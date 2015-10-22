@@ -1,0 +1,23 @@
+{
+  "name": "investment-manager",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LaMaldicionDeMandos/investment-manager.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "license": "GNU GENERAL PUBLIC LICENSE"
+}
