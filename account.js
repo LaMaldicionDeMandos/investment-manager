@@ -1,23 +1,54 @@
 var q = require('q');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({delimiter: ';'});
-
-var create = function(filename, name) {
-	var defer = q.defer();
-	var account = {name: name};
-	converter.on("end_parsed", function (jsonArray) {
-		jsonArray.forEach(function(item) {
+var fs = require("fs");
+function Account(name, array) {
+	that = this;
+	this.name = name;
+	array.forEach(function(item) {
 	   		item.opening = parseFloat(item.opening.replace(',', '.', 'gi'));
    			item.close = parseFloat(item.close.replace(',', '.', 'gi'));
    			item.percent = function() {
 				return 100*(item.close - item.opening)/item.opening;
 			};
-			account.history = jsonArray;
-			defer.resolve(account);
-   		}); 
 	});
-	require("fs").createReadStream(filename).pipe(converter);
+	this.history = array;
+	this.predictionByNMatches = function(n) {
+			console.log('Predicting with size: ' + n);
+			var jsonArray = that.history.slice(0, that.history.length);
+			var lasts = jsonArray.slice(0, n);
+		   	jsonArray.splice(0, n);
+		   	var difs = [];
+		   	for (var i = 0; i < jsonArray.length - n;i++) {
+		   		var diff = 0;
+		   		for (var j = 0; j < n; j++) {
+		   			diff+= Math.abs(lasts[j].percent() - jsonArray[i + j].percent());
+		   		}
+		   		difs.push(diff);
+		   	}
+		   	var min = 10000000;
+		   	var index = 0;
+		   	for (var i = 0; i < difs.length; i++) {
+		   		if (difs[i] < min) {
+		   			min = difs[i];
+		   			index = i;
+		   		}
+		   	}
+		   	for(var i = 0; i < n ; i++) {
+		   		console.log('referencia: ' + lasts[i].percent() + '  --  obtenido: ' + jsonArray[index + i].percent());
+		   	}
+			return jsonArray[index - 1].percent();
+		};	 
+};
+var create = function(filename, name) {
+	var defer = q.defer();
+	var account = {name: name};
+	converter.on("end_parsed", function (json) {
+		var account = new Account(name, json);
+		defer.resolve(account);
+	}); 
+	fs.createReadStream(filename).pipe(converter);
 	return defer.promise;
-}
+};
 
 module.exports = create;
