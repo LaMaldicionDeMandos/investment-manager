@@ -10,12 +10,13 @@ var create = function(filename, name) {
 	   		item.opening = parseFloat(item.opening.replace(',', '.', 'gi'));
    			item.close = parseFloat(item.close.replace(',', '.', 'gi'));
    			item.percent = function() {
-			return 100*(item.close - item.opening)/item.opening;
-		};
-		account.history = jsonArray;
-		defer.resolve(account);
-   	}); 
-	}
+				return 100*(item.close - item.opening)/item.opening;
+			};
+			account.history = jsonArray;
+			defer.resolve(account);
+   		}); 
+	});
+	require("fs").createReadStream(filename).pipe(converter);
 	return defer.promise;
 }
 

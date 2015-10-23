@@ -1,18 +1,13 @@
+var accountFactory = require('./account.js');
 console.log('Path file: ' + process.argv[2]);
-var file = {filename: process.argv[2]};
 var size = process.argv[3] || 15;
-var Converter = require("csvtojson").Converter;
-var converter = new Converter({delimiter: ';'});
 
-//end_parsed will be emitted once parsing finished 
-converter.on("end_parsed", function (jsonArray) {
-   	jsonArray.forEach(function(item) {
-   		item.opening = parseFloat(item.opening.replace(',', '.', 'gi'));
-   		item.close = parseFloat(item.close.replace(',', '.', 'gi'));
-   		item.percent = function() {
-			return 100*(item.close - item.opening)/item.opening;
-		};
-   	}); 
+accountFactory(process.argv[2], 'TRAN').then(function(account) {
+   console.log(JSON.stringify(account));
+});
+
+
+/*
    	var lasts = jsonArray.slice(0, size);
    	jsonArray.splice(0, size);
    	var difs = [];
@@ -38,6 +33,4 @@ converter.on("end_parsed", function (jsonArray) {
    	}
       console.log('New Value: ' + jsonArray[index - 1].percent());
 });
- 
-//read from file 
-require("fs").createReadStream(file.filename).pipe(converter);
+*/
