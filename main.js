@@ -1,4 +1,3 @@
-var csv = require('csv-to-json');
 console.log('Path file: ' + process.argv[2]);
 var file = {filename: process.argv[2]};
 var size = process.argv[3] || 15;
@@ -37,6 +36,7 @@ converter.on("end_parsed", function (jsonArray) {
    	for(var i = 0; i < size ; i++) {
    		console.log('referencia: ' + lasts[i].percent() + '  --  obtenido: ' + jsonArray[index + i].percent());
    	}
+      console.log('New Value: ' + jsonArray[index - 1].percent());
 });
  
 //read from file 
