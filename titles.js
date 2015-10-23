@@ -2,7 +2,7 @@ var q = require('q');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({delimiter: ';'});
 var fs = require("fs");
-function Account(name, array) {
+function Title(name, array) {
 	that = this;
 	this.name = name;
 	array.forEach(function(item) {
@@ -14,7 +14,6 @@ function Account(name, array) {
 	});
 	this.history = array;
 	this.predictionByNMatches = function(n) {
-			console.log('Predicting with size: ' + n);
 			var jsonArray = that.history.slice(0, that.history.length);
 			var lasts = jsonArray.slice(0, n);
 		   	jsonArray.splice(0, n);
@@ -42,10 +41,10 @@ function Account(name, array) {
 };
 var create = function(filename, name) {
 	var defer = q.defer();
-	var account = {name: name};
+	var title = {name: name};
 	converter.on("end_parsed", function (json) {
-		var account = new Account(name, json);
-		defer.resolve(account);
+		var title = new Title(name, json);
+		defer.resolve(title);
 	}); 
 	fs.createReadStream(filename).pipe(converter);
 	return defer.promise;
