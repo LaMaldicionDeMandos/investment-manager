@@ -1,4 +1,4 @@
-var stockExchange = {
+module.exports = {
 	BCBA: [
 	{id: '48',name: 'AGRO'},
 	{id: '17388',name: 'AULA'},
@@ -69,4 +69,4 @@ var stockExchange = {
 	{id: '20441',name: 'TS'},
 	{id: '2846',name: 'YPFD'}
 	]
-}	
+};	
