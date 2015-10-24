@@ -8,14 +8,12 @@ function Fetcher() {
 		request(baseUrl + titleId).pipe(fs.createWriteStream(filepath));
 	};
 	this.fetchTitles = function(path, titles) {
-		for (var key in titles) {
-			titles[key].forEach(function(title) {
-				var finalPath = path + '/' + key + '/' + title.name + '.csv';
-				console.log('Fetching ' + title.name + ' in ' + finalPath);
-				that.fetchTitle(finalPath, title.id);
-			});
-		}
-	}
+		titles.forEach(function(key, title) {
+			var finalPath = path + '/' + key + '/' + title.name + '.csv';
+			console.log('Fetching ' + title.name + ' in ' + finalPath);
+			that.fetchTitle(finalPath, title.id);
+		});
+	};
 };	
 
 module.exports = new Fetcher();
