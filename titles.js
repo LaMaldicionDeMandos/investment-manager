@@ -6,8 +6,8 @@ function Title(name, array) {
 	that = this;
 	this.name = name;
 	array.forEach(function(item) {
-	   		item.opening = parseFloat(item.opening.replace(',', '.', 'gi'));
-   			item.close = parseFloat(item.close.replace(',', '.', 'gi'));
+	   		item.opening = parseFloat(item.Apertura.replace(',', '.', 'gi'));
+   			item.close = parseFloat(item.Cierre.replace(',', '.', 'gi'));
    			item.percent = function() {
 				return 100*(item.close - item.opening)/item.opening;
 			};
@@ -32,9 +32,6 @@ function Title(name, array) {
 		   			min = difs[i];
 		   			index = i;
 		   		}
-		   	}
-		   	for(var i = 0; i < n ; i++) {
-		   		console.log('referencia: ' + lasts[i].percent() + '  --  obtenido: ' + jsonArray[index + i].percent());
 		   	}
 			return jsonArray[index - 1].percent();
 		};	 

@@ -27,7 +27,6 @@ function TitleCodes() {
 		{id: '34271',name: 'EDN'},
 		{id: '1258',name: 'ERAR'},
 		{id: '1279',name: 'ESME'},
-		{id: '1279',name: 'ESME'},
 		{id: '1301',name: 'FERR'},
 		{id: '1305',name: 'FIPL'},
 		{id: '1320',name: 'FRAN'},
