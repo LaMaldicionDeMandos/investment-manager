@@ -3,7 +3,6 @@ var fs = require('fs');
 var baseUrl = 'https://www.invertironline.com/Titulo/DescargarCotizacionesHistoricasTitulo?idTitulo=';
 
 function Fetcher() {
-	var that = this;
 	this.fetchTitle = function(filepath, titleId) {
 		request(baseUrl + titleId).pipe(fs.createWriteStream(filepath));
 	};
@@ -11,7 +10,7 @@ function Fetcher() {
 		titles.forEach(function(key, title) {
 			var finalPath = path + '/' + key + '/' + title.name + '.csv';
 			console.log('Fetching ' + title.name + ' in ' + finalPath);
-			that.fetchTitle(finalPath, title.id);
+			this.fetchTitle(finalPath, title.id);
 		});
 	};
 };	

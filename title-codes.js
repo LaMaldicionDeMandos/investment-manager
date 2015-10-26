@@ -1,5 +1,4 @@
 function TitleCodes() {
-	var that = this;
 	this.codes = {
 		BCBA: [
 		{id: '48',name: 'AGRO'},
@@ -72,8 +71,8 @@ function TitleCodes() {
 		]
 	};
 	this.forEach = function(closure) {
-		for (var key in that.codes) {
-			that.codes[key].forEach(function(title) {
+		for (var key in this.codes) {
+			this.codes[key].forEach(function(title) {
 				closure(key, title);
 			});
 		}	

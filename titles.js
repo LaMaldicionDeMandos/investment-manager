@@ -4,7 +4,6 @@ var Converter = require("csvtojson").Converter;
 var converter = new Converter({delimiter: ';'});
 var fs = require("fs");
 function Title(name, array) {
-	that = this;
 	this.name = name;
 	array.forEach(function(item) {
 	   		item.opening = parseFloat(item.Apertura.replace(',', '.', 'gi'));
@@ -15,7 +14,7 @@ function Title(name, array) {
 	});
 	this.history = array;
 	this.predictionByNMatches = function(n) {
-			var jsonArray = that.history.slice(0, that.history.length);
+			var jsonArray = this.history.slice(0, this.history.length);
 			var lasts = jsonArray.slice(0, n);
 		   	jsonArray.splice(0, n);
 		   	var difs = [];
@@ -39,9 +38,9 @@ function Title(name, array) {
 	this.save = function(callback) {
 		var dto = new database.Title();
 		dto._id = database.ObjectId();
-		dto.name = that.name;
+		dto.name = this.name;
 		dto.history = [];
-		that.history.forEach(function(item) {
+		this.history.forEach(function(item) {
 			var historyDto = new database.History();
 			historyDto.Fecha = item.Fecha;
 			historyDto.Apertura = item.Apertura;
@@ -70,7 +69,6 @@ Title.prototype.fromDto = function(dto) {
 }
 var create = function(filename, name) {
 	var defer = q.defer();
-	var title = {name: name};
 	converter.on("end_parsed", function (json) {
 		var title = new Title(name, json);
 		defer.resolve(title);
