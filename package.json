@@ -10,7 +10,8 @@
     "request":"^2.65.0",
     "csvtojson":"~0.4.3",
     "q":"~1.4.1",
-    "exec-sh":"0.2.0"
+    "exec-sh":"0.2.0",
+    "mongoose":"~4.2.2"
   },
   "engines": {
     "node": "0.12.7"
