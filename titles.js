@@ -13,22 +13,32 @@ function Title(name, array) {
 			};
 	});
 	this.history = array;
-	this.predictionByNMatches = function(n) {
+	this.standardErrorByNMatches = function(n) {
+		for (var i = this.history.length; i > 0; i++) {
+
+		}
+	};
+	this.predictionByNMatches = function(n, position) {
+			position = position || 0;
 			var jsonArray = this.history.slice(0, this.history.length);
-			var lasts = jsonArray.slice(0, n);
-		   	jsonArray.splice(0, n);
+			n = (this.history.length - position > n) ? n : this.history.length - position;
+			var lasts = jsonArray.slice(position, position + n);
 		   	var difs = [];
 		   	for (var i = 0; i < jsonArray.length - n;i++) {
-		   		var diff = 0;
-		   		for (var j = 0; j < n; j++) {
-		   			diff+= Math.abs(lasts[j].percent() - jsonArray[i + j].percent());
-		   		}
-		   		difs.push(diff);
+				if (i + n  <= position || i >= position + n) {
+					var diff = 0;
+					for (var j = 0; j < n; j++) {
+						diff+= Math.abs(lasts[j].percent() - jsonArray[i + j].percent());
+					}
+					difs.push(diff);
+				} else {
+					difs.push(NaN);
+				}
 		   	}
 		   	var min = 10000000;
 		   	var index = 0;
 		   	for (var i = 0; i < difs.length; i++) {
-		   		if (difs[i] < min) {
+		   		if (isNaN(difs[i]) && difs[i] < min) {
 		   			min = difs[i];
 		   			index = i;
 		   		}
