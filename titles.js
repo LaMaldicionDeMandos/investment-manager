@@ -1,4 +1,5 @@
 var q = require('q');
+var database = require('./database.js');
 var Converter = require("csvtojson").Converter;
 var converter = new Converter({delimiter: ';'});
 var fs = require("fs");
@@ -34,8 +35,39 @@ function Title(name, array) {
 		   		}
 		   	}
 			return jsonArray[index - 1].percent();
-		};	 
+		};
+	this.save = function(callback) {
+		var dto = new database.Title();
+		dto._id = database.ObjectId();
+		dto.name = that.name;
+		dto.history = [];
+		that.history.forEach(function(item) {
+			var historyDto = new database.History();
+			historyDto.Fecha = item.Fecha;
+			historyDto.Apertura = item.Apertura;
+			historyDto.Maximo = item.Maximo;
+			historyDto.Minimo = item.Minimo;
+			historyDto.Cierre = item.Cierre;
+			historyDto.CantNominal = item.CantNominal;
+			historyDto.opening = item.opening;
+			historyDto.close = item.close;
+			dto.history.push(historyDto);
+		});
+		dto.save(function(err) {
+			if (err) {
+				console.log(err);
+				callback(err);
+			} else {
+				console.log('Save Success:' + dto.name);
+				callback();
+			}
+		});
+	}		 
 };
+
+Title.prototype.fromDto = function(dto) {
+	return new Title(dto.name, dto.history);
+}
 var create = function(filename, name) {
 	var defer = q.defer();
 	var title = {name: name};
