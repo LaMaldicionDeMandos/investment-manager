@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var connection = mongoose.createConnection('mongodb://localhost/investment');
+mongoose.connect('mongodb://localhost/investment');
 console.log('Connecting to mongodb');
 
 var Schema = mongoose.Schema;
@@ -21,7 +21,7 @@ function DBSchema() {
 var schema = new DBSchema();
 
 process.on('exit', function() {
-	connection.disconnect();
+	mongoose.disconnect();
 });
 
 module.exports = schema;

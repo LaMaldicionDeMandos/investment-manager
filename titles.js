@@ -1,7 +1,5 @@
-var q = require('q');
 var database = require('./database.js');
-var Converter = require("csvtojson").Converter;
-var converter = new Converter({delimiter: ';'});
+var csv = require("csvjson");
 var fs = require("fs");
 function Title(name, array) {
 	this.name = name;
@@ -38,7 +36,7 @@ function Title(name, array) {
 		   	var min = 10000000;
 		   	var index = 0;
 		   	for (var i = 0; i < difs.length; i++) {
-		   		if (isNaN(difs[i]) && difs[i] < min) {
+		   		if (!isNaN(difs[i]) && difs[i] < min) {
 		   			min = difs[i];
 		   			index = i;
 		   		}
@@ -63,7 +61,7 @@ function Title(name, array) {
 		dto.save(function(err) {
 			if (err) {
 				console.log(err);
-				callback(err);
+				callback('Error: ' + dto.name + ' --> ' + err);
 			} else {
 				console.log('Save Success:' + dto.name);
 				callback();
@@ -74,15 +72,11 @@ function Title(name, array) {
 
 Title.prototype.fromDto = function(dto) {
 	return new Title(dto.name, dto.history);
-}
+};
+
 var create = function(filename, name) {
-	var defer = q.defer();
-	converter.on("end_parsed", function (json) {
-		var title = new Title(name, json);
-		defer.resolve(title);
-	}); 
-	fs.createReadStream(filename).pipe(converter);
-	return defer.promise;
+	var json = csv.toObject(filename).output;
+	return new Title(name, json);
 };
 
 module.exports = create;
