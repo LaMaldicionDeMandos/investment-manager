@@ -6,10 +6,10 @@ var fs = require("fs");
 function Title(name, array) {
 	this.name = name;
 	array.forEach(function(item) {
-	   		item.opening = parseFloat(item.Apertura.replace(',', '.', 'gi'));
-   			item.close = parseFloat(item.Cierre.replace(',', '.', 'gi'));
+	   		item.opening = parseFloat(item.opening);
+   			item.closing = parseFloat(item.closing);
    			item.percent = function() {
-				return 100*(item.close - item.opening)/item.opening;
+				return 100*(item.closing - item.opening)/item.opening;
 			};
 	});
 	this.history = array;
@@ -52,14 +52,12 @@ function Title(name, array) {
 		dto.history = [];
 		this.history.forEach(function(item) {
 			var historyDto = new database.History();
-			historyDto.Fecha = item.Fecha;
-			historyDto.Apertura = item.Apertura;
-			historyDto.Maximo = item.Maximo;
-			historyDto.Minimo = item.Minimo;
-			historyDto.Cierre = item.Cierre;
-			historyDto.CantNominal = item.CantNominal;
+			historyDto.date = item.date;
 			historyDto.opening = item.opening;
-			historyDto.close = item.close;
+			historyDto.max = item.max;
+			historyDto.min = item.min;
+			historyDto.closing = item.closing;
+			historyDto.amount = item.amount;
 			dto.history.push(historyDto);
 		});
 		dto.save(function(err) {
