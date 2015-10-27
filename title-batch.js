@@ -1,9 +1,19 @@
 var titleCodes = require('./title-codes.js');
 var titleFactory = require('./titles.js');
 var async = require('async');
+require('./database.js').clean();
 var path = process.argv[2];
 var size = process.argv[3] || 15;
-
+var cleanDb = function(callback) {
+	require('./database.js').clean(function(err) {
+		console.log("clear database");
+		if (!err) {
+			callback(null, null);
+		} else {
+			callback(err);
+		}
+	});
+};
 var functions = [];
 titleCodes.forEach(function(key, title) {
 	console.log("Title: " + title.name);
@@ -19,7 +29,13 @@ titleCodes.forEach(function(key, title) {
 		});
 	});
 });
-async.parallel(functions, function(err, results) {
-	console.log("Exit");
+var saveItems = function(callback) {
+	async.parallel(functions, function(err, results) {
+		console.log("End saving titles");
+		callback(err, results);
+	});
+}
+async.series([cleanDb, saveItems], function(err, results) {
+	console.log("End");
 	process.exit();
 });
