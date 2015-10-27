@@ -8,6 +8,12 @@ function Fetcher() {
 	this.fetchTitle = function(filepath, titleId) {
 		var transform = th(function(data, encoding, done) {
 			var string = data.toString();
+			string = string.replace('Fecha', 'date');
+			string = string.replace('Apertura', 'opening');
+			string = string.replace('Maximo', 'max');
+			string = string.replace('Minimo', 'min');
+			string = string.replace('Cierre', 'closing');
+			string = string.replace('CantNominal', 'amount');
 			string = string.replace(/,/g, '.');
 			string = string.replace(/;/g, ',');
 			this.push(string);
