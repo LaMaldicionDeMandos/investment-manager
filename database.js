@@ -15,6 +15,7 @@ function DBSchema() {
 	this.ObjectId = mongoose.Types.ObjectId;
 	this.History = History;
 	this.Title = Title;
+	this.clean = function(callback) { Title.remove({}, callback) }
 }
 
 var schema = new DBSchema();
