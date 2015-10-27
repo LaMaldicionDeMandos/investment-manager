@@ -9,6 +9,8 @@
   "dependencies": {
     "request":"^2.65.0",
     "csvtojson":"~0.4.3",
+    "csvjson":"^1.0.5",
+    "through2":"^2.0.0",
     "q":"~1.4.1",
     "exec-sh":"0.2.0",
     "mongoose":"~4.2.2"
