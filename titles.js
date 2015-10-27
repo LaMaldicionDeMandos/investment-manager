@@ -1,6 +1,5 @@
 var database = require('./database.js');
 var csv = require("csvjson");
-var fs = require("fs");
 function Title(name, array) {
 	this.name = name;
 	array.forEach(function(item) {
