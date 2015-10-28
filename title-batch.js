@@ -16,9 +16,8 @@ var cleanDb = function(callback) {
 };
 var functions = [];
 titleCodes.forEach(function(key, title) {
-	console.log("Title: " + title.name);
 	var title = titleFactory(path + '/' + key + '/' + title.name + '.csv', title.name);
-	console.log('Prediction ' + title.name + ': ' + title.predictionByNMatches(size));
+	console.log('Prediction ' + title.name + ': ' + title.predictionByNMatches(size) + ' -- ' + JSON.stringify(title.standardErrorByNMatches(size)));
 	functions.push(function(callback) {
 		title.save(function(err) {
 			if (!err) {

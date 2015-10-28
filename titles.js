@@ -11,9 +11,40 @@ function Title(name, array) {
 	});
 	this.history = array;
 	this.standardErrorByNMatches = function(n) {
-		for (var i = this.history.length; i > 0; i++) {
-
+		var predictions = [];
+		for (var i = 0; i < this.history.length - n; i++) {
+			predictions.push(this.predictionByNMatches(n, i));
 		}
+		var negatives = [];
+		var positives = [];
+
+		for(var i = 1; i < predictions.length;i++) {
+			var prediction = predictions[i];
+			var real = this.history[i-1].percent();
+			if (prediction - real <= 0) {
+				positives.push(real - prediction);
+			}
+			if (real - prediction <= 0) {
+				negatives.push(prediction - real);
+			}
+		}
+		var total = positives.length + negatives.length;
+		var report = {positivesPercent: 100*positives.length/total, negativesPercent:100*negatives.length/total};
+		var sum = 0;
+		var neg = 0;
+		var pos = 0;
+		positives.forEach(function(value) {
+			sum+= value;
+			pos+= value;
+		});
+		negatives.forEach(function(value) {
+			sum+= value;
+			neg+= value;
+		});
+		report.error = sum/(positives.length + negatives.length);
+		report.positives = pos/positives.length;
+		report.negatives = neg/negatives.length;
+		return report;
 	};
 	this.predictionByNMatches = function(n, position) {
 			position = position || 0;
