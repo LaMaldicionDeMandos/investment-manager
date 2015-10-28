@@ -5,7 +5,8 @@ console.log('Connecting to mongodb');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
  
-var HistorySchema = new Schema({date: String, opening: String, max: String, min:String, closing:String, amount:String});
+var HistorySchema = new Schema({date: String, opening: Number, max: Number, min:Number, closing:Number, amount:String,
+	jump: Number});
 var TitleSchema = new Schema({_id: ObjectId, name: String, history:[HistorySchema]});
 
 var History = mongoose.model('History', HistorySchema);

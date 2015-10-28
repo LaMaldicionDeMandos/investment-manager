@@ -2,9 +2,12 @@ var database = require('./database.js');
 var csv = require("csvjson");
 function Title(name, array) {
 	this.name = name;
-	array.forEach(function(item) {
+	array.forEach(function(item, index, array) {
 	   		item.opening = parseFloat(item.opening);
    			item.closing = parseFloat(item.closing);
+			item.max = parseFloat(item.max);
+			item.min = parseFloat(item.min);
+			item.jupm = index == array.length - 1 ? 0 : item.opening - parseFloat(array[index + 1].closing);
    			item.percent = function() {
 				return 100*(item.closing - item.opening)/item.opening;
 			};
@@ -86,6 +89,7 @@ function Title(name, array) {
 			historyDto.min = item.min;
 			historyDto.closing = item.closing;
 			historyDto.amount = item.amount;
+			historyDto.jump = item.jupm;
 			dto.history.push(historyDto);
 		});
 		dto.save(function(err) {
