@@ -65,7 +65,7 @@ function Title(name, array) {
 		   	}
 		   	var min = 10000000;
 		   	var index = 0;
-		   	for (var i = 0; i < difs.length; i++) {
+		   	for (var i = 1; i < difs.length; i++) {
 		   		if (!isNaN(difs[i]) && difs[i] < min) {
 		   			min = difs[i];
 		   			index = i;
