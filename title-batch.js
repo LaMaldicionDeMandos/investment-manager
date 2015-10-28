@@ -19,9 +19,9 @@ titleCodes.forEach(function(key, title) {
 	var title = titleFactory(path + '/' + key + '/' + title.name + '.csv', title.name);
 	var prediction = title.predictionByNMatches(size);
 	var report = title.standardErrorByNMatches(size);
-	var max = prediction + report.positives;
-	var min = prediction - report.negatives;
-	console.log('Prediction ' + title.name + ': ' + prediction + ' -- maximo: ' + max + ' -- minimo: ' + min);
+	var max = prediction.after + report.positives;
+	var min = prediction.after - report.negatives;
+	console.log('Prediction ' + title.name + ' Despues: ' + prediction.after + ' -- Antes: ' + prediction.before + ' -- maximo: ' + max + ' -- minimo: ' + min);
 	functions.push(function(callback) {
 		title.save(function(err) {
 			if (!err) {

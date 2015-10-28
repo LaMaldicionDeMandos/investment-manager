@@ -7,23 +7,26 @@ function Title(name, array) {
    			item.closing = parseFloat(item.closing);
 			item.max = parseFloat(item.max);
 			item.min = parseFloat(item.min);
-			item.jupm = index == array.length - 1 ? 0 : item.opening - parseFloat(array[index + 1].closing);
-   			item.percent = function() {
+			item.jump = (index == array.length - 1) ? 0 : item.opening - parseFloat(array[index + 1].closing);
+   			item.percentAfterOpen = function() {
 				return 100*(item.closing - item.opening)/item.opening;
+			};
+			item.percentBeforeOpen = function() {
+				return 100*(item.closing - item.opening + item.jump)/(item.opening - item.jump);
 			};
 	});
 	this.history = array;
 	this.standardErrorByNMatches = function(n) {
 		var predictions = [];
 		for (var i = 0; i < this.history.length - n; i++) {
-			predictions.push(this.predictionByNMatches(n, i));
+			predictions.push(this.predictionByNMatches(n, i).after);
 		}
 		var negatives = [];
 		var positives = [];
 
 		for(var i = 1; i < predictions.length;i++) {
 			var prediction = predictions[i];
-			var real = this.history[i-1].percent();
+			var real = this.history[i-1].percentAfterOpen();
 			if (prediction - real <= 0) {
 				positives.push(real - prediction);
 			}
@@ -59,7 +62,7 @@ function Title(name, array) {
 				if (i + n  <= position || i >= position + n) {
 					var diff = 0;
 					for (var j = 0; j < n; j++) {
-						diff+= Math.abs(lasts[j].percent() - jsonArray[i + j].percent());
+						diff+= Math.abs(lasts[j].percentAfterOpen() - jsonArray[i + j].percentAfterOpen());
 					}
 					difs.push(diff);
 				} else {
@@ -74,7 +77,7 @@ function Title(name, array) {
 		   			index = i;
 		   		}
 		   	}
-			return jsonArray[index - 1].percent();
+			return {after: jsonArray[index - 1].percentAfterOpen(), before: jsonArray[index - 1].percentBeforeOpen()};
 		};
 	this.save = function(callback) {
 		var dto = new database.Title();
@@ -89,7 +92,7 @@ function Title(name, array) {
 			historyDto.min = item.min;
 			historyDto.closing = item.closing;
 			historyDto.amount = item.amount;
-			historyDto.jump = item.jupm;
+			historyDto.jump = item.jump;
 			dto.history.push(historyDto);
 		});
 		dto.save(function(err) {
