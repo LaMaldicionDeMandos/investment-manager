@@ -15,13 +15,23 @@ var cleanDb = function(callback) {
 	});
 };
 var functions = [];
+var reportAfter = function(title) {
+	return {prediction:title.predictionByNMatchesAfter(size), report: title.standardErrorByNMatchesAfter(size)};
+};
+var reportBefore = function(title) {
+	return {prediction:title.predictionByNMatchesBefore(size), report: title.standardErrorByNMatchesBefore(size)};
+};
+var printResult = function(prediction, result, titleName) {
+	var max = result.prediction + result.report.positives;
+	var min = result.prediction - result.report.negatives;
+	console.log('Prediccion ' + prediction + ' ' + titleName + ': ' + result.prediction + ' maximo: ' + max + ' minimo: ' + min);
+}
 titleCodes.forEach(function(key, title) {
 	var title = titleFactory(path + '/' + key + '/' + title.name + '.csv', title.name);
-	var prediction = title.predictionByNMatches(size);
-	var report = title.standardErrorByNMatches(size);
-	var max = prediction.after + report.positives;
-	var min = prediction.after - report.negatives;
-	console.log('Prediction ' + title.name + ' Despues: ' + prediction.after + ' -- Antes: ' + prediction.before + ' -- maximo: ' + max + ' -- minimo: ' + min);
+	var result = reportAfter(title);
+	printResult('Despues de Apertura', result, title.name);
+	result = reportBefore(title);
+	printResult('Antes de Apertura  ', result, title.name);
 	functions.push(function(callback) {
 		title.save(function(err) {
 			if (!err) {

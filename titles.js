@@ -16,17 +16,17 @@ function Title(name, array) {
 			};
 	});
 	this.history = array;
-	this.standardErrorByNMatches = function(n) {
+	var standardErrorByNMatches = function(n, percentFunc, that) {
 		var predictions = [];
-		for (var i = 0; i < this.history.length - n; i++) {
-			predictions.push(this.predictionByNMatches(n, i).after);
+		for (var i = 0; i < that.history.length - n; i++) {
+			predictions.push(predictionByNMatches(n, i, percentFunc, that));
 		}
 		var negatives = [];
 		var positives = [];
 
 		for(var i = 1; i < predictions.length;i++) {
 			var prediction = predictions[i];
-			var real = this.history[i-1].percentAfterOpen();
+			var real = that.history[i-1][percentFunc]();
 			if (prediction - real <= 0) {
 				positives.push(real - prediction);
 			}
@@ -52,17 +52,25 @@ function Title(name, array) {
 		report.negatives = neg/negatives.length;
 		return report;
 	};
-	this.predictionByNMatches = function(n, position) {
+
+	this.standardErrorByNMatchesBefore = function(n) {
+		return standardErrorByNMatches(n, 'percentBeforeOpen', this);
+	};
+
+	this.standardErrorByNMatchesAfter = function(n) {
+		return standardErrorByNMatches(n, 'percentAfterOpen', this);
+	};
+	var predictionByNMatches = function(n, position, percentFunc, that) {
 			position = position || 0;
-			var jsonArray = this.history.slice(0, this.history.length);
-			n = (this.history.length - position > n) ? n : this.history.length - position;
+			var jsonArray = that.history.slice(0, that.history.length);
+			n = (that.history.length - position > n) ? n : that.history.length - position;
 			var lasts = jsonArray.slice(position, position + n);
 		   	var difs = [];
 		   	for (var i = 0; i < jsonArray.length - n;i++) {
 				if (i + n  <= position || i >= position + n) {
 					var diff = 0;
 					for (var j = 0; j < n; j++) {
-						diff+= Math.abs(lasts[j].percentAfterOpen() - jsonArray[i + j].percentAfterOpen());
+						diff+= Math.abs(lasts[j][percentFunc]() - jsonArray[i + j][percentFunc]());
 					}
 					difs.push(diff);
 				} else {
@@ -77,8 +85,14 @@ function Title(name, array) {
 		   			index = i;
 		   		}
 		   	}
-			return {after: jsonArray[index - 1].percentAfterOpen(), before: jsonArray[index - 1].percentBeforeOpen()};
+			return jsonArray[index - 1][percentFunc]();
 		};
+	this.predictionByNMatchesBefore = function(n, position) {
+		return predictionByNMatches(n, position, 'percentBeforeOpen', this);
+	};
+	this.predictionByNMatchesAfter = function(n, position) {
+		return predictionByNMatches(n, position, 'percentAfterOpen', this);
+	}
 	this.save = function(callback) {
 		var dto = new database.Title();
 		dto._id = database.ObjectId();
