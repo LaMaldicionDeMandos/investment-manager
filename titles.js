@@ -19,7 +19,7 @@ function Title(name, array) {
 	var standardErrorByNMatches = function(n, percentFunc, that) {
 		var predictions = [];
 		for (var i = 0; i < that.history.length - n; i++) {
-			predictions.push(predictionByNMatches(n, i, percentFunc, that));
+			predictions.push(predictionByNWindow(n, i, percentFunc, that));
 		}
 		var negatives = [];
 		var positives = [];
@@ -60,7 +60,7 @@ function Title(name, array) {
 	this.standardErrorByNMatchesAfter = function(n) {
 		return standardErrorByNMatches(n, 'percentAfterOpen', this);
 	};
-	var predictionByNMatches = function(n, position, percentFunc, that) {
+	var predictionByNWindow = function(n, position, percentFunc, that) {
 			position = position || 0;
 			var jsonArray = that.history.slice(0, that.history.length);
 			n = (that.history.length - position > n) ? n : that.history.length - position;
@@ -87,11 +87,11 @@ function Title(name, array) {
 		   	}
 			return jsonArray[index - 1][percentFunc]();
 		};
-	this.predictionByNMatchesBefore = function(n, position) {
-		return predictionByNMatches(n, position, 'percentBeforeOpen', this);
+	this.predictionByNWindowBefore = function(n, position) {
+		return predictionByNWindow(n, position, 'percentBeforeOpen', this);
 	};
-	this.predictionByNMatchesAfter = function(n, position) {
-		return predictionByNMatches(n, position, 'percentAfterOpen', this);
+	this.predictionByNWindowAfter = function(n, position) {
+		return predictionByNWindow(n, position, 'percentAfterOpen', this);
 	}
 	this.save = function(callback) {
 		var dto = new database.Title();
