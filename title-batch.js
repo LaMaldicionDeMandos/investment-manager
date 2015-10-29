@@ -16,10 +16,10 @@ var cleanDb = function(callback) {
 };
 var functions = [];
 var reportAfter = function(title) {
-	return {prediction:title.predictionByNWindowAfter(size), report: title.standardErrorByNMatchesAfter(size)};
+	return {prediction:title.predictionByNWindowAfter(size), report: title.standardErrorByNWindowAfter(size)};
 };
 var reportBefore = function(title) {
-	return {prediction:title.predictionByNWindowBefore(size), report: title.standardErrorByNMatchesBefore(size)};
+	return {prediction:title.predictionByNWindowBefore(size), report: title.standardErrorByNWindowBefore(size)};
 };
 var printResult = function(prediction, result, titleName) {
 	var max = result.prediction + result.report.positives;
