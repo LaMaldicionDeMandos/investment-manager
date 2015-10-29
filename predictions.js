@@ -26,7 +26,7 @@ function predictionByNWindow(it, n, position, percentFunc) {
             index = i;
         }
     }
-    return jsonArray[index - 1][percentFunc]();
+    return jsonArray[index - 1];
 };
 
 function standardErrorByNWindow(it, n, percentFunc) {
@@ -47,22 +47,27 @@ function standardErrorByNWindow(it, n, percentFunc) {
             negatives.push(prediction - real);
         }
     }
-    var total = positives.length + negatives.length;
-    var report = {positivesPercent: 100*positives.length/total, negativesPercent:100*negatives.length/total};
     var sum = 0;
     var neg = 0;
     var pos = 0;
+    var report = {maxPositiveError: 0, maxNegativeError: 0};
     positives.forEach(function(value) {
         sum+= value;
         pos+= value;
+        if (value > report.maxPositiveError) {
+            report.maxPositiveError = value;
+        }
     });
     negatives.forEach(function(value) {
         sum+= value;
         neg+= value;
+        if (report.maxNegativeError > value) {
+            report.maxNegativeError = value;
+        }
     });
     report.error = sum/(positives.length + negatives.length);
-    report.positives = pos/positives.length;
-    report.negatives = neg/negatives.length;
+    report.positiveError = pos/positives.length;
+    report.negativeError = neg/negatives.length;
     return report;
 };
 

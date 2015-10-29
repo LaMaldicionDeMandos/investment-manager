@@ -48,6 +48,11 @@ function Title(name, array) {
 			historyDto.jump = item.jump;
 			dto.history.push(historyDto);
 		});
+		var report = new database.WindowReport();
+		var prediction = this.predictionByNWindowBefore(10).percentBeforeOpen();
+		report.predictionBefore = prediction.percentBeforeOpen();
+		report.predictionAfter = prediction.percentAfterOpen();
+		dto.windowReports = []
 		dto.save(function(err) {
 			if (err) {
 				console.log(err);
