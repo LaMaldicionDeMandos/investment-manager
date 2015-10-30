@@ -4,7 +4,9 @@
 var db = require('./database.js');
 var Title = db.Title;
 
-Title.find(function(err, titles) {
+var name = process.argv[2];
+var query = name ? {name: name} : {};
+Title.find(query, function(err, titles) {
    if (err) {
        console.log(err);
        return;
