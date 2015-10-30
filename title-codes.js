@@ -30,7 +30,7 @@ function TitleCodes() {
 		{id: '1305',name: 'FIPL'},
 		{id: '1320',name: 'FRAN'},
 		{id: '1354',name: 'GARO'},
-		{id: '1360',name: 'GRAN'},
+		{id: '1360',name: 'GBAN'},
 		{id: '35529',name: 'GCLA'},
 		{id: '35529',name: 'GCLA'},
 		{id: '3445',name: 'GGAL'},
