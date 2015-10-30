@@ -31,7 +31,25 @@ function Title(name, array) {
 	};
 	this.predictionByNWindowAfter = function(n, position) {
 		return predictions.predictionByNWindowAfter(this, n, position);
-	}
+	};
+	var createPredictionReport = function(that, size, mode) {
+		var prediction = new database.Prediction();
+		prediction.index = that['predictionByNWindow' + mode](size);
+		prediction.before = that.history[prediction.index].percentBeforeOpen();
+		prediction.after = that.history[prediction.index].percentAfterOpen();
+		var errorReport = that['standardErrorByNWindow' + mode](size);
+		prediction.error = errorReport.error;
+		prediction.positiveError = errorReport.positiveError;
+		prediction.negativeError = errorReport.negativeError;
+		prediction.maxPositiveError = errorReport.maxPositiveError;
+		prediction.maxNegativeError = errorReport.maxNegativeError;
+		return prediction;
+	};
+	this.windowReports = [{
+		size: 10, report: {
+		predictionBefore: createPredictionReport(this, 10, 'Before'),
+		predictionAfter: createPredictionReport(this, 10, 'After')
+	}}];
 	this.save = function(callback) {
 		var dto = new database.Title();
 		dto._id = database.ObjectId();
@@ -48,11 +66,12 @@ function Title(name, array) {
 			historyDto.jump = item.jump;
 			dto.history.push(historyDto);
 		});
-		var report = new database.WindowReport();
-		var prediction = this.predictionByNWindowBefore(10).percentBeforeOpen();
-		report.predictionBefore = prediction.percentBeforeOpen();
-		report.predictionAfter = prediction.percentAfterOpen();
-		dto.windowReports = []
+		var report = {size: this.windowReports[0].size};
+		var windowReport = new database.WindowReport();
+		windowReport.predictionBefore = this.windowReports[0].report.predictionBefore;
+		windowReport.predictionAfter = this.windowReports[0].report.predictionAfter;
+		report.report = windowReport;
+		dto.windowReports = [report];
 		dto.save(function(err) {
 			if (err) {
 				console.log(err);
@@ -62,11 +81,7 @@ function Title(name, array) {
 				callback();
 			}
 		});
-	}		 
-};
-
-Title.prototype.fromDto = function(dto) {
-	return new Title(dto.name, dto.history);
+	};
 };
 
 var create = function(filename, name) {

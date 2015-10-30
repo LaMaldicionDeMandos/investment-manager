@@ -26,13 +26,13 @@ function predictionByNWindow(it, n, position, percentFunc) {
             index = i;
         }
     }
-    return jsonArray[index - 1];
+    return index - 1;
 };
 
 function standardErrorByNWindow(it, n, percentFunc) {
     var predictions = [];
     for (var i = 0; i < it.history.length - n; i++) {
-        predictions.push(predictionByNWindow(it, n, i, percentFunc));
+        predictions.push(it.history[predictionByNWindow(it, n, i, percentFunc)][percentFunc]());
     }
     var negatives = [];
     var positives = [];
@@ -61,7 +61,7 @@ function standardErrorByNWindow(it, n, percentFunc) {
     negatives.forEach(function(value) {
         sum+= value;
         neg+= value;
-        if (report.maxNegativeError > value) {
+        if (report.maxNegativeError < value) {
             report.maxNegativeError = value;
         }
     });
