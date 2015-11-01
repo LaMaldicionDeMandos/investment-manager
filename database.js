@@ -29,6 +29,7 @@ function DBSchema() {
 var schema = new DBSchema();
 
 process.on('exit', function() {
+	console.log('Desconnecting db');
 	mongoose.disconnect();
 });
 
