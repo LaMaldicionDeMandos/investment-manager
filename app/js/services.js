@@ -3,13 +3,24 @@
  */
 (function () {
     'use strict';
+    var Title = require('../database').Title;
+
 //    var mysql = require('mysql');
     angular.module('app.services', [])
-        .factory('titlesService', function () {
+        .factory('titlesService', function ($q) {
             return {
                 all: function () {
-                    return ['title1', 'title2'];
+                    var def = $q.defer();
+                    Title.find({}).select('name windowReports').exec(function(err, titles) {
+                        if (err) {
+                            console.log(err);
+                            def.reject(err);
+                            return;
+                        }
+                        def.resolve(titles);
+                    });
+                    return def.promise;
                 }
             };
         });
-})();
+    })();

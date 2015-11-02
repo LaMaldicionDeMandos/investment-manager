@@ -5,6 +5,12 @@
     'use strict';
     angular.module('app.controllers', [])
         .controller('predictionsController', function($scope, titlesService) {
-            $scope.titles = titlesService.all();
+            titlesService.all().then(
+                function(titles) {
+                    $scope.titles = titles;
+            },  function(error) {
+                    console.log(error);
+                }
+            );
         })
 })();
