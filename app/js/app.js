@@ -9,13 +9,13 @@
     angular.module('app', [
         'ngRoute',
         'ngMaterial',
-        'ngAnimate'
+        'ngAnimate',
+        'app.controllers'
     ])
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/', {
-                templateUrl: _templateBase + '/../assets/html/hello.html'
-/*                controller: '',
-                controllerAs: '_ctrl' */
+                templateUrl: _templateBase + '/../assets/html/predictions.html',
+                controller: 'predictionsController'
             });
             $routeProvider.otherwise({ redirectTo: '/' });
         }
