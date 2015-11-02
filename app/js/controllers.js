@@ -4,7 +4,7 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('predictionsController', function($scope) {
-            $scope.name = 'Marcelo';
+        .controller('predictionsController', function($scope, titlesService) {
+            $scope.titles = titlesService.all();
         })
 })();
