@@ -1,22 +1,33 @@
 <h1>Predictions</h1>
-<md-content>
+<div class="jumbotron">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Titulos</th>
+                <th rowspan="2">Titulos</th>
+                <th colspan="3">Antes</th>
+                <th colspan="3">Despues</th>
+            </tr>
+            <tr>
+                <th>Prediccion</th>
+                <th>Maximo</th>
+                <th>Minimo</th>
+                <th>Prediccion</th>
+                <th>Maximo</th>
+                <th>Minimo</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="title in titles">
                 <td>
-                    <label>Report  {{title.name}} --> Antes: {{title.windowReports[0].report.predictionBefore.before | number : 2}} -- Despues:
-                        {{title.windowReports[0].report.predictionBefore.after | number : 2}} -- Maximo Antes:
-                        {{(title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}} -- Maximo Despues:
-                        {{(title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}} -- Minimo Antes:
-                        {{(title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}} -- Minimo Despues:
-                        {{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}</label>
+                    <label>{{title.name}}</label>
                 </td>
+                <td>{{title.windowReports[0].report.predictionBefore.before | number : 2}}</td>
+                <td>{{(title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}</td>
+                <td>{{(title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}</td>
+                <td>{{title.windowReports[0].report.predictionBefore.after | number : 2}}</td>
+                <td>{{(title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}</td>
+                <td>{{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}</td>
             </tr>
         </tbody>
     </table>
-</md-content>
+</div>
