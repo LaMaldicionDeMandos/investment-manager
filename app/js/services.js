@@ -4,8 +4,6 @@
 (function () {
     'use strict';
     var Title = require('../database').Title;
-
-//    var mysql = require('mysql');
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {
