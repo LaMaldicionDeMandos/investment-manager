@@ -38,12 +38,24 @@
             <td>
                 <label>{{title.name}}</label>
             </td>
-            <td>{{title.windowReports[0].report.predictionBefore.before | number : 2}}</td>
-            <td>{{(title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}</td>
-            <td>{{(title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}</td>
-            <td>{{title.windowReports[0].report.predictionBefore.after | number : 2}}</td>
-            <td>{{(title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}</td>
-            <td>{{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}</td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.before">
+                {{title.windowReports[0].report.predictionBefore.before | number : 2}}
+            </td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError">
+                {{(title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
+            </td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError">
+                {{(title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
+            </td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.after">
+                {{title.windowReports[0].report.predictionBefore.after | number : 2}}
+            </td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError">
+                {{(title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
+            </td>
+            <td in-color ng-model="title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError">
+                {{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
+            </td>
         </tr>
     </tbody>
 </table>

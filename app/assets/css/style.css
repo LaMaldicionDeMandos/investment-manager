@@ -5,3 +5,11 @@ body {
 .centerer{
     text-align: center !important;
 }
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}

@@ -11,7 +11,8 @@
         'ngMaterial',
         'ngAnimate',
         'app.controllers',
-        'app.services'
+        'app.services',
+        'app.directives'
     ])
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/', {
