@@ -5,13 +5,34 @@
     'use strict';
     angular.module('app.controllers', [])
         .controller('predictionsController', function($scope, titlesService) {
-            var sortByName = function(a, b) {
+            var compareByName = function(a, b) {
                 return a.name > b.name ? 1 : -1;
                 };
+            var compareByBefore = function(a, b) {
+                return a.windowReports[0].report.predictionBefore.before < b.windowReports[0].report.predictionBefore.before
+                    ? 1 : -1;
+                };
+            var compareByAfter = function(a, b) {
+                return a.windowReports[0].report.predictionBefore.after < b.windowReports[0].report.predictionBefore.after
+                    ? 1 : -1;
+            };
+            $scope.sortByName = function() {
+                $scope.sorterBy = 'name';
+                $scope.titles.sort(compareByName);
+            };
+            $scope.sortByBefore = function() {
+                $scope.sorterBy = 'before';
+                $scope.titles.sort(compareByBefore);
+            };
+            $scope.sortByAfter = function() {
+                $scope.sorterBy = 'after';
+                $scope.titles.sort(compareByAfter);
+            };
+            $scope.sorterBy = 'name';
             titlesService.all().then(
                 function(titles) {
                     $scope.titles = titles;
-                    $scope.titles.sort(sortByName);
+                    $scope.titles.sort(compareByName);
             },  function(error) {
                     console.log(error);
                 }
