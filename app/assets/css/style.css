@@ -2,14 +2,15 @@ body {
     padding-bottom: 10px;
 }
 
+.header {
+    position: fixed;
+}
+
+#content {
+    position: relative;
+    top: 128px;
+}
+
 .centerer{
     text-align: center !important;
-}
-
-.red {
-    color: red;
-}
-
-.green {
-    color: green;
 }
