@@ -1,14 +1,12 @@
-<md-toolbar layout="row" class="shadow-z-2 header">
-    <h2 class="md-toolbar-tools md-medium-tall" flex="100">
-        <span>Predicciones</span>
-    </h2>
-    <h2 class="md-toolbar-tools md-medium-tall grey" flex="0">
-        <span>Titulo</span>
-    </h2>
-</md-toolbar>
-<md-content layout="row">
-    <table class="table table-striped table-hover content" flex="100">
-        <thead>
+<selection layout="row" flex>
+    <md-toolbar layout="row" class="shadow-z-2 header">
+        <h2 class="md-toolbar-tools md-medium-tall" flex="20">
+            <span>Predicciones</span>
+        </h2>
+    </md-toolbar>
+    <md-content layout="row" flex="100">
+        <table class="table table-striped table-hover content">
+            <thead>
             <tr>
                 <th rowspan="2" class="centerer">
                     <label>Titulos</label>
@@ -41,10 +39,10 @@
                     <label>Minimo</label>
                 </th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr ng-repeat="title in titles">
-                <td>
+                <td ng-click="selectTitle(title);open()">
                     <label>{{title.name}}</label>
                 </td>
                 <td in-color ng-model="title.windowReports[0].report.predictionBefore.before">
@@ -66,7 +64,15 @@
                     {{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
                 </td>
             </tr>
-        </tbody>
-    </table>
-    <div class="light-grey content" flex="0"/>
-</md-content>
+            </tbody>
+        </table>
+    </md-content>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+        <md-toolbar class="grey">
+            <h1 class="md-toolbar-tools">{{current.name}}</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+            <h1>{{current.name}}</h1>
+        </md-content>
+    </md-sidenav>
+</selection>

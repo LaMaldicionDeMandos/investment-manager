@@ -4,7 +4,7 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('predictionsController', function($scope, titlesService) {
+        .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
             var compareByName = function(a, b) {
                 return a.name > b.name ? 1 : -1;
                 };
@@ -16,6 +16,14 @@
                 return a.windowReports[0].report.predictionBefore.after < b.windowReports[0].report.predictionBefore.after
                     ? 1 : -1;
             };
+
+            $scope.open = function() {
+                $mdSidenav('right')
+                    .toggle()
+                    .then(function () {
+                        console.log("toggle " + navID + " is done");
+                    });
+            }
             $scope.sortByName = function() {
                 $scope.sorterBy = 'name';
                 $scope.titles.sort(compareByName);
@@ -37,5 +45,9 @@
                     console.log(error);
                 }
             );
+
+            $scope.selectTitle = function(title) {
+                $scope.current = title;
+            };
         })
 })();
