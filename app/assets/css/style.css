@@ -6,11 +6,19 @@ body {
     position: fixed;
 }
 
-#content {
+.content {
     position: relative;
-    top: 88px;
+    top: 64px;
 }
 
 .centerer{
     text-align: center !important;
+}
+
+.grey {
+    background-color: grey;
+}
+
+.light-grey {
+    background-color: lightgrey;
 }
