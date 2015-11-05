@@ -21,7 +21,7 @@
                 $mdSidenav('right')
                     .toggle()
                     .then(function () {
-                        console.log("toggle " + navID + " is done");
+                        console.log("toggle  is done");
                     });
             }
             $scope.sortByName = function() {
