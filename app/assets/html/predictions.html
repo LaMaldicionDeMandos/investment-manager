@@ -1,5 +1,5 @@
 <selection layout="row" flex>
-    <md-toolbar layout="row" class="shadow-z-2 header">
+    <md-toolbar layout="row" class="shadow-z-2 header green">
         <h2 class="md-toolbar-tools md-medium-tall" flex="20">
             <span>Predicciones</span>
         </h2>
@@ -68,11 +68,37 @@
         </table>
     </md-content>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-        <md-toolbar class="grey">
+        <md-toolbar class="dark-green">
             <h1 class="md-toolbar-tools">{{current.name}}</h1>
         </md-toolbar>
-        <md-content layout-padding>
-            <h1>{{current.name}}</h1>
+        <md-content layout="row">
+            <md-card layout-padding layout="column" flex="30">
+                <h3>Predicción</h3>
+                <md-divider/>
+                <md-content layout="column">
+                    <span layout="row">
+                        <label>Maximo</label>
+                        <h3 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after + current.windowReports[0].report.predictionBefore.positiveError">
+                            {{(current.windowReports[0].report.predictionBefore.after + current.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
+                        </h3>
+                    </span>
+                    <md-divider />
+                    <span layout="row">
+                        <label>Promedio</label>
+                        <h1 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after">{{current.windowReports[0].report.predictionBefore.after | number : 2}}</h1>
+                    </span>
+                    <md-divider/>
+                    <span layout="row">
+                        <label>Minimo</label>
+                        <h3 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after - current.windowReports[0].report.predictionBefore.negativeError">
+                            {{(current.windowReports[0].report.predictionBefore.after - current.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
+                        </h3>
+                    </span>
+                </md-content>
+            </md-card>
+            <md-card layout-padding layout="column" flex="30">
+                <h3>Otra cosa</h3>
+            </md-card>
         </md-content>
     </md-sidenav>
 </selection>
