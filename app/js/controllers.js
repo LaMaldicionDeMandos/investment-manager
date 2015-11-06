@@ -9,11 +9,11 @@
                 return a.name > b.name ? 1 : -1;
                 };
             var compareByBefore = function(a, b) {
-                return a.windowReports[0].report.predictionBefore.before < b.windowReports[0].report.predictionBefore.before
+                return a.before < b.before
                     ? 1 : -1;
                 };
             var compareByAfter = function(a, b) {
-                return a.windowReports[0].report.predictionBefore.after < b.windowReports[0].report.predictionBefore.after
+                return a.after < b.after
                     ? 1 : -1;
             };
 
@@ -39,7 +39,17 @@
             $scope.sorterBy = 'name';
             titlesService.all().then(
                 function(titles) {
-                    $scope.titles = titles;
+                    $scope.titles = titles.map(function(title) {
+                        return {
+                            name: title.name,
+                            after: title.windowReports[0].report.predictionBefore.after,
+                            before: title.windowReports[0].report.predictionBefore.before,
+                            maxBefore: title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError,
+                            maxAfter: title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError,
+                            minBefore: title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError,
+                            minAfter: title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError,
+                        }
+                    });
                     $scope.titles.sort(compareByName);
             },  function(error) {
                     console.log(error);

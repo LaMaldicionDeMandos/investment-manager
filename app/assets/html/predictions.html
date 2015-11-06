@@ -45,24 +45,12 @@
                 <td ng-click="selectTitle(title);open()">
                     <label>{{title.name}}</label>
                 </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.before">
-                    {{title.windowReports[0].report.predictionBefore.before | number : 2}}
-                </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError">
-                    {{(title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
-                </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError">
-                    {{(title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
-                </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.after">
-                    {{title.windowReports[0].report.predictionBefore.after | number : 2}}
-                </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError">
-                    {{(title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
-                </td>
-                <td in-color ng-model="title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError">
-                    {{(title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
-                </td>
+                <td in-color ng-model="title.before">{{title.before | number : 2}}</td>
+                <td in-color ng-model="title.maxBefore">{{title.maxBefore | number : 2}}</td>
+                <td in-color ng-model="title.minBefore">{{title.minBefore | number : 2}}</td>
+                <td in-color ng-model="title.after">{{title.after | number : 2}}</td>
+                <td in-color ng-model="title.maxAfter">{{title.maxAfter | number : 2}}</td>
+                <td in-color ng-model="title.minAfter">{{title.minAfter | number : 2}}</td>
             </tr>
             </tbody>
         </table>
@@ -78,20 +66,17 @@
                 <md-content layout="column">
                     <span layout="row">
                         <label>Maximo</label>
-                        <h3 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after + current.windowReports[0].report.predictionBefore.positiveError">
-                            {{(current.windowReports[0].report.predictionBefore.after + current.windowReports[0].report.predictionBefore.positiveError) | number : 2}}
-                        </h3>
+                        <h3 class="center" in-color ng-model="current.maxAfter">{{current.maxAfter | number : 2}}</h3>
                     </span>
                     <md-divider />
                     <span layout="row">
                         <label>Promedio</label>
-                        <h1 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after">{{current.windowReports[0].report.predictionBefore.after | number : 2}}</h1>
+                        <h1 class="center" in-color ng-model="current.after">{{current.after | number : 2}}</h1>
                     </span>
                     <md-divider/>
                     <span layout="row">
                         <label>Minimo</label>
-                        <h3 class="center" in-color ng-model="current.windowReports[0].report.predictionBefore.after - current.windowReports[0].report.predictionBefore.negativeError">
-                            {{(current.windowReports[0].report.predictionBefore.after - current.windowReports[0].report.predictionBefore.negativeError) | number : 2}}
+                        <h3 class="center" in-color ng-model="current.minAfter">{{current.minAfter | number : 2}}
                         </h3>
                     </span>
                 </md-content>
