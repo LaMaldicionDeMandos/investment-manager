@@ -4,8 +4,8 @@ console.log('Connecting to mongodb');
 
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-var PredictionSchema = new Schema({after: Number, before: Number, error: Number, positiveError: Number,
-	negativeError: Number, maxPositiveError: Number, maxNegativeError: Number, index: Number});
+var PredictionSchema = new Schema({after: Number, before: Number, errorList: [Number], positiveError: Number,
+	negativeError: Number, index: Number});
 var WindowReportSchema = new Schema({predictionBefore: PredictionSchema, predictionAfter: PredictionSchema});
 var HistorySchema = new Schema({date: String, opening: Number, max: Number, min:Number, closing:Number, amount:String,
 	jump: Number});

@@ -18,12 +18,12 @@ function Title(name, array) {
 	});
 	this.history = array;
 
-	this.standardErrorByNWindowBefore = function(n) {
-		return predictions.standardErrorByNWindowBefore(this, n);
+	this.standardErrorByNWindowBefore = function(n, percent) {
+		return predictions.standardErrorByNWindowBefore(this, n, percent);
 	};
 
-	this.standardErrorByNWindowAfter = function(n) {
-		return predictions.standardErrorByNWindowAfter(this, n);
+	this.standardErrorByNWindowAfter = function(n, percent) {
+		return predictions.standardErrorByNWindowAfter(this, n, percent);
 	};
 
 	this.predictionByNWindowBefore = function(n, position) {
@@ -32,23 +32,21 @@ function Title(name, array) {
 	this.predictionByNWindowAfter = function(n, position) {
 		return predictions.predictionByNWindowAfter(this, n, position);
 	};
-	var createPredictionReport = function(that, size, mode) {
+	var createPredictionReport = function(that, size, mode, errorPercent) {
 		var prediction = new database.Prediction();
 		prediction.index = that['predictionByNWindow' + mode](size);
 		prediction.before = that.history[prediction.index].percentBeforeOpen();
 		prediction.after = that.history[prediction.index].percentAfterOpen();
-		var errorReport = that['standardErrorByNWindow' + mode](size);
-		prediction.error = errorReport.error;
+		var errorReport = that['standardErrorByNWindow' + mode](size, errorPercent);
+		prediction.errorList = errorReport.errorList;
 		prediction.positiveError = errorReport.positiveError;
 		prediction.negativeError = errorReport.negativeError;
-		prediction.maxPositiveError = errorReport.maxPositiveError;
-		prediction.maxNegativeError = errorReport.maxNegativeError;
 		return prediction;
 	};
 	this.windowReports = [{
 		size: 10, report: {
-		predictionBefore: createPredictionReport(this, 10, 'Before'),
-		predictionAfter: createPredictionReport(this, 10, 'After')
+		predictionBefore: createPredictionReport(this, 10, 'Before', 90),
+		predictionAfter: createPredictionReport(this, 10, 'After', 90)
 	}}];
 	this.save = function(callback) {
 		var dto = new database.Title();

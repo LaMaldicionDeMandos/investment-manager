@@ -29,54 +29,40 @@ function predictionByNWindow(it, n, position, percentFunc) {
     return index - 1;
 };
 
-function standardErrorByNWindow(it, n, percentFunc) {
+function standardErrorByNWindow(it, n, percent, percentFunc) {
     var predictions = [];
     for (var i = 0; i < it.history.length - n; i++) {
         predictions.push(it.history[predictionByNWindow(it, n, i, percentFunc)][percentFunc]());
     }
-    var negatives = [];
-    var positives = [];
+    var errors = [];
 
     for(var i = 1; i < predictions.length;i++) {
         var prediction = predictions[i];
         var real = it.history[i-1][percentFunc]();
-        if (prediction - real <= 0) {
-            positives.push(real - prediction);
-        }
-        if (real - prediction <= 0) {
-            negatives.push(prediction - real);
-        }
+        errors.push(real - prediction);
     }
-    var sum = 0;
-    var neg = 0;
-    var pos = 0;
-    var report = {maxPositiveError: 0, maxNegativeError: 0};
-    positives.forEach(function(value) {
-        sum+= value;
-        pos+= value;
-        if (value > report.maxPositiveError) {
-            report.maxPositiveError = value;
-        }
-    });
-    negatives.forEach(function(value) {
-        sum+= value;
-        neg+= value;
-        if (report.maxNegativeError < value) {
-            report.maxNegativeError = value;
-        }
-    });
-    report.error = sum/(positives.length + negatives.length);
-    report.positiveError = pos/positives.length;
-    report.negativeError = neg/negatives.length;
+
+    var factor = 1 - percent/100;
+    var cant = errors.length*factor;
+    var rest = cant%2;
+    var pos = cant/2 + rest;
+    var neg = cant/2;
+
+    errors.sort(function(a, b) { return b - a;});
+    var filteredError = errors.slice(pos, -neg);
+    var report = {};
+    report.positiveError = filteredError[0];
+    report.negativeError = filteredError[filteredError.length-1];
+    report.errorList = errors;
     return report;
 };
 
-exports.standardErrorByNWindowBefore = function(it, n) {
-    return standardErrorByNWindow(it, n, 'percentBeforeOpen');
+exports.standardErrorByNWindowBefore = function(it, n, percent) {
+    return standardErrorByNWindow(it, n, percent, 'percentBeforeOpen');
 };
 
-exports.standardErrorByNWindowAfter = function(it, n) {
-    return standardErrorByNWindow(it, n, 'percentAfterOpen');
+exports.standardErrorByNWindowAfter = function(it, n, percent) {
+    return standardErrorByNWindow(it, n, percent, 'percentAfterOpen');
 };
 
 exports.predictionByNWindowBefore = function(it, n, position) {
