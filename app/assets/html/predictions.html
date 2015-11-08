@@ -9,34 +9,34 @@
             <thead>
             <tr>
                 <th rowspan="2" class="centerer">
-                    <label>Titulos</label>
+                    <label>Títulos</label>
                     <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
                 </th>
                 <th colspan="3" class="centerer">
                     <label>Antes</label>
                 </th>
-                <th colspan="3" class="centerer">Despues</th>
+                <th colspan="3" class="centerer">Después</th>
             </tr>
             <tr>
                 <th>
-                    <label>Prediccion</label>
+                    <label>Predicción</label>
                     <a class='fa fa-caret-down right' ng-show="sorterBy != 'before'" ng-click="sortByBefore()"/>
                 </th>
                 <th>
-                    <label>Maximo al 90%</label>
+                    <label>Máximo al 90%</label>
                 </th>
                 <th>
-                    <label>Minimo al 90%</label>
+                    <label>Mínimo al 90%</label>
                 </th>
                 <th>
-                    <label>Prediccion</label>
+                    <label>Predicción</label>
                     <a class='fa fa-caret-down right' ng-show="sorterBy != 'after'" ng-click="sortByAfter()"/>
                 </th>
                 <th>
-                    <label>Maximo al 90%</label>
+                    <label>Máximo al 90%</label>
                 </th>
                 <th>
-                    <label>Minimo al 90%</label>
+                    <label>Mínimo al 90%</label>
                 </th>
             </tr>
             </thead>
@@ -65,7 +65,7 @@
                 <md-divider/>
                 <md-content layout="column">
                     <span layout="row">
-                        <label>Maximo al 90%</label>
+                        <label>Máximo al 90%</label>
                         <h3 class="center" in-color ng-model="current.maxAfter">{{current.maxAfter | number : 2}}</h3>
                     </span>
                     <md-divider />
@@ -75,7 +75,7 @@
                     </span>
                     <md-divider/>
                     <span layout="row">
-                        <label>Minimo al 90%</label>
+                        <label>Mínimo al 90%</label>
                         <h3 class="center" in-color ng-model="current.minAfter">{{current.minAfter | number : 2}}
                         </h3>
                     </span>
