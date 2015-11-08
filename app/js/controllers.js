@@ -46,8 +46,8 @@
                             before: title.windowReports[0].report.predictionBefore.before,
                             maxBefore: title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError,
                             maxAfter: title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError,
-                            minBefore: title.windowReports[0].report.predictionBefore.before - title.windowReports[0].report.predictionBefore.negativeError,
-                            minAfter: title.windowReports[0].report.predictionBefore.after - title.windowReports[0].report.predictionBefore.negativeError,
+                            minBefore: title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.negativeError,
+                            minAfter: title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.negativeError,
                         }
                     });
                     $scope.titles.sort(compareByName);

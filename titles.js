@@ -33,7 +33,7 @@ function Title(name, array) {
 		return predictions.predictionByNWindowAfter(this, n, position);
 	};
 	var createPredictionReport = function(that, size, mode, errorPercent) {
-		var prediction = new database.Prediction();
+		var prediction = {};
 		prediction.index = that['predictionByNWindow' + mode](size);
 		prediction.before = that.history[prediction.index].percentBeforeOpen();
 		prediction.after = that.history[prediction.index].percentAfterOpen();
@@ -54,7 +54,7 @@ function Title(name, array) {
 		dto.name = this.name;
 		dto.history = [];
 		this.history.forEach(function(item) {
-			var historyDto = new database.History();
+			var historyDto = {};
 			historyDto.date = item.date;
 			historyDto.opening = item.opening;
 			historyDto.max = item.max;
@@ -65,7 +65,7 @@ function Title(name, array) {
 			dto.history.push(historyDto);
 		});
 		var report = {size: this.windowReports[0].size};
-		var windowReport = new database.WindowReport();
+		var windowReport = {};
 		windowReport.predictionBefore = this.windowReports[0].report.predictionBefore;
 		windowReport.predictionAfter = this.windowReports[0].report.predictionAfter;
 		report.report = windowReport;

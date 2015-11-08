@@ -23,20 +23,20 @@
                     <a class='fa fa-caret-down right' ng-show="sorterBy != 'before'" ng-click="sortByBefore()"/>
                 </th>
                 <th>
-                    <label>Maximo</label>
+                    <label>Maximo al 90%</label>
                 </th>
                 <th>
-                    <label>Minimo</label>
+                    <label>Minimo al 90%</label>
                 </th>
                 <th>
                     <label>Prediccion</label>
                     <a class='fa fa-caret-down right' ng-show="sorterBy != 'after'" ng-click="sortByAfter()"/>
                 </th>
                 <th>
-                    <label>Maximo</label>
+                    <label>Maximo al 90%</label>
                 </th>
                 <th>
-                    <label>Minimo</label>
+                    <label>Minimo al 90%</label>
                 </th>
             </tr>
             </thead>
@@ -65,7 +65,7 @@
                 <md-divider/>
                 <md-content layout="column">
                     <span layout="row">
-                        <label>Maximo</label>
+                        <label>Maximo al 90%</label>
                         <h3 class="center" in-color ng-model="current.maxAfter">{{current.maxAfter | number : 2}}</h3>
                     </span>
                     <md-divider />
@@ -75,7 +75,7 @@
                     </span>
                     <md-divider/>
                     <span layout="row">
-                        <label>Minimo</label>
+                        <label>Minimo al 90%</label>
                         <h3 class="center" in-color ng-model="current.minAfter">{{current.minAfter | number : 2}}
                         </h3>
                     </span>
