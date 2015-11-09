@@ -5,6 +5,7 @@
     'use strict';
     angular.module('app.controllers', [])
         .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
+            $scope.errorPercent = 90;
             var compareByName = function(a, b) {
                 return a.name > b.name ? 1 : -1;
                 };
@@ -62,13 +63,25 @@
 
             $scope.selectTitle = function(title) {
                 $scope.current = title;
-                var min = Math.round(title.errors[title.errors.length-1]*10)/10;
-                var max = Math.round(title.errors[0]*10)/10;
+                $scope.changeErrorPercent($scope.errorPercent);
+            };
+
+            $scope.changeErrorPercent = function(percent) {
+                percent = percent || 100;
+                var factor = (100 - percent)/100;
+                var cant = $scope.current.errors.length*factor;
+                var rest = cant%2;
+                var pos = cant/2 + rest;
+                var neg = cant/2;
+
+                var filteredError = neg > 0 ? $scope.current.errors.slice(pos, -neg) : $scope.current.errors.slice(pos);
+                var min = Math.round(filteredError[filteredError.length-1]*10)/10;
+                var max = Math.round(filteredError[0]*10)/10;
                 var values = [];
                 for (var v = min;v<=max;v+=0.1) {
                     values.push({c:[{v: v}, {v:0}]});
                 }
-                title.errors.forEach(function(value) {
+                filteredError.forEach(function(value) {
                     var cut = Math.round(value*10)/10;
                     var col = values.filter(function(c) {
                         var diff = cut - c.c[0].v;
@@ -77,7 +90,7 @@
                     if (col) col.c[1].v++;
                 });
                 values.forEach(function(value) {
-                   value.c[1].v*=100/values.length;
+                    value.c[1].v*=100/values.length;
                 });
                 $scope.chartObject.data.rows = values;
             };
@@ -93,26 +106,7 @@
                     id: "count",
                     type: "number"
                 }],
-                "rows": [{
-                    c: [{
-                        v: 2.5
-                    }, {
-                        v: 19
-                    }]
-                }, {
-                    c: [{
-                        v: 3
-                    }, {
-                        v: 13
-                    }]
-
-                }, {
-                    c: [{
-                        v: 4
-                    }, {
-                        v: 24
-                    }]
-                }]
+                "rows": []
             };
             $scope.chartObject.options = {
                 "colors": ['#0000FF'],

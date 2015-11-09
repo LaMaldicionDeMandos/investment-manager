@@ -82,7 +82,12 @@
                 </md-content>
             </md-card>
             <md-card layout-padding layout="column" flex="66">
-                <h3>Errores</h3>
+                <md-input-container layout="row">
+                    <h3>Errores al&nbsp;</h3>
+                    <h3><input ng-model="errorPercent" type="number" max="100", min="1"
+                               style="width: 50px !important;" ng-change="changeErrorPercent(errorPercent)"/></h3>
+                    <h3>%</h3>
+                </md-input-container>
                 <md-divider/>
                 <div google-chart chart="chartObject" style="height:100%; width:100%;"></div>
             </md-card>
