@@ -75,8 +75,8 @@
                 var neg = cant/2;
 
                 var filteredError = neg > 0 ? $scope.current.errors.slice(pos, -neg) : $scope.current.errors.slice(pos);
-                var min = Math.round(filteredError[filteredError.length-1]*10)/10;
-                var max = Math.round(filteredError[0]*10)/10;
+                var min = Math.round($scope.current.errors[$scope.current.errors.length-1]*10)/10;
+                var max = Math.round($scope.current.errors[0]*10)/10;
                 var values = [];
                 for (var v = min;v<=max;v+=0.1) {
                     values.push({c:[{v: v}, {v:0}]});
