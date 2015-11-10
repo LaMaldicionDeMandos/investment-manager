@@ -66,7 +66,7 @@
                 <md-content layout="column">
                     <span layout="row">
                         <label>Máximo al 90%</label>
-                        <h3 class="center" in-color ng-model="current.maxAfter">{{current.maxAfter | number : 2}}</h3>
+                        <h3 class="center" in-color ng-model="current.maxAfter">{{current.after + current.maxError | number : 2}}</h3>
                     </span>
                     <md-divider />
                     <span layout="row">
@@ -76,7 +76,7 @@
                     <md-divider/>
                     <span layout="row">
                         <label>Mínimo al 90%</label>
-                        <h3 class="center" in-color ng-model="current.minAfter">{{current.minAfter | number : 2}}
+                        <h3 class="center" in-color ng-model="current.minAfter">{{current.after + current.minError | number : 2}}
                         </h3>
                     </span>
                 </md-content>

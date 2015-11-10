@@ -93,7 +93,10 @@
                     value.c[1].v*=100/values.length;
                 });
                 $scope.chartObject.data.rows = values;
+                $scope.current.maxError = filteredError[0];
+                $scope.current.minError = filteredError[filteredError.length-1];
             };
+
             $scope.chartObject = {};
             $scope.chartObject.type = "LineChart";
             $scope.chartObject.displayed = true;
