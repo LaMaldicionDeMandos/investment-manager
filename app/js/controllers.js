@@ -41,9 +41,14 @@
             };
             $scope.sorterBy = 'name';
 
-            $scope.changeAllMaxAndMin = function(percent) {
+            $scope.changeAllMaxAndMinBefore = function(percent) {
                 $scope.titles.forEach(function(title) {
-                    title.changeAllMaxAndMin(percent);
+                    title.changeMaxAndMinBefore(percent);
+                });
+            };
+            $scope.changeAllMaxAndMinAfter = function(percent) {
+                $scope.titles.forEach(function(title) {
+                    title.changeMaxAndMinAfter(percent);
                 });
             };
             titlesService.all().then(
@@ -60,10 +65,15 @@
                             maxError: title.windowReports[0].report.predictionBefore.positiveError,
                             minError: title.windowReports[0].report.predictionBefore.negativeError,
                             errors: title.windowReports[0].report.predictionBefore.errorList,
-                            changeMaxAndMin: function(percent) {
+                            changeMaxAndMinBefore: function(percent) {
                                 var filtered = this.filterErrors(percent);
-                                this.maxAfter = after + filtered[0];
-                                this.minAfter = after + filtered[filtered.length - 1];
+                                this.maxBefore = this.before + filtered[0];
+                                this.minBefore = this.before + filtered[filtered.length - 1];
+                            },
+                            changeMaxAndMinAfter: function(percent) {
+                                var filtered = this.filterErrors(percent);
+                                this.maxAfter = this.after + filtered[0];
+                                this.minAfter = this.after + filtered[filtered.length - 1];
                             },
                             filterErrors: function(percent) {
                                 percent = percent || 100;
