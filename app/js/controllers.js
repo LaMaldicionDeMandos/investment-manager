@@ -55,6 +55,8 @@
                 function(titles) {
                     $scope.titles = titles.map(function(title) {
                         var report = {
+                            id: title._id,
+                            index: title.windowReports[0].report.predictionBefore.index,
                             name: title.name,
                             after: title.windowReports[0].report.predictionBefore.after,
                             before: title.windowReports[0].report.predictionBefore.before,
@@ -115,10 +117,32 @@
                     console.log(error);
                 }
             );
-
+            var populateWindow = function(title) {
+                var rows = [];
+                for(var i = 9;i>=0;i--) {
+                    rows.push({
+                        c:[{v: 10 - i},
+                            {v: title.history[i].percentBeforeOpen()},
+                            {v: title.history[i+title.index-1].percentBeforeOpen()}
+                        ]
+                    });
+                }
+                rows.push({c:[{v:11}, {}, {v: title.history[title.index].percentBeforeOpen()}]})
+                $scope.chartPrediction.data.rows = rows;
+            };
             $scope.selectTitle = function(title) {
                 $scope.current = title;
-                $scope.current.changeErrorPercent($scope.errorPercent);
+                title.changeErrorPercent($scope.errorPercent);
+                if (title.history) {
+                    populateWindow(title);
+                } else {
+                    titlesService.findHistory(title).then(
+                        function(history) {
+                            console.log(JSON.stringify(history));
+                            title.history = history;
+                            populateWindow(title);
+                        });
+                }
             };
 
             $scope.chartObject = {};
@@ -150,6 +174,49 @@
             };
             $scope.chartObject.view = {
                 columns: [0, 1]
+            };
+
+            $scope.chartPrediction = {};
+            $scope.chartPrediction.type = "LineChart";
+            $scope.chartPrediction.displayed = true;
+            $scope.chartPrediction.data = {
+                "cols": [{
+                    id: "date",
+                    label: "Día",
+                    type: "number"
+                }, {
+                    id: "percentReal",
+                    label: "Real",
+                    type: "number"
+                }, {
+                    id: "percentEstimated",
+                    label: "Estimado",
+                    type: "number"
+                }],
+                "rows": [{c:[{v: 1}, {v:0}, {v:2}]},
+                    {c:[{v: 2}, {v:1}, {v:2}]},
+                    {c:[{v: 3}, {v:2}, {v:3}]},
+                    {c:[{v: 4}, {v:2}, {v:3}]},
+                    {c:[{v: 5}, {v:1}, {v:2}]},
+                    {c:[{v: 6}, {v:1}, {v:3}]},
+                    {c:[{v: 7}, {v:0}, {v:4}]}
+                ]
+            };
+            $scope.chartPrediction.options = {
+                "colors": ['#0000FF', '#00FF00'],
+                "defaultColors": ['#0000FF'],
+                "isStacked": "false",
+                "fill": 0,
+                "displayExactValues": false,
+                "vAxis": {
+                    "title": "Ganancia",
+                    "gridlines": {
+                        "count": 6
+                    }
+                }
+            };
+            $scope.chartPrediction.view = {
+                columns: [0, 1, 2]
             };
         })
 })();
