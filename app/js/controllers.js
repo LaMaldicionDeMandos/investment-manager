@@ -4,29 +4,36 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
-            $scope.errorPercent = 90;
-            $scope.globalAfterPercent = 90;
-            $scope.globalBeforePercent = 90;
-            var compareByName = function(a, b) {
-                return a.name > b.name ? 1 : -1;
-                };
-            var compareByBefore = function(a, b) {
-                return a.before < b.before
-                    ? 1 : -1;
-                };
-            var compareByAfter = function(a, b) {
-                return a.after < b.after
-                    ? 1 : -1;
-            };
-
+        .controller('predictionsController', function($scope, $mdSidenav) {
             $scope.open = function() {
                 $mdSidenav('right')
                     .toggle()
                     .then(function () {
                         console.log("toggle  is done");
                     });
-            }
+            };
+
+            $scope.selectTitle = function(title) {
+                $scope.currentTitle = title;
+                $scope.$broadcast('currentTitleEvent', title);
+            };
+        })
+        .controller('tableController', function($scope, titlesService) {
+            $scope.globalAfterPercent = 90;
+            $scope.globalBeforePercent = 90;
+
+            var compareByName = function(a, b) {
+                return a.name > b.name ? 1 : -1;
+            };
+            var compareByBefore = function(a, b) {
+                return a.before < b.before
+                    ? 1 : -1;
+            };
+            var compareByAfter = function(a, b) {
+                return a.after < b.after
+                    ? 1 : -1;
+            };
+
             $scope.sortByName = function() {
                 $scope.sorterBy = 'name';
                 $scope.titles.sort(compareByName);
@@ -51,72 +58,43 @@
                     title.changeMaxAndMinAfter(percent);
                 });
             };
+
             titlesService.all().then(
                 function(titles) {
                     $scope.titles = titles.map(function(title) {
-                        var report = {
-                            id: title._id,
-                            index: title.windowReports[0].report.predictionBefore.index,
-                            name: title.name,
-                            after: title.windowReports[0].report.predictionBefore.after,
-                            before: title.windowReports[0].report.predictionBefore.before,
-                            maxBefore: title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.positiveError,
-                            maxAfter: title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.positiveError,
-                            minBefore: title.windowReports[0].report.predictionBefore.before + title.windowReports[0].report.predictionBefore.negativeError,
-                            minAfter: title.windowReports[0].report.predictionBefore.after + title.windowReports[0].report.predictionBefore.negativeError,
-                            maxError: title.windowReports[0].report.predictionBefore.positiveError,
-                            minError: title.windowReports[0].report.predictionBefore.negativeError,
-                            errors: title.windowReports[0].report.predictionBefore.errorList,
-                            changeMaxAndMinBefore: function(percent) {
-                                var filtered = this.filterErrors(percent);
-                                this.maxBefore = this.before + filtered[0];
-                                this.minBefore = this.before + filtered[filtered.length - 1];
-                            },
-                            changeMaxAndMinAfter: function(percent) {
-                                var filtered = this.filterErrors(percent);
-                                this.maxAfter = this.after + filtered[0];
-                                this.minAfter = this.after + filtered[filtered.length - 1];
-                            },
-                            filterErrors: function(percent) {
-                                percent = percent || 100;
-                                var factor = (100 - percent)/100;
-                                var cant = this.errors.length*factor;
-                                var rest = cant%2;
-                                var pos = cant/2 + rest;
-                                var neg = cant/2;
-                                return neg > 0 ? this.errors.slice(pos, -neg) : this.errors.slice(pos);
-                            },
-                            changeErrorPercent: function(percent) {
-                                var filteredError = this.filterErrors(percent);
-                                var min = Math.round(this.errors[this.errors.length-1]*10)/10;
-                                var max = Math.round(this.errors[0]*10)/10;
-                                var values = [];
-                                for (var v = min;v<=max;v+=0.1) {
-                                    values.push({c:[{v: v}, {v:0}]});
-                                }
-                                filteredError.forEach(function(value) {
-                                    var cut = Math.round(value*10)/10;
-                                    var col = values.filter(function(c) {
-                                        var diff = cut - c.c[0].v;
-                                        return diff < .05 && diff > -.05;
-                                    })[0];
-                                    if (col) col.c[1].v++;
-                                });
-                                values.forEach(function(value) {
-                                    value.c[1].v*=100/values.length;
-                                });
-                                $scope.chartObject.data.rows = values;
-                                this.maxError = filteredError[0];
-                                this.minError = filteredError[filteredError.length-1];
-                            }
-                        };
-                        return report;
+                        return new Title(title);
                     });
                     $scope.titles.sort(compareByName);
-            },  function(error) {
+                },  function(error) {
                     console.log(error);
                 }
             );
+        })
+        .controller('predictionController', function($scope, titlesService) {
+            $scope.errorPercent = 90;
+            $scope.current = undefined;
+
+            $scope.changeErrorPercent = function(title, percent) {
+                var values = title.changeErrorPercent(percent);
+                $scope.chartObject.data.rows = values;
+            };
+
+            $scope.$on('currentTitleEvent', function( event, title) {
+                $scope.current = title;
+                var values = title.changeErrorPercent($scope.errorPercent);
+                $scope.chartObject.data.rows = values;
+                if (title.history) {
+                    populateWindow(title);
+                } else {
+                    titlesService.findHistory(title).then(
+                        function(history) {
+                            console.log(JSON.stringify(history));
+                            title.history = history;
+                            populateWindow(title);
+                        });
+                }
+            });
+
             var populateWindow = function(title) {
                 var rows = [];
                 for(var i = 9;i>=0;i--) {
@@ -130,21 +108,6 @@
                 rows.push({c:[{v:11}, {}, {v: title.history[title.index].percentBeforeOpen()}]})
                 $scope.chartPrediction.data.rows = rows;
             };
-            $scope.selectTitle = function(title) {
-                $scope.current = title;
-                title.changeErrorPercent($scope.errorPercent);
-                if (title.history) {
-                    populateWindow(title);
-                } else {
-                    titlesService.findHistory(title).then(
-                        function(history) {
-                            console.log(JSON.stringify(history));
-                            title.history = history;
-                            populateWindow(title);
-                        });
-                }
-            };
-
             $scope.chartObject = {};
             $scope.chartObject.type = "LineChart";
             $scope.chartObject.displayed = true;

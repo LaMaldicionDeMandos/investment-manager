@@ -7,8 +7,9 @@
     <<md-content layout="row" flex="100" ng-include="'assets/html/table.html'" ></md-content>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
         <md-toolbar class="dark-green">
-            <h1 class="md-toolbar-tools">{{current.name}}</h1>
+            <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
-        <md-content layout="row" layout-wrap ng-include="'assets/html/prediction_report.html'"></md-content>
+        <md-content layout="row" layout-wrap ng-controller="predictionController"
+                    ng-include="'assets/html/prediction_report.html'"></md-content>
     </md-sidenav>
 </selection>
