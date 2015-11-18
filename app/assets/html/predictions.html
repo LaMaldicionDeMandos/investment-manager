@@ -1,15 +1,29 @@
 <selection layout="row" flex>
     <md-toolbar layout="row" class="shadow-z-2 header green">
-        <h2 class="md-toolbar-tools md-medium-tall" flex="20">
+        <h1 class="md-toolbar-tools" flex="20">
             <span>Predicciones</span>
-        </h2>
+        </h1>
     </md-toolbar>
-    <<md-content layout="row" flex="100" ng-include="'assets/html/table.html'" ></md-content>
-    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
-        <md-toolbar class="dark-green">
+    <div ng-controller="menuController" >
+        <md-fab-speed-dial md-direction="left" md-open="isOpen"
+                           class="md-fab-top-right menu-button" ng-class="{ 'md-hover-full': hover }"
+                           ng-mouseenter="open(true)" ng-mouseleave="open(false)">
+            <md-fab-trigger>
+                <md-button aria-label="menu" class="md-fab md-warn">
+                    <md-tooltip md-direction="top" md-visible="tooltipVisible">Menu</md-tooltip>
+                    <md-icon md-svg-src="assets/ic_menu.svg" aria-label="menu"></md-icon>
+                </md-button>
+            </md-fab-trigger>
+            <md-fab-actions>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </div>
+    <md-content layout="row" flex="100" ng-include="'assets/html/table.html'" ></md-content>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="prediction">
+        <md-toolbar class="dark-green header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
-        <md-content layout="row" layout-wrap ng-controller="predictionController"
+        <md-content layout="row" layout-wrap ng-controller="predictionController" class="content"
                     ng-include="'assets/html/prediction_report.html'"></md-content>
     </md-sidenav>
 </selection>

@@ -4,9 +4,16 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
+        .controller('menuController', function($scope) {
+            $scope.menu = {isOpen: false, hover: false};
+            $scope.open = function(open) {
+                $scope.menu.isOpen = open;
+            };
+        })
         .controller('predictionsController', function($scope, $mdSidenav) {
+            $scope.view = 'prediction';
             $scope.open = function() {
-                $mdSidenav('right')
+                $mdSidenav($scope.view)
                     .toggle()
                     .then(function () {
                         console.log("toggle  is done");

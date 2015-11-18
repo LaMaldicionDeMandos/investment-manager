@@ -4,11 +4,17 @@ body {
 
 .header {
     position: fixed;
+    height: 96px !important;
+}
+
+.menu-button {
+    top: 10px !important;
+    right: 10px !important;
 }
 
 .content {
     position: relative;
-    top: 64px;
+    top: 102px;
 }
 
 .centerer{
