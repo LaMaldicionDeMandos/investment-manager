@@ -1,0 +1,59 @@
+ <table class="table table-striped table-hover content">
+    <thead>
+    <tr>
+        <th rowspan="2" class="centerer">
+            <label>Títulos</label>
+            <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
+        </th>
+        <th colspan="3" class="centerer">
+            <label>Antes</label>
+        </th>
+        <th colspan="3" class="centerer">Después</th>
+    </tr>
+    <tr>
+        <th>
+            <label>Predicción</label>
+            <a class='fa fa-caret-down right' ng-show="sorterBy != 'before'" ng-click="sortByBefore()"/>
+        </th>
+        <th layout="row">
+            <label>Máximo al&nbsp;</label>
+            <md-input-container style="padding: 0px !important;margin-top: -5px !important;">
+                <input ng-model="globalBeforePercent" type="number" max="99", min="1"
+                       style="height: 25px !important;width: 40px !important;" ng-change="changeAllMaxAndMinBefore(globalBeforePercent)"/>
+            </md-input-container>
+            <label>%</label>
+        </th>
+        <th>
+            <label>Mínimo al {{globalBeforePercent}}%</label>
+        </th>
+        <th>
+            <label>Predicción</label>
+            <a class='fa fa-caret-down right' ng-show="sorterBy != 'after'" ng-click="sortByAfter()"/>
+        </th>
+        <th layout="row">
+            <label>Máximo al&nbsp;</label>
+            <md-input-container style="padding: 0px !important;margin-top: -5px !important;">
+                <input ng-model="globalAfterPercent" type="number" max="99", min="1"
+                       style="height: 25px !important;width: 40px !important;" ng-change="changeAllMaxAndMinAfter(globalAfterPercent)"/>
+            </md-input-container>
+            <label>%</label>
+        </th>
+        <th>
+            <label>Mínimo al {{globalAfterPercent}}%</label>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="title in titles">
+        <td ng-click="selectTitle(title);open()">
+            <label>{{title.name}}</label>
+        </td>
+        <td in-color ng-model="title.before">{{title.before | number : 2}}</td>
+        <td in-color ng-model="title.maxBefore">{{title.maxBefore | number : 2}}</td>
+        <td in-color ng-model="title.minBefore">{{title.minBefore | number : 2}}</td>
+        <td in-color ng-model="title.after">{{title.after | number : 2}}</td>
+        <td in-color ng-model="title.maxAfter">{{title.maxAfter | number : 2}}</td>
+        <td in-color ng-model="title.minAfter">{{title.minAfter | number : 2}}</td>
+    </tr>
+    </tbody>
+</table>

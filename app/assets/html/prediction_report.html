@@ -1,0 +1,51 @@
+<md-card layout-padding layout="column" flex="30">
+    <h3>Predicción</h3>
+    <md-divider/>
+    <md-content layout="column">
+        <span layout="row">
+            <label>Máximo al {{errorPercent}}%</label>
+            <h3 class="center" in-color ng-model="current.maxAfter">{{current.after + current.maxError | number : 2}}</h3>
+        </span>
+        <md-divider />
+        <span layout="row">
+            <label>Promedio</label>
+            <h1 class="center" in-color ng-model="current.after">{{current.after | number : 2}}</h1>
+        </span>
+        <md-divider/>
+        <span layout="row">
+            <label>Mínimo al {{errorPercent}}%</label>
+            <h3 class="center" in-color ng-model="current.minAfter">{{current.after + current.minError | number : 2}}
+            </h3>
+        </span>
+    </md-content>
+</md-card>
+<md-card layout-padding layout="column" flex="66">
+    <md-input-container layout="row">
+        <h3>Errores al&nbsp;</h3>
+        <h3><input ng-model="errorPercent" type="number" max="99", min="1"
+                   style="width: 50px !important;" ng-change="current.changeErrorPercent(errorPercent)"/></h3>
+        <h3>%</h3>
+    </md-input-container>
+    <md-divider/>
+    <div google-chart chart="chartObject" style="height:100%; width:100%;"></div>
+</md-card>
+<md-card layout-padding layout="column" flex="30">
+    <h3>Error al {{errorPercent}}%</h3>
+    <md-divider/>
+    <md-content layout="column">
+        <span layout="row">
+            <label>Máximo</label>
+            <h1 class="center" in-color ng-model="current.maxError">{{current.maxError | number : 2}}</h1>
+        </span>
+        <md-divider />
+        <span layout="row">
+            <label>Mínimo</label>
+            <h1 class="center" in-color ng-model="current.minError">{{current.minError | number : 2}}</h1>
+        </span>
+    </md-content>
+</md-card>
+<md-card layout-padding layout="column" flex="66">
+    <h3>Valores Ertimados Vs Reales</h3>
+    <md-divider/>
+    <div google-chart chart="chartPrediction" style="height:100%; width:100%;"></div>
+</md-card>

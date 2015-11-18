@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    var _templateBase = './js';
+    var _templateBase = './assets/html';
 
     angular.module('app', [
         'ngRoute',
@@ -17,7 +17,7 @@
     ])
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider.when('/', {
-                templateUrl: _templateBase + '/../assets/html/predictions.html',
+                templateUrl: _templateBase + '/predictions.html',
                 controller: 'predictionsController'
             });
             $routeProvider.otherwise({ redirectTo: '/' });
