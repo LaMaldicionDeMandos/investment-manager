@@ -7,14 +7,28 @@
     <div ng-controller="menuController" >
         <md-fab-speed-dial md-direction="left" md-open="isOpen"
                            class="md-fab-top-right menu-button" ng-class="{ 'md-hover-full': hover }"
-                           ng-mouseenter="open(true)" ng-mouseleave="open(false)">
+                           ng-mouseenter="openMenu(true)" ng-mouseleave="openMenu(false)">
             <md-fab-trigger>
                 <md-button aria-label="menu" class="md-fab md-warn">
                     <md-tooltip md-direction="top" md-visible="tooltipVisible">Menu</md-tooltip>
-                    <md-icon md-svg-src="assets/ic_menu.svg" aria-label="menu"></md-icon>
+                    <md-icon md-svg-src="assets/img/ic_menu.svg" aria-label="menu"></md-icon>
                 </md-button>
             </md-fab-trigger>
             <md-fab-actions>
+                <md-menu>
+                    <md-button aria-label="Settings" class="md-fab md-raised md-mini" ng-click="$mdOpenMenu()">
+                        <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
+                            Settings
+                        </md-tooltip>
+                        <md-icon md-svg-src="assets/img/ic_settings.svg" aria-label="Settings"></md-icon>
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="">
+                                Share...
+                            </md-button>
+                    </md-menu-content>
+                </md-menu>
             </md-fab-actions>
         </md-fab-speed-dial>
     </div>

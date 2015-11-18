@@ -6,8 +6,8 @@
     angular.module('app.controllers', [])
         .controller('menuController', function($scope) {
             $scope.menu = {isOpen: false, hover: false};
-            $scope.open = function(open) {
-                $scope.menu.isOpen = open;
+            $scope.openMenu = function(mustOpen) {
+                $scope.menu.isOpen = mustOpen;
             };
         })
         .controller('predictionsController', function($scope, $mdSidenav) {
