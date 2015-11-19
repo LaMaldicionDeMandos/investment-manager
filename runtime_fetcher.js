@@ -11,6 +11,12 @@ String.prototype.format = function(p) {
     return p.reduce(replace, this);
 };
 
+Date.prototype.format = function() {
+    return this.getFullYear() + '-' +
+        ((this.getMonth() < 10) ? '0' + this.getMonth() : this.getMonth()) +
+        '-' + ((this.getDay() < 10) ? '0' + this.getDay() : this.getDay())
+}
+
 function Fetcher() {
     var that = this;
     this.fetchTitle = function(title, path) {
@@ -30,7 +36,11 @@ function Fetcher() {
     };
     this.fetchTitles = function(path, titles) {
         titles.forEach(function(key, title) {
-            var finalPath = path + '/' + key + '/' + title.name + '.json';
+            var finalPath = path + '/' + key + '/' + title.name;
+            if (!fs.existsSync(finalPath)) {
+                fs.mkdirSync(finalPath,0744);
+            }
+            finalPath+= '/' + new Date().format() + '.json';
             that.fetchTitle(title.id, finalPath);
         });
     };
