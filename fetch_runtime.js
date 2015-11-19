@@ -1,9 +1,9 @@
 /**
  * Created by boot on 11/19/15.
  */
-var fetch = require('./runtime_fetcher');
-var titleId = process.argv[2];
-var path = process.argv[3];
+var fetcher = require('./runtime_fetcher');
+var titles = require('./title-codes.js');
+var path = process.argv[2];
 
-fetch(titleId, path);
+fetcher.fetchTitles(path, titles);
 
