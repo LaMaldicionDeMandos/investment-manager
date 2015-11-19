@@ -12,6 +12,9 @@
         })
         .controller('predictionsController', function($scope, $mdSidenav) {
             $scope.view = 'prediction';
+            $scope.selectView = function(view) {
+              $scope.view = view;
+            };
             $scope.open = function() {
                 $mdSidenav($scope.view)
                     .toggle()

@@ -6,10 +6,10 @@
     </md-toolbar>
     <div ng-controller="menuController" >
         <md-fab-speed-dial md-direction="left" md-open="isOpen"
-                           class="md-fab-top-right menu-button" ng-class="{ 'md-hover-full': hover }"
+                           class="md-fab-top-right menu-button md-scale" ng-class="{ 'md-hover-full': hover }"
                            ng-mouseenter="openMenu(true)" ng-mouseleave="openMenu(false)">
             <md-fab-trigger>
-                <md-button aria-label="menu" class="md-fab md-warn">
+                <md-button aria-label="menu" class="md-fab md-warn" style="background-color: #7c4dff">
                     <md-tooltip md-direction="top" md-visible="tooltipVisible">Menu</md-tooltip>
                     <md-icon md-svg-src="assets/img/ic_menu.svg" aria-label="menu"></md-icon>
                 </md-button>
@@ -20,13 +20,19 @@
                         <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
                             Settings
                         </md-tooltip>
-                        <md-icon md-svg-src="assets/img/ic_settings.svg" aria-label="Settings"></md-icon>
+                        <md-icon md-svg-src="assets/img/ic_dashboard.svg" aria-label="Settings"></md-icon>
                     </md-button>
                     <md-menu-content>
                         <md-menu-item>
-                            <md-button ng-click="">
-                                Share...
+                            <md-button ng-click="selectView('prediction')">
+                                Predicciones
                             </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="selectView('statistics')">
+                                Estadísticas
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
             </md-fab-actions>
@@ -39,5 +45,12 @@
         </md-toolbar>
         <md-content layout="row" layout-wrap ng-controller="predictionController" class="content"
                     ng-include="'assets/html/prediction_report.html'"></md-content>
+    </md-sidenav>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="statistics">
+        <md-toolbar class="cyan header">
+            <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
+        </md-toolbar>
+        <md-content layout="row" layout-wrap class="content"
+                    ng-include="'assets/html/statistics_report.html'"></md-content>
     </md-sidenav>
 </selection>
