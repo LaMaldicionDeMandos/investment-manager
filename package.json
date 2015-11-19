@@ -16,6 +16,7 @@
     "asar": "^0.7.2",
     "async": "1.5.0",
     "bootstrap-material-design": "^0.3.0",
+    "cron": "^1.0.9",
     "csvjson": "^1.0.5",
     "electron-prebuilt": "^0.31.2",
     "fs-jetpack": "^0.7.0",
