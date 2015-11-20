@@ -25,7 +25,8 @@
                 <label class="center">{{current.maxDiference | number : 2}}%</label>
             </span>
             <span layout="row">
-                <label>Limite inferior al 90%:</label>
+                <label>Limite inferior al <input ng-model="limitPercent" type="number" max="99", min="1"
+                                                 style="width: 50px !important;" ng-change="changeLimitPercent()"/>%:</label>
                 <label class="center">{{current.minLimit | number : 2}}%</label>
             </span>
             <span layout="row">
