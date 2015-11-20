@@ -222,6 +222,24 @@
                 } else {
                     data.promise.then(function(history) {
                         console.log('History from statistics');
+                        var minEqualClose = data.title.history.filter(function(item) {
+                            return item.min == item.closing;
+                        }).length;
+                        var maxEqualClose = data.title.history.filter(function(item) {
+                            return item.max == item.closing;
+                        }).length;
+                        $scope.current.minDiference = data.title.history.map(function(item) {
+                           return item.percentBeforeOpen() - item.percentMin();
+                        }).reduce(function(last, actual) {
+                            return last + actual;
+                        })/data.title.history.length;
+                        $scope.current.maxDiference = data.title.history.map(function(item) {
+                                return item.percentMax() - item.percentBeforeOpen();
+                            }).reduce(function(last, actual) {
+                                return last + actual;
+                            })/data.title.history.length;
+                        $scope.current.minEqualClosePercent = 100*minEqualClose/data.title.history.length;
+                        $scope.current.maxEqualClosePercent = 100*maxEqualClose/data.title.history.length;
                         $scope.populate(data.title);
                     });
                 }

@@ -5,8 +5,26 @@
         <div google-chart chart="chartFull" style="height:200px; width:100%;"></div>
     </md-card>
     <md-card layout-padding layout="column" flex="25">
-        <h3>Datos</h3>
+        <h3>Datos varios</h3>
         <md-divider/>
+        <md-content layout="column">
+            <span layout="row">
+                <label>Minimo = Cierre:</label>
+                <label class="center" ng-model="current.minEqualClosePercent">{{current.minEqualClosePercent | number : 2}}%</label>
+            </span>
+            <span layout="row">
+                <label>Maximo = Cierre:</label>
+                <label class="center" ng-model="current.maxEqualClosePercent">{{current.maxEqualClosePercent | number : 2}}%</label>
+            </span>
+            <span layout="row">
+                <label>Minimo diferencia promedio:</label>
+                <label class="center" ng-model="current.minEqualClosePercent">{{current.minDiference | number : 2}}%</label>
+            </span>
+            <span layout="row">
+                <label>Maximo diferencia promedio:</label>
+                <label class="center" ng-model="current.maxEqualClosePercent">{{current.maxDiference | number : 2}}%</label>
+            </span>
+        </md-content>
     </md-card>
     <md-card layout-padding layout="column" flex="70">
         <h3>Historial ultimos 100 días</h3>
