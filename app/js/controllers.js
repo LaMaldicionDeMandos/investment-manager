@@ -10,7 +10,7 @@
                 $scope.menu.isOpen = mustOpen;
             };
         })
-        .controller('predictionsController', function($scope, $mdSidenav) {
+        .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
             $scope.view = 'prediction';
             $scope.selectView = function(view) {
               $scope.view = view;
@@ -25,7 +25,11 @@
 
             $scope.selectTitle = function(title) {
                 $scope.currentTitle = title;
-                $scope.$broadcast('currentTitleEvent', title);
+                var promise = titlesService.findHistory(title).then(function(history){
+                    console.log('History from main');
+                    title.history = history;
+                });
+                $scope.$broadcast('currentTitleEvent', {title: title, promise: promise});
             };
         })
         .controller('tableController', function($scope, titlesService) {
@@ -89,19 +93,18 @@
                 $scope.chartObject.data.rows = values;
             };
 
-            $scope.$on('currentTitleEvent', function( event, title) {
+            $scope.$on('currentTitleEvent', function( event, data) {
+                var title = data.title;
                 $scope.current = title;
                 var values = title.changeErrorPercent($scope.errorPercent);
                 $scope.chartObject.data.rows = values;
                 if (title.history) {
                     populateWindow(title);
                 } else {
-                    titlesService.findHistory(title).then(
-                        function(history) {
-                            console.log(JSON.stringify(history));
-                            title.history = history;
-                            populateWindow(title);
-                        });
+                    data.promise.then(function(history) {
+                        console.log('History from prediction');
+                        populateWindow(title);
+                    });
                 }
             });
 
@@ -190,6 +193,116 @@
             };
             $scope.chartPrediction.view = {
                 columns: [0, 1, 2]
+            };
+        })
+        .controller('statisticsController', function($scope, titlesService) {
+            $scope.current = undefined;
+            $scope.populate = function(title) {
+                var rowsFull = [];
+                var rowsLast = [];
+                for(var i = title.history.length - 1;i>=0;i--) {
+                    var value = {
+                        c:[{v: title.history[i].date},
+                            {v: title.history[i].percentMax()},
+                            {v: title.history[i].percentMin()},
+                            {v: title.history[i].percentBeforeOpen()},
+                        ]
+                    }
+                    rowsFull.push(value);
+                    if (i < 100) { rowsLast.push(value);}
+
+                }
+                $scope.chartFull.data.rows = rowsFull;
+                $scope.chartLast.data.rows = rowsLast;
+            };
+            $scope.$on('currentTitleEvent', function( event, data) {
+                $scope.current = data.title;
+                if (data.title.history) {
+                    $scope.populate(data.title);
+                } else {
+                    data.promise.then(function(history) {
+                        console.log('History from statistics');
+                        $scope.populate(data.title);
+                    });
+                }
+            });
+            $scope.chartFull = {};
+            $scope.chartFull.type = "LineChart";
+            $scope.chartFull.displayed = true;
+            $scope.chartFull.data = {
+                "cols": [{
+                    id: "date",
+                    label: "Fecha",
+                    type: "string"
+                }, {
+                    id: "max",
+                    label: "Máximo",
+                    type: "number"
+                }, {
+                    id: "min",
+                    label: "Mínimo",
+                    type: "number"
+                }, {
+                    id: "close",
+                    label: "Cierre",
+                    type: "number"
+                }],
+                "rows": []
+            };
+            $scope.chartFull.options = {
+                "colors": ['#00ff00', '#ff0000', '#0000ff'],
+                "defaultColors": ['#0000FF'],
+                "isStacked": "false",
+                "fill": 0,
+                "displayExactValues": false,
+                "vAxis": {
+                    "title": "Historial",
+                    "gridlines": {
+                        "count": 6
+                    }
+                }
+            };
+            $scope.chartFull.view = {
+                columns: [0, 1, 2, 3]
+            };
+            $scope.chartLast = {};
+            $scope.chartLast.type = "LineChart";
+            $scope.chartLast.displayed = true;
+            $scope.chartLast.data = {
+                "cols": [{
+                    id: "date",
+                    label: "Fecha",
+                    type: "string"
+                }, {
+                    id: "max",
+                    label: "Máximo",
+                    type: "number"
+                }, {
+                    id: "min",
+                    label: "Mínimo",
+                    type: "number"
+                }, {
+                    id: "close",
+                    label: "Cierre",
+                    type: "number"
+                }],
+                "rows": []
+            };
+            $scope.chartLast.options = {
+                "colors": ['#00ff00', '#ff0000', '#0000ff'],
+                "defaultColors": ['#0000FF'],
+                "isStacked": "false",
+                "fill": 0,
+                "displayExactValues": false,
+                "vAxis": {
+                    "title": "Historial",
+                    "gridlines": {
+                        "count": 6
+                    }
+                }
+            };
+            $scope.chartLast.view = {
+                columns: [0, 1, 2, 3]
             };
         })
 })();

@@ -34,6 +34,12 @@
                             item.percentBeforeOpen = function() {
                                 return 100*(item.closing - item.opening + item.jump)/(item.opening - item.jump);
                             };
+                            item.percentMin = function() {
+                                return 100*(item.min - item.opening + item.jump)/(item.opening - item.jump);
+                            };
+                            item.percentMax = function() {
+                                return 100*(item.max - item.opening + item.jump)/(item.opening - item.jump);
+                            };
                         });
                         def.resolve(titleHistory.history);
                     });
