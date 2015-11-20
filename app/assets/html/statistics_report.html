@@ -10,19 +10,27 @@
         <md-content layout="column">
             <span layout="row">
                 <label>Minimo = Cierre:</label>
-                <label class="center" ng-model="current.minEqualClosePercent">{{current.minEqualClosePercent | number : 2}}%</label>
+                <label class="center">{{current.minEqualClosePercent | number : 2}}%</label>
             </span>
             <span layout="row">
                 <label>Maximo = Cierre:</label>
-                <label class="center" ng-model="current.maxEqualClosePercent">{{current.maxEqualClosePercent | number : 2}}%</label>
+                <label class="center">{{current.maxEqualClosePercent | number : 2}}%</label>
             </span>
             <span layout="row">
                 <label>Minimo diferencia promedio:</label>
-                <label class="center" ng-model="current.minEqualClosePercent">{{current.minDiference | number : 2}}%</label>
+                <label class="center">{{current.minDiference | number : 2}}%</label>
             </span>
             <span layout="row">
                 <label>Maximo diferencia promedio:</label>
-                <label class="center" ng-model="current.maxEqualClosePercent">{{current.maxDiference | number : 2}}%</label>
+                <label class="center">{{current.maxDiference | number : 2}}%</label>
+            </span>
+            <span layout="row">
+                <label>Limite inferior al 90%:</label>
+                <label class="center">{{current.minLimit | number : 2}}%</label>
+            </span>
+            <span layout="row">
+                <label>Limite superior al 90%:</label>
+                <label class="center">{{current.maxLimit | number : 2}}%</label>
             </span>
         </md-content>
     </md-card>

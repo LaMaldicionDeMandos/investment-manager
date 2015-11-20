@@ -238,6 +238,12 @@
                             }).reduce(function(last, actual) {
                                 return last + actual;
                             })/data.title.history.length;
+                        $scope.current.minLimit = data.title.history.slice().sort(function(a,b) {
+                            return a.percentMin() - b.percentMin();
+                        }).slice(data.title.history.length*0.1)[0].percentMin();
+                        $scope.current.maxLimit = data.title.history.slice().sort(function(a,b) {
+                            return b.percentMax() - a.percentMax();
+                        }).slice(data.title.history.length*0.1)[0].percentMax();
                         $scope.current.minEqualClosePercent = 100*minEqualClose/data.title.history.length;
                         $scope.current.maxEqualClosePercent = 100*maxEqualClose/data.title.history.length;
                         $scope.populate(data.title);
