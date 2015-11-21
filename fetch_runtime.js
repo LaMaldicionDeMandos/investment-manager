@@ -3,7 +3,10 @@
  */
 var fetcher = require('./runtime_fetcher');
 var titles = require('./title-codes.js');
-var path = process.argv[2];
 
-fetcher.fetchTitles(path, titles);
+var fetch = function(path) {
+    return fetcher.fetchTitles(path, titles);
+};
+
+module.exports = fetch;
 

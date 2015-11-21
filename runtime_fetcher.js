@@ -4,6 +4,7 @@
 var request = require('request');
 var fs = require('fs');
 var th = require('through2');
+var q = require('q');
 var baseUrl = 'https://www.invertironline.com/Titulo/GraficoIntradiario?idTitulo=%s&idTipo=4&idMercado=1';
 
 var replace = function(p, c) { return p.replace(/%s/, c);};
@@ -17,9 +18,18 @@ Date.prototype.format = function() {
         '-' + ((this.getDay() < 10) ? '0' + this.getDay() : this.getDay())
 }
 
+function parseList(string) {
+    try {
+        return JSON.parse(string);
+    } catch(e) {
+        return parseList(string.substr(0, string.length - 1));
+    }
+}
+
 function Fetcher() {
     var that = this;
     this.fetchTitle = function(title, path) {
+        var def = q.defer();
         var transform = th(function(data, encoding, done) {
             var string = data.toString();
             string = string.replace(/FechaHoraGMT/g, 'dateTimeGMT');
@@ -32,17 +42,26 @@ function Fetcher() {
             done();
         });
         console.log('Fetching titles from: ' + baseUrl.format([title]));
-        request(baseUrl.format([title])).pipe(transform).pipe(fs.createWriteStream(path));
+        var writer = fs.createWriteStream(path);
+        writer.on('close', function() {
+            var string = fs.readFileSync(path, 'utf8');
+            var list = parseList(string);
+            def.resolve(list);
+        });
+        request(baseUrl.format([title])).pipe(transform).pipe(writer);
+        return def.promise;
     };
     this.fetchTitles = function(path, titles) {
+        var promises = [];
         titles.forEach(function(key, title) {
             var finalPath = path + '/' + key + '/' + title.name;
             if (!fs.existsSync(finalPath)) {
                 fs.mkdirSync(finalPath,0744);
             }
             finalPath+= '/' + new Date().format() + '.json';
-            that.fetchTitle(title.id, finalPath);
+            promises.push({title: title, promise: that.fetchTitle(title.id, finalPath)});
         });
+        return promises;
     };
 };
 
