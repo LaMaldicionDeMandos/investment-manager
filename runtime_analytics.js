@@ -69,12 +69,12 @@ var analyzeTitle = function(title, movement) {
 };
 
 var analyzePercent = function(title) {
-    console.log('Percent: ' + title.name + ' - ' + title.percent);
+    console.log('Percent: ' + title.name + ' ==> ' + title.percent);
     if (title.percent < title.percentMin()) {
-        console.log('Alerta de minimo!!!!');
+        console.log('*********************** Alerta de minimo *******************');
     }
     if (title.percent > title.percentMax()) {
-        console.log('Alerta de maximo!!!!');
+        console.log('*********************** Alerta de maximo *******************');
     }
 };
 
