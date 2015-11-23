@@ -41,7 +41,6 @@ function Fetcher() {
             this.push(string);
             done();
         });
-        console.log('Fetching titles from: ' + baseUrl.format([title]));
         var writer = fs.createWriteStream(path);
         writer.on('close', function() {
             var string = fs.readFileSync(path, 'utf8');

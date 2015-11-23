@@ -1,24 +1,28 @@
 /**
  * Created by boot on 11/19/15.
  */
+var runNow = process.argv[2] == 'true';
+var analyze = require('./runtime_analytics');
 var CronJob = require('cron').CronJob;
-var loop;
-var start = new CronJob('0 11 * * 1-2-3-4-5', function() {
+var loopJob;
+var loop = function() {
+    console.log("Analizing");
+    analyze('./titles/runtime');
+};
+var start = function() {
     console.log('Run loop');
-    loop = loop || new CronJob('*/30 * * * * *', function() {
-        console.log('Corre cada 30 segundos');
-    }, function() {
-        console.log('stop loop');
-    });
-    loop.start();
-});
-
-start.start();
-
-var stop = new CronJob('0 17 * * 1-2-3-4-5', function() {
-    if (loop) {
+    loopJob = loopJob || new CronJob('*/30 * * * * *', loop, function() {
+            console.log('stop loop');
+        }, true);
+};
+var stop = function() {
+    if (loopJob) {
         console.log('stoping loop');
-        loop.stop();
+        loopJob.stop();
     }
-});
-stop.start();
+};
+var startJob = new CronJob('0 11 * * 1-5', start, null, true);
+if (runNow) {
+    start();
+}
+var stopJob = new CronJob('0 17 * * 1-5', stop, null, true);

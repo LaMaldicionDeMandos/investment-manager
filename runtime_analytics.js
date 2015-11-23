@@ -4,7 +4,7 @@
 var fetcher = require('./fetch_runtime');
 var q = require('q');
 var titleCodes = require('./title-codes.js');
-var path = process.argv[2];
+var Title = require('./database').Title;
 var latests = {};
 
 var titles = {};
@@ -35,8 +35,44 @@ var create = function(name, movement) {
 
 var analyzeTitle = function(title, movement) {
     if (movement) {
-        var percent = 100*(movement.value - title.first.value)/title.first.value;
-        console.log(title.name + ' Percent: ' + percent);
+        title.percent = 100*(movement.value - title.first.value)/title.first.value;
+        if (!title.history) {
+            Title.findOne({name: title.name}).select('history').exec(function(err, titleHistory) {
+                var history = titleHistory.history;
+                history.forEach(function(item) {
+                    item.percentAfterOpen = function() {
+                        return 100*(item.closing - item.opening)/item.opening;
+                    };
+                    item.percentBeforeOpen = function() {
+                        return 100*(item.closing - item.opening + item.jump)/(item.opening - item.jump);
+                    };
+                    item.percentMin = function() {
+                        return 100*(item.min - item.opening + item.jump)/(item.opening - item.jump);
+                    };
+                    item.percentMax = function() {
+                        return 100*(item.max - item.opening + item.jump)/(item.opening - item.jump);
+                    };
+                });
+                title.minLimit = history.slice().sort(function(a,b) {
+                    return a.percentMin() - b.percentMin();
+                }).slice(history.length*(100 - 95)/100)[0].percentMin();
+                title.maxLimit = history.slice().sort(function(a,b) {
+                    return b.percentMax() - a.percentMax();
+                }).slice(history.length*(100 - 95)/100)[0].percentMax();
+                title.history = history;
+            });
+        }
+        analyzePercent(title);
+    };
+};
+
+var analyzePercent = function(title) {
+    console.log('Percent: ' + title.name + ' - ' + title.percent);
+    if (title.percent < title.percentMin) {
+        console.log('Alerta de minimo!!!!');
+    }
+    if (title.percent > title.percentMax) {
+        console.log('Alerta de maximo!!!!');
     }
 };
 
@@ -47,10 +83,13 @@ var analyze = function(titleCodes, path) {
             var title = titles[item.title.name];
             if (!title) {
                 title = create(item.title.name, movement);
+                titles[item.title.name] = title;
             }
             analyzeTitle(title, movement);
         });
     });
 };
 
-analyze(titleCodes, path);
+module.exports = function(path) {
+    analyze(titleCodes, path);
+}
