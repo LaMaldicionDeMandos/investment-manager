@@ -60,18 +60,20 @@ var analyzeTitle = function(title, movement) {
                     return b.percentMax() - a.percentMax();
                 }).slice(history.length*(100 - 95)/100)[0].percentMax();
                 title.history = history;
+                analyzePercent(title);
             });
+        } else {
+            analyzePercent(title);
         }
-        analyzePercent(title);
     };
 };
 
 var analyzePercent = function(title) {
     console.log('Percent: ' + title.name + ' - ' + title.percent);
-    if (title.percent < title.percentMin) {
+    if (title.percent < title.percentMin()) {
         console.log('Alerta de minimo!!!!');
     }
-    if (title.percent > title.percentMax) {
+    if (title.percent > title.percentMax()) {
         console.log('Alerta de maximo!!!!');
     }
 };
