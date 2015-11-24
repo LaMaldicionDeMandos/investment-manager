@@ -1,6 +1,10 @@
 /**
  * Created by boot on 11/19/15.
  */
+Date.prototype.formatTime = function() {
+    return '' + (this.getHours() >= 10 ? this.getHours() : ('0' + this.getHours())) +
+            ':' + (this.getMinutes() >= 10 ? this.getMinutes() : ('0' + this.getMinutes()));
+}
 password = process.argv[2];
 sendMail = !(process.argv[4] == 'false');
 console.log('Password: ' + password);
@@ -9,7 +13,7 @@ var analyze = require('./runtime_analytics');
 var CronJob = require('cron').CronJob;
 var loopJob;
 var loop = function() {
-    console.log("Analizing");
+    console.log("Analizing " + new Date().formatTime());
     analyze('./titles/runtime');
 };
 var start = function() {
