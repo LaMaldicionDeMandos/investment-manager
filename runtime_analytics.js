@@ -39,6 +39,7 @@ var create = function(name, movement) {
 var analyzeTitle = function(title, movement) {
     if (movement) {
         title.percent = 100*(movement.value - title.first.value)/title.first.value;
+        title.value = movement.value;
         if (!title.history) {
             Title.findOne({name: title.name}).select('history').exec(function(err, titleHistory) {
                 var history = titleHistory.history;
@@ -72,7 +73,7 @@ var analyzeTitle = function(title, movement) {
 };
 
 var analyzePercent = function(title) {
-    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2));
+    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2) + '|| Value ==> ' + title.value);
     if (title.percent < title.minLimit) {
         console.log('*********************** Alerta de minimo *******************');
         if (sendMail) mailer.send('Alerta de Minimo', title.name + ' llegó a un minimo ' + title.percent.toFixed(2));
