@@ -14,7 +14,7 @@ var loop = function() {
 };
 var start = function() {
     console.log('Run loop');
-    loopJob = loopJob || new CronJob('*/10 * * * * *', loop, function() {
+    loopJob = loopJob || new CronJob('*/30 * * * * *', loop, function() {
             console.log('stop loop');
         }, true);
 };
