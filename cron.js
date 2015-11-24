@@ -2,7 +2,7 @@
  * Created by boot on 11/19/15.
  */
 password = process.argv[2];
-sendMail = !(process.argv[4] == 'true');
+sendMail = !(process.argv[4] == 'false');
 console.log('Password: ' + password);
 var runNow = process.argv[3] == 'true';
 var analyze = require('./runtime_analytics');
