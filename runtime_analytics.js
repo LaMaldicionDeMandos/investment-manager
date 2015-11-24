@@ -73,7 +73,7 @@ var analyzeTitle = function(title, movement) {
 };
 
 var analyzePercent = function(title) {
-    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2) + '|| Value ==> ' + title.value);
+    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2) + ' || Value ==> ' + title.value);
     if (title.percent < title.minLimit) {
         console.log('*********************** Alerta de minimo *******************');
         if (sendMail) mailer.send('Alerta de Minimo', title.name + ' llegó a un minimo ' + title.percent.toFixed(2));

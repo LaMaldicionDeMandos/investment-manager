@@ -26,6 +26,7 @@ var stop = function() {
     if (loopJob) {
         console.log('stoping loop');
         loopJob.stop();
+        analyze('./titles/runtime');
     }
 };
 var startJob = new CronJob('0 11 * * 1-5', start, null, true);
