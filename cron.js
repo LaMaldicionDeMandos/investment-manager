@@ -1,7 +1,9 @@
 /**
  * Created by boot on 11/19/15.
  */
-var runNow = process.argv[2] == 'true';
+password = process.argv[2];
+console.log('Password: ' + password);
+var runNow = process.argv[3] == 'true';
 var analyze = require('./runtime_analytics');
 var CronJob = require('cron').CronJob;
 var loopJob;
@@ -11,7 +13,7 @@ var loop = function() {
 };
 var start = function() {
     console.log('Run loop');
-    loopJob = loopJob || new CronJob('*/30 * * * * *', loop, function() {
+    loopJob = loopJob || new CronJob('*/10 * * * * *', loop, function() {
             console.log('stop loop');
         }, true);
 };

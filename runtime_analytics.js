@@ -1,11 +1,13 @@
 /**
  * Created by boot on 11/21/15.
  */
-var fetcher = require('./fetch_runtime');
-//var fetcher = require('./fetcher_test');
+//var fetcher = require('./fetch_runtime');
+var fetcher = require('./fetcher_test');
+var Mailer = require('./mailer');
 var q = require('q');
 var titleCodes = require('./title-codes.js');
 var Title = require('./database').Title;
+var mailer = new Mailer(password);
 var latests = {};
 
 var titles = {};
@@ -70,12 +72,14 @@ var analyzeTitle = function(title, movement) {
 };
 
 var analyzePercent = function(title) {
-    console.log('Percent: ' + title.name + ' ==> ' + title.percent);
+    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2));
     if (title.percent < title.minLimit) {
         console.log('*********************** Alerta de minimo *******************');
+        mailer.send('Alerta de Minimo', title.name + ' llegó a un minimo ' + title.percent.toFixed(2));
     }
     if (title.percent > title.maxLimit) {
         console.log('*********************** Alerta de maximo *******************');
+        mailer.send('Alerta de Maximo', title.name + ' llegó a un maximo ' + title.percent.toFixed(2));
     }
 };
 
