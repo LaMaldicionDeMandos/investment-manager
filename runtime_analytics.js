@@ -2,6 +2,7 @@
  * Created by boot on 11/21/15.
  */
 var fetcher = require('./fetch_runtime');
+//var fetcher = require('./fetcher_test');
 var q = require('q');
 var titleCodes = require('./title-codes.js');
 var Title = require('./database').Title;
@@ -55,10 +56,10 @@ var analyzeTitle = function(title, movement) {
                 });
                 title.minLimit = history.slice().sort(function(a,b) {
                     return a.percentMin() - b.percentMin();
-                }).slice(history.length*(100 - 95)/100)[0].percentMin();
+                }).slice(history.length*(100 - 90)/100)[0].percentMin();
                 title.maxLimit = history.slice().sort(function(a,b) {
                     return b.percentMax() - a.percentMax();
-                }).slice(history.length*(100 - 95)/100)[0].percentMax();
+                }).slice(history.length*(100 - 90)/100)[0].percentMax();
                 title.history = history;
                 analyzePercent(title);
             });
@@ -70,10 +71,10 @@ var analyzeTitle = function(title, movement) {
 
 var analyzePercent = function(title) {
     console.log('Percent: ' + title.name + ' ==> ' + title.percent);
-    if (title.percent < title.percentMin()) {
+    if (title.percent < title.minLimit) {
         console.log('*********************** Alerta de minimo *******************');
     }
-    if (title.percent > title.percentMax()) {
+    if (title.percent > title.maxLimit) {
         console.log('*********************** Alerta de maximo *******************');
     }
 };
