@@ -40,6 +40,7 @@ var analyzeTitle = function(title, movement) {
     if (movement) {
         title.percent = 100*(movement.value - title.first.value)/title.first.value;
         title.value = movement.value;
+        title.time = new Date(movement.dateTime).formatTime();
         if (!title.history) {
             Title.findOne({name: title.name}).select('history').exec(function(err, titleHistory) {
                 var history = titleHistory.history;
@@ -59,10 +60,10 @@ var analyzeTitle = function(title, movement) {
                 });
                 title.minLimit = history.slice().sort(function(a,b) {
                     return a.percentMin() - b.percentMin();
-                }).slice(history.length*(100 - 90)/100)[0].percentMin();
+                }).slice(history.length*(100 - 95)/100)[0].percentMin();
                 title.maxLimit = history.slice().sort(function(a,b) {
                     return b.percentMax() - a.percentMax();
-                }).slice(history.length*(100 - 90)/100)[0].percentMax();
+                }).slice(history.length*(100 - 95)/100)[0].percentMax();
                 title.history = history;
                 analyzePercent(title);
             });
@@ -73,7 +74,7 @@ var analyzeTitle = function(title, movement) {
 };
 
 var analyzePercent = function(title) {
-    console.log('Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2) + ' || Value ==> ' + title.value);
+    console.log(title.time + ' Percent: ' + title.name + ' ==> ' + title.percent.toFixed(2) + ' || Value ==> ' + title.value);
     if (title.percent < title.minLimit) {
         console.log('*********************** Alerta de minimo *******************');
         if (sendMail) mailer.send('Alerta de Minimo', title.name + ' llegó a un minimo ' + title.percent.toFixed(2));
