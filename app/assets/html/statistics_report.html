@@ -1,8 +1,13 @@
 <div ng-controller="statisticsController" layout="row" flex="100" layout-wrap>
-    <md-card layout-padding layout="column" flex="100">
+    <!-- <md-card layout-padding layout="column" flex="100">
         <h3>Historial</h3>
         <md-divider/>
         <div google-chart chart="chartFull" style="height:200px; width:100%;"></div>
+    </md-card> -->
+    <md-card layout-padding layout="column" flex="100">
+        <h3>Intra diario</h3>
+        <md-divider/>
+        <div google-chart chart="chartDays" style="height:200px; width:100%;"></div>
     </md-card>
     <md-card layout-padding layout="column" flex="25">
         <h3>Datos varios</h3>

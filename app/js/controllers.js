@@ -332,5 +332,46 @@
             $scope.chartLast.view = {
                 columns: [0, 1, 2, 3]
             };
+
+            $scope.chartDays = {};
+            $scope.chartDays.type = "ScatterChart";
+            $scope.chartDays.displayed = true;
+            $scope.chartDays.data = {
+                "cols": [{
+                    id: "hous",
+                    label: "Hora",
+                    type: "timeofday"
+                }, {
+                    id: "max",
+                    label: "Máximo",
+                    type: "number"
+                }, {
+                    id: "min",
+                    label: "Mínimo",
+                    type: "number"
+                }],
+                "rows": [
+                    {c:[{v: [11, 3]}, {v: 21.3}]},
+                    {c:[{v: [11,15]}, null,{v: 19.55}]},
+                    {c:[{v: [11,3]}, {v: 13.4}]},
+                    {c:[{v: [16,12]}, null, {v: 12.3}]},
+                ]
+            };
+            $scope.chartDays.options = {
+                "colors": ['#00ff00', '#ff0000', '#0000ff'],
+                "defaultColors": ['#0000FF'],
+                "isStacked": "false",
+                "fill": 0,
+                "displayExactValues": false,
+                "vAxis": {
+                    "title": "Intra diario",
+                    "gridlines": {
+                        "count": 6
+                    }
+                }
+            };
+            $scope.chartDays.view = {
+                columns: [0, 1, 2]
+            };
         })
 })();
