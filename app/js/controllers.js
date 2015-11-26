@@ -25,11 +25,22 @@
 
             $scope.selectTitle = function(title) {
                 $scope.currentTitle = title;
-                var promise = titlesService.findHistory(title).then(function(history){
-                    console.log('History from main');
-                    title.history = history;
-                });
-                $scope.$broadcast('currentTitleEvent', {title: title, promise: promise});
+                var historyPromise;
+                var extremePromise;
+                if (!title.history) {
+                    historyPromise = titlesService.findHistory(title).then(function (history) {
+                        console.log('History from main');
+                        title.history = history;
+                    });
+                }
+                if (!title.extremes) {
+                    extremePromise = titlesService.findExtremes(title).then(function (extremes) {
+                        console.log('Extremes from main');
+                        title.extremes = extremes;
+                    });
+                }
+                $scope.$broadcast('currentTitleEvent',
+                    {title: title, historyPromise: historyPromise, extremePromise: extremePromise});
             };
         })
         .controller('tableController', function($scope, titlesService) {
@@ -101,7 +112,7 @@
                 if (title.history) {
                     populateWindow(title);
                 } else {
-                    data.promise.then(function(history) {
+                    data.historyPromise.then(function(history) {
                         console.log('History from prediction');
                         populateWindow(title);
                     });
@@ -224,12 +235,21 @@
                 $scope.chartFull.data.rows = rowsFull;
                 $scope.chartLast.data.rows = rowsLast;
             };
+            $scope.populateExtreme = function(title) {
+                var rows = [];
+                title.extremes.forEach(function(extreme) {
+                   var min = {c:[{v: [extreme.min.hour, extreme.min.minute]}, {v: extreme.min.percent}]};
+                   var max = {c:[{v: [extreme.max.hour, extreme.max.minute]}, null, {v: extreme.max.percent}]};
+                   rows.push(min, max);
+                });
+                $scope.chartDays.data.rows = rows;
+            };
             $scope.$on('currentTitleEvent', function( event, data) {
                 $scope.current = data.title;
                 if (data.title.history) {
                     $scope.populate(data.title);
                 } else {
-                    data.promise.then(function(history) {
+                    data.historyPromise.then(function(history) {
                         console.log('History from statistics');
                         var minEqualClose = data.title.history.filter(function(item) {
                             return item.min == item.closing;
@@ -253,6 +273,14 @@
                         $scope.populate(data.title);
                     });
                 }
+                if (data.title.extremes) {
+                    $scope.populateExtreme(data.title);
+                } else {
+                    data.extremePromise.then(function(extremes) {
+                        $scope.populateExtreme(data.title);
+                    });
+                }
+
             });
             $scope.chartFull = {};
             $scope.chartFull.type = "LineChart";
@@ -342,23 +370,18 @@
                     label: "Hora",
                     type: "timeofday"
                 }, {
-                    id: "max",
-                    label: "Máximo",
-                    type: "number"
-                }, {
                     id: "min",
                     label: "Mínimo",
                     type: "number"
+                }, {
+                    id: "max",
+                    label: "Máximo",
+                    type: "number"
                 }],
-                "rows": [
-                    {c:[{v: [11, 3]}, {v: 6.5}]},
-                    {c:[{v: [11,15]}, null,{v: -7.2}]},
-                    {c:[{v: [11,3]}, {v: 8.71}]},
-                    {c:[{v: [16,12]}, null, {v: -5.4}]},
-                ]
+                "rows": []
             };
             $scope.chartDays.options = {
-                "colors": ['#00ff00', '#ff0000', '#0000ff'],
+                "colors": ['#ff0000', '#00aa00'],
                 "defaultColors": ['#0000FF'],
                 "isStacked": "false",
                 "pointSize": 1,

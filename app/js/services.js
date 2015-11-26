@@ -4,6 +4,7 @@
 (function () {
     'use strict';
     var Title = require('../database').Title;
+    var TitleExtreme = require('../database').TitleExtreme;
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {
@@ -42,6 +43,19 @@
                             };
                         });
                         def.resolve(titleHistory.history);
+                    });
+                    return def.promise;
+                },
+                findExtremes: function(title) {
+                    var def = $q.defer();
+                    TitleExtreme.findOne({code: title.name}, function(err, extreme) {
+                        if (err) {
+                            console.log(err);
+                            def.reject(err);
+                            return;
+                        }
+
+                        def.resolve(extreme.extremes);
                     });
                     return def.promise;
                 }

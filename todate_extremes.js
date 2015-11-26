@@ -37,7 +37,7 @@ function create(title, movements) {
 
 titles.forEach(function(key, title) {
     var dir = path + "/" + key + "/" + title.name;
-    TitleExtreme.findOne({name: title.name}, function(item) {
+    TitleExtreme.findOne({code: title.name}, function(err, item) {
         item = item || createTitleExtreme(title.name);
         var movements = fs.readFileSync(dir + '/' + file);
         var extreme = create(title, JSON.parse(movements));
