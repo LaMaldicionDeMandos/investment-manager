@@ -1,13 +1,21 @@
 /**
- * Created by boot on 11/25/15.
+ * Created by marcelo on 26/11/15.
  */
 var titles = require('./title-codes.js');
 var db = require('./database.js');
 var TitleExtreme = db.TitleExtreme;
 
 var path = process.argv[2];
-
+var file = process.argv[3];
 var fs = require('fs');
+
+function createTitleExtreme(code) {
+    var item = new TitleExtreme();
+    item._id = db.ObjectId();
+    item.code = code;
+    item.extremes = [];
+    return item;
+}
 
 function create(title, movements) {
     var first = movements[0];
@@ -29,19 +37,11 @@ function create(title, movements) {
 
 titles.forEach(function(key, title) {
     var dir = path + "/" + key + "/" + title.name;
-    console.log(dir);
-    var item = new TitleExtreme();
-    item._id = db.ObjectId();
-    item.code = title.name;
-    item.extremes = [];
-    fs.readdirSync(dir).forEach(function(file) {
-        if (file.endsWith('.json')) {
-            var movements = fs.readFileSync(dir + '/' + file);
-            var extreme = create(title, JSON.parse(movements));
-            item.extremes.push(extreme);
-            item.save();
-        }
+    TitleExtreme.findOne({name: title.name}, function(item) {
+        item = item || createTitleExtreme(title.name);
+        var movements = fs.readFileSync(dir + '/' + file);
+        var extreme = create(title, JSON.parse(movements));
+        item.extremes.push(extreme);
+        item.save();
     });
-
-
 });
