@@ -351,16 +351,17 @@
                     type: "number"
                 }],
                 "rows": [
-                    {c:[{v: [11, 3]}, {v: 21.3}]},
-                    {c:[{v: [11,15]}, null,{v: 19.55}]},
-                    {c:[{v: [11,3]}, {v: 13.4}]},
-                    {c:[{v: [16,12]}, null, {v: 12.3}]},
+                    {c:[{v: [11, 3]}, {v: 6.5}]},
+                    {c:[{v: [11,15]}, null,{v: -7.2}]},
+                    {c:[{v: [11,3]}, {v: 8.71}]},
+                    {c:[{v: [16,12]}, null, {v: -5.4}]},
                 ]
             };
             $scope.chartDays.options = {
                 "colors": ['#00ff00', '#ff0000', '#0000ff'],
                 "defaultColors": ['#0000FF'],
                 "isStacked": "false",
+                "pointSize": 1,
                 "fill": 0,
                 "displayExactValues": false,
                 "vAxis": {
