@@ -9,12 +9,17 @@ var TitleSchema = new Schema({_id: ObjectId, name: String, history:[{date: Strin
 	windowReports:[{size:Number, report:{predictionBefore: {after: Number, before: Number, errorList: [Number], positiveError: Number,
 		negativeError: Number, index: Number}, predictionAfter: {after: Number, before: Number, errorList: [Number], positiveError: Number,
 		negativeError: Number, index: Number}}}]});
+var TitleExtremeSchema = new Schema({_id: ObjectId, code: String, extremes:
+	[{date: Number,
+		min: {percent: Number, hour: Number, minute: Number}, max: {percent: Number, hour: Number, minute: Number}}]});
 
 var Title = mongoose.model('Title', TitleSchema);
+var TitleExtreme = mongoose.model('TitleExtreme', TitleExtremeSchema);
 
 function DBSchema() {
 	this.ObjectId = mongoose.Types.ObjectId;
 	this.Title = Title;
+	this.TitleExtreme = TitleExtreme;
 	this.clean = function(callback) { Title.remove({}, callback) }
 }
 
