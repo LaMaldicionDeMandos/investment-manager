@@ -238,8 +238,8 @@
             $scope.populateExtreme = function(title) {
                 var rows = [];
                 title.extremes.forEach(function(extreme) {
-                   var min = {c:[{v: [extreme.min.hour, extreme.min.minute]}, {v: extreme.min.percent}]};
-                   var max = {c:[{v: [extreme.max.hour, extreme.max.minute]}, null, {v: extreme.max.percent}]};
+                   var min = {c:[{v: [extreme.min.hour, extreme.min.minute, 0]}, {v: extreme.min.percent}]};
+                   var max = {c:[{v: [extreme.max.hour, extreme.max.minute, 0]}, null, {v: extreme.max.percent}]};
                    rows.push(min, max);
                 });
                 $scope.chartDays.data.rows = rows;
@@ -366,7 +366,7 @@
             $scope.chartDays.displayed = true;
             $scope.chartDays.data = {
                 "cols": [{
-                    id: "hous",
+                    id: "hours",
                     label: "Hora",
                     type: "timeofday"
                 }, {
@@ -387,6 +387,11 @@
                 "pointSize": 1,
                 "fill": 0,
                 "displayExactValues": false,
+                "hAxis": {
+                    "gridlines": {
+                        "count": 20
+                    }
+                },
                 "vAxis": {
                     "title": "Intra diario",
                     "gridlines": {
