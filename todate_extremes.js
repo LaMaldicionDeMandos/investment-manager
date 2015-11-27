@@ -17,7 +17,7 @@ function createTitleExtreme(code) {
     return item;
 }
 
-function create(title, movements) {
+function create(movements) {
     var first = movements[0];
     movements.sort(function(a, b){
         return a.value - b.value;
@@ -40,7 +40,7 @@ titles.forEach(function(key, title) {
     TitleExtreme.findOne({code: title.name}, function(err, item) {
         item = item || createTitleExtreme(title.name);
         var movements = fs.readFileSync(dir + '/' + file);
-        var extreme = create(title, JSON.parse(movements));
+        var extreme = create(JSON.parse(movements));
         item.extremes.push(extreme);
         item.save();
     });

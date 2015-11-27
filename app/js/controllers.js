@@ -206,7 +206,7 @@
                 columns: [0, 1, 2]
             };
         })
-        .controller('statisticsController', function($scope, titlesService) {
+        .controller('extremesController', function($scope) {
             $scope.current = undefined;
             $scope.limitPercent = 90;
             $scope.changeLimitPercent = function() {
@@ -250,7 +250,7 @@
                     $scope.populate(data.title);
                 } else {
                     data.historyPromise.then(function(history) {
-                        console.log('History from statistics');
+                        console.log('History from extremes');
                         var minEqualClose = data.title.history.filter(function(item) {
                             return item.min == item.closing;
                         }).length;

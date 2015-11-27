@@ -29,8 +29,13 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
+                            <md-button ng-click="selectView('extremes')">
+                                Extremos
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
                             <md-button ng-click="selectView('statistics')">
-                                Estadísticas
+                                Estadisticas
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -45,6 +50,13 @@
         </md-toolbar>
         <md-content layout="row" layout-wrap ng-controller="predictionController" class="content"
                     ng-include="'assets/html/prediction_report.html'"></md-content>
+    </md-sidenav>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="extremes">
+        <md-toolbar class="cyan header">
+            <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
+        </md-toolbar>
+        <md-content layout="row" layout-wrap class="content"
+                    ng-include="'assets/html/extremes_report.html'"></md-content>
     </md-sidenav>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="statistics">
         <md-toolbar class="cyan header">
