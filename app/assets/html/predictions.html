@@ -16,11 +16,11 @@
             </md-fab-trigger>
             <md-fab-actions>
                 <md-menu>
-                    <md-button aria-label="Settings" class="md-fab md-raised md-mini" ng-click="$mdOpenMenu()">
+                    <md-button aria-label="Reportes" class="md-fab md-raised md-mini" ng-click="$mdOpenMenu()">
                         <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
-                            Settings
+                            Reportes
                         </md-tooltip>
-                        <md-icon md-svg-src="assets/img/ic_dashboard.svg" aria-label="Settings"></md-icon>
+                        <md-icon md-svg-src="assets/img/ic_dashboard.svg" aria-label="Reportes"></md-icon>
                     </md-button>
                     <md-menu-content>
                         <md-menu-item>
@@ -40,10 +40,31 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
+                <md-menu>
+                    <md-button aria-label="Tablas" class="md-fab md-raised md-mini" ng-click="$mdOpenMenu()">
+                        <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
+                            Tablas
+                        </md-tooltip>
+                        <md-icon md-svg-src="assets/img/ic_grid.svg" aria-label="Tablas"></md-icon>
+                    </md-button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="selectWindowMethod()">
+                                Metodo por Ventanas
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="selectRegressionMethod()">
+                                Metodo por regresion lineal
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </md-fab-actions>
         </md-fab-speed-dial>
     </div>
-    <md-content layout="row" flex="100" ng-include="'assets/html/table.html'" ></md-content>
+    <md-content ng-show="windowMethod" layout="row" flex="100" ng-include="'assets/html/window_table.html'" ></md-content> -->
+    <md-content ng-show="regressionMethod" layout="row" flex="100" ng-include="'assets/html/regression_table.html'" ></md-content>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="prediction">
         <md-toolbar class="dark-green header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>

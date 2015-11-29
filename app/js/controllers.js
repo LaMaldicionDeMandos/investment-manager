@@ -12,6 +12,16 @@
         })
         .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
             $scope.view = 'prediction';
+            $scope.windowMethod = true;
+            $scope.regressionMethod = false;
+            $scope.selectWindowMethod = function() {
+                $scope.windowMethod = true;
+                $scope.regressionMethod = false;
+            };
+            $scope.selectRegressionMethod = function() {
+                $scope.windowMethod = false;
+                $scope.regressionMethod = true;
+            };
             $scope.selectView = function(view) {
               $scope.view = view;
             };
@@ -23,14 +33,15 @@
                     });
             };
 
-            $scope.selectTitle = function(title) {
-                $scope.currentTitle = title;
+            $scope.populateTitle = function(title) {
                 var historyPromise;
                 var extremePromise;
+                console.log('Populating title: ' + title.name);
                 if (!title.history) {
+                    console.log('Fetching history title: ' + title.name);
                     historyPromise = titlesService.findHistory(title).then(function (history) {
                         console.log('History from main');
-                        title.history = history;
+                        title.populate(history);
                     });
                 }
                 if (!title.extremes) {
@@ -39,11 +50,79 @@
                         title.extremes = extremes;
                     });
                 }
-                $scope.$broadcast('currentTitleEvent',
-                    {title: title, historyPromise: historyPromise, extremePromise: extremePromise});
+                return {title: title, historyPromise: historyPromise, extremePromise: extremePromise};
             };
+
+            $scope.selectTitle = function(title) {
+                $scope.currentTitle = title;
+                var result = $scope.populateTitle(title);
+                $scope.$broadcast('currentTitleEvent', result);
+            };
+
+            titlesService.all().then(
+                function(titles) {
+                    $scope.titles = titles.map(function(title) {
+                        var theTitle = new Title(title);
+                        $scope.populateTitle(theTitle);
+                        return theTitle;
+                    });
+                    $scope.$broadcast('arriveTitlesEvent', $scope.titles);
+                },  function(error) {
+                    console.log(error);
+                }
+            );
         })
-        .controller('tableController', function($scope, titlesService) {
+        .controller('regressionTableController', function($scope) {
+            var compareByName = function(a, b) {
+                return a.name > b.name ? 1 : -1;
+            };
+
+            var compareByClosing = function(a, b) {
+                return a.closingPercent < b.closingPercent
+                    ? 1 : -1;
+            };
+
+            var compareByJump = function(a, b) {
+                return a.jumpPercent < b.jumpPercent
+                    ? 1 : -1;
+            };
+
+            var compareByDiff = function(a, b) {
+                return a.totalPercent < b.totalPercent
+                    ? 1 : -1;
+            };
+
+            $scope.sortByName = function() {
+                $scope.sorterBy = 'name';
+                $scope.titles.sort(compareByName);
+            };
+
+            $scope.sortByClose = function() {
+                $scope.sorterBy = 'close';
+                $scope.titles.sort(compareByClosing);
+            };
+
+            $scope.sortByJump = function() {
+                $scope.sorterBy = 'jump';
+                $scope.titles.sort(compareByJump);
+            };
+
+            $scope.sortByDiff = function() {
+                $scope.sorterBy = 'diff';
+                $scope.titles.sort(compareByDiff);
+            };
+
+            $scope.sorterBy;
+
+            $scope.$on('arriveTitlesEvent', function( event, titles) {
+                $scope.titles = titles;
+                $scope.titles.sort(compareByName);
+                $scope.titles.forEach(function(title) {
+                    populate(title);
+                });
+            });
+        })
+        .controller('windowTableController', function($scope) {
             $scope.globalAfterPercent = 90;
             $scope.globalBeforePercent = 90;
 
@@ -71,7 +150,7 @@
                 $scope.sorterBy = 'after';
                 $scope.titles.sort(compareByAfter);
             };
-            $scope.sorterBy = 'name';
+            $scope.sorterBy = '';
 
             $scope.changeAllMaxAndMinBefore = function(percent) {
                 $scope.titles.forEach(function(title) {
@@ -83,19 +162,11 @@
                     title.changeMaxAndMinAfter(percent);
                 });
             };
-
-            titlesService.all().then(
-                function(titles) {
-                    $scope.titles = titles.map(function(title) {
-                        return new Title(title);
-                    });
-                    $scope.titles.sort(compareByName);
-                },  function(error) {
-                    console.log(error);
-                }
-            );
+            $scope.$on('arriveTitlesEvent', function( event, titles) {
+                $scope.titles = titles;
+            });
         })
-        .controller('predictionController', function($scope, titlesService) {
+        .controller('predictionController', function($scope) {
             $scope.errorPercent = 90;
             $scope.current = undefined;
 
@@ -293,30 +364,6 @@
         })
         .controller('statisticsController', function($scope) {
             $scope.current = undefined;
-            $scope.closingNextValue = 0;
-            $scope.closingLastValue = 0;
-            $scope.openingNextValue = 0;
-            $scope.openingLastValue = 0;
-            var regretion = function(size, target, attr) {
-                var sx = 0;
-                var sy = 0;
-                var sxx = 0;
-                var sxy = 0;
-                var syy = 0;
-                for(var i = size - 1 ;i>=0;i--) {
-                    var j = size - i - 1;
-                    sx+= j;
-                    sy+= target[i][attr];
-                    sxx+= j*j;
-                    sxy+= j*target[i][attr];
-                    syy+= target[i][attr]*target[i][attr];
-                }
-                var b = (size*sxy - sx*sy)/(size*sxx - sx*sx);
-                var a = (sy - b*sx)/size;
-                return function(x) {
-                    return a + b*x;
-                };
-            };
             $scope.populate = function(title) {
                 var rows = [];
                 var size = 31;
@@ -326,16 +373,6 @@
                     var opening = Chart.createRow([j, title.history[i].opening]);
                     rows.push(opening, closing);
                 }
-                var cRegretion = regretion(size, title.history, 'closing');
-                var oRegretion = regretion(size, title.history, 'opening');
-
-                $scope.closingNextValue = cRegretion(31);
-                $scope.closingLastValue = title.history[0].closing;
-                $scope.closingPercent = 100*($scope.closingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
-                $scope.openingNextValue = oRegretion(31);
-                $scope.openingLastValue = title.history[0].opening;
-                $scope.totalPercent = 100*($scope.closingNextValue - $scope.openingNextValue)/$scope.openingNextValue;
-                $scope.jumpPercent = 100*($scope.openingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
                 $scope.chartRegretion.data.rows = rows;
             };
             $scope.$on('currentTitleEvent', function( event, data) {

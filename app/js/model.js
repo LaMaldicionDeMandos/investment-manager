@@ -60,6 +60,40 @@ function Title(title) {
         this.minError = filteredError[filteredError.length-1];
         return values;
     };
+    var regression = function(size, target, attr) {
+        var sx = 0;
+        var sy = 0;
+        var sxx = 0;
+        var sxy = 0;
+        var syy = 0;
+        for(var i = size - 1 ;i>=0;i--) {
+            var j = size - i - 1;
+            sx+= j;
+            sy+= target[i][attr];
+            sxx+= j*j;
+            sxy+= j*target[i][attr];
+            syy+= target[i][attr]*target[i][attr];
+        }
+        var b = (size*sxy - sx*sy)/(size*sxx - sx*sx);
+        var a = (sy - b*sx)/size;
+        return function(x) {
+            return a + b*x;
+        };
+    };
+    this.populate = function(history, size) {
+        size = size || 31;
+        this.history = history;
+        var cRegression = regression(size, history, 'closing');
+        var oRegression = regression(size, history, 'opening');
+
+        this.closingNextValue = cRegression(31);
+        this.closingLastValue = history[0].closing;
+        this.closingPercent = 100*(this.closingNextValue - this.closingLastValue)/this.closingLastValue;
+        this.openingNextValue = oRegression(31);
+        this.openingLastValue = history[0].opening;
+        this.totalPercent = 100*(this.closingNextValue - this.openingNextValue)/this.openingNextValue;
+        this.jumpPercent = 100*(this.openingNextValue - this.closingLastValue)/this.closingLastValue;
+    };
 };
 
 function Chart(type, cols, colors, colsToShow) {

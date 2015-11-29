@@ -2,20 +2,23 @@
     <md-card layout-padding layout="column" flex="45">
         <h3>Regresión Cierre</h3>
         <md-divider/>
-        <label>El ultimo valor fue {{closingLastValue | number : 2}}</label>
+        <label>El ultimo valor fue {{current.closingLastValue | number : 2}}</label>
         <br>
-        <label>El siguiente valor es {{closingNextValue | number : 2}}</label>
+        <label>El siguiente valor es {{current.closingNextValue | number : 2}}</label>
         <br>
-        <label>Ganancia <label in-color ng-model="closingPercent">{{closingPercent | number : 2}}%</label></label>
+        <label>Ganancia <label in-color ng-model="current.closingPercent">
+            {{current.closingPercent | number : 2}}%</label></label>
     </md-card>
     <md-card layout-padding layout="column" flex="45">
         <h3>Regresión Apertura</h3>
         <md-divider/>
-        <label>El siguiente salto es <label in-color ng-model="jumpPercent">{{jumpPercent | number : 2}}%</label></label>
+        <label>El siguiente salto es <label in-color ng-model="current.jumpPercent">
+            {{current.jumpPercent | number : 2}}%</label></label>
         <br/>
-        <label>El siguiente valor es {{openingNextValue | number : 2}}</label>
+        <label>El siguiente valor es {{current.openingNextValue | number : 2}}</label>
         <br/>
-        <label>Ganancia entre apertura y cierre <label in-color ng-model="totalPercent">{{totalPercent | number : 2}}%</label></label>
+        <label>Ganancia entre apertura y cierre <label in-color ng-model="current.totalPercent">
+            {{current.totalPercent | number : 2}}%</label></label>
     </md-card>
     <md-card layout-padding layout="column" flex="100">
         <div google-chart chart="chartRegretion" style="height:200px; width:100%;"></div>
