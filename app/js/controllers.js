@@ -122,52 +122,27 @@
             var populateWindow = function(title) {
                 var rows = [];
                 for(var i = 9;i>=0;i--) {
-                    rows.push({
-                        c:[{v: 10 - i},
-                            {v: title.history[i].percentBeforeOpen()},
-                            {v: title.history[i+title.index-1].percentBeforeOpen()}
-                        ]
-                    });
+                    rows.push(Chart.createRow([
+                        10 - i,
+                        title.history[i].percentBeforeOpen(),
+                        title.history[i+title.index-1].percentBeforeOpen()
+                        ]));
                 }
-                rows.push({c:[{v:11}, {}, {v: title.history[title.index].percentBeforeOpen()}]})
+                rows.push(Chart.createRow([11, null, title.history[title.index].percentBeforeOpen()]));
                 $scope.chartPrediction.data.rows = rows;
             };
-            $scope.chartObject = {};
-            $scope.chartObject.type = "LineChart";
-            $scope.chartObject.displayed = true;
-            $scope.chartObject.data = {
-                "cols": [{
+            $scope.chartObject = new Chart(Chart.Type.LINE, [{
                     id: "error",
                     label: "Error",
                     type: "number"
                 }, {
                     id: "count",
                     type: "number"
-                }],
-                "rows": []
-            };
-            $scope.chartObject.options = {
-                "colors": ['#0000FF'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "fill": 0,
-                "displayExactValues": false,
-                "vAxis": {
-                    "title": "Ocurrencias",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartObject.view = {
-                columns: [0, 1]
-            };
+                }]);
 
-            $scope.chartPrediction = {};
-            $scope.chartPrediction.type = "LineChart";
-            $scope.chartPrediction.displayed = true;
-            $scope.chartPrediction.data = {
-                "cols": [{
+            $scope.chartObject.options.vAxis.title = 'Ocurrencias';
+
+            $scope.chartPrediction = new Chart(Chart.Type.LINE, [{
                     id: "date",
                     label: "Día",
                     type: "number"
@@ -179,32 +154,8 @@
                     id: "percentEstimated",
                     label: "Estimado",
                     type: "number"
-                }],
-                "rows": [{c:[{v: 1}, {v:0}, {v:2}]},
-                    {c:[{v: 2}, {v:1}, {v:2}]},
-                    {c:[{v: 3}, {v:2}, {v:3}]},
-                    {c:[{v: 4}, {v:2}, {v:3}]},
-                    {c:[{v: 5}, {v:1}, {v:2}]},
-                    {c:[{v: 6}, {v:1}, {v:3}]},
-                    {c:[{v: 7}, {v:0}, {v:4}]}
-                ]
-            };
-            $scope.chartPrediction.options = {
-                "colors": ['#0000FF', '#00FF00'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "fill": 0,
-                "displayExactValues": false,
-                "vAxis": {
-                    "title": "Ganancia",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartPrediction.view = {
-                columns: [0, 1, 2]
-            };
+                }], ['#0000FF', '#00FF00']);
+            $scope.chartPrediction.options.vAxis.title = 'Ganancia';
         })
         .controller('extremesController', function($scope) {
             $scope.current = undefined;
@@ -221,13 +172,12 @@
                 var rowsFull = [];
                 var rowsLast = [];
                 for(var i = title.history.length - 1;i>=0;i--) {
-                    var value = {
-                        c:[{v: title.history[i].date},
-                            {v: title.history[i].percentMax()},
-                            {v: title.history[i].percentMin()},
-                            {v: title.history[i].percentBeforeOpen()},
-                        ]
-                    }
+                    var value = Chart.createRow([
+                        title.history[i].date,
+                        title.history[i].percentMax(),
+                        title.history[i].percentMin(),
+                        title.history[i].percentBeforeOpen()
+                        ]);
                     rowsFull.push(value);
                     if (i < 100) { rowsLast.push(value);}
 
@@ -238,8 +188,13 @@
             $scope.populateExtreme = function(title) {
                 var rows = [];
                 title.extremes.forEach(function(extreme) {
-                   var min = {c:[{v: [extreme.min.hour, extreme.min.minute, 0]}, {v: extreme.min.percent}]};
-                   var max = {c:[{v: [extreme.max.hour, extreme.max.minute, 0]}, null, {v: extreme.max.percent}]};
+                   var min = Chart.createRow([
+                       [extreme.min.hour, extreme.min.minute, 0],
+                       extreme.min.percent]);
+                   var max = Chart.createRow([
+                       [extreme.max.hour, extreme.max.minute, 0],
+                       null,
+                       extreme.max.percent]);
                    rows.push(min, max);
                 });
                 $scope.chartDays.data.rows = rows;
@@ -282,11 +237,7 @@
                 }
 
             });
-            $scope.chartFull = {};
-            $scope.chartFull.type = "LineChart";
-            $scope.chartFull.displayed = true;
-            $scope.chartFull.data = {
-                "cols": [{
+            $scope.chartFull = new Chart(Chart.Type.LINE, [{
                     id: "date",
                     label: "Fecha",
                     type: "string"
@@ -302,30 +253,9 @@
                     id: "close",
                     label: "Cierre",
                     type: "number"
-                }],
-                "rows": []
-            };
-            $scope.chartFull.options = {
-                "colors": ['#00ff00', '#ff0000', '#0000ff'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "fill": 0,
-                "displayExactValues": false,
-                "vAxis": {
-                    "title": "Historial",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartFull.view = {
-                columns: [0, 1, 2, 3]
-            };
-            $scope.chartLast = {};
-            $scope.chartLast.type = "LineChart";
-            $scope.chartLast.displayed = true;
-            $scope.chartLast.data = {
-                "cols": [{
+                }], ['#00ff00', '#ff0000', '#0000ff']);
+            $scope.chartFull.options.vAxis.title = 'Historial';
+            $scope.chartLast = new Chart(Chart.Type.LINE, [{
                     id: "date",
                     label: "Fecha",
                     type: "string"
@@ -341,31 +271,10 @@
                     id: "close",
                     label: "Cierre",
                     type: "number"
-                }],
-                "rows": []
-            };
-            $scope.chartLast.options = {
-                "colors": ['#00ff00', '#ff0000', '#0000ff'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "fill": 0,
-                "displayExactValues": false,
-                "vAxis": {
-                    "title": "Historial",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartLast.view = {
-                columns: [0, 1, 2, 3]
-            };
+                }], ['#00ff00', '#ff0000', '#0000ff']);
+            $scope.chartLast.options.vAxis.title = 'Historial';
 
-            $scope.chartDays = {};
-            $scope.chartDays.type = "ScatterChart";
-            $scope.chartDays.displayed = true;
-            $scope.chartDays.data = {
-                "cols": [{
+            $scope.chartDays = new Chart(Chart.Type.SCATTER, [{
                     id: "hours",
                     label: "Hora",
                     type: "timeofday"
@@ -377,31 +286,10 @@
                     id: "max",
                     label: "Máximo",
                     type: "number"
-                }],
-                "rows": []
-            };
-            $scope.chartDays.options = {
-                "colors": ['#ff0000', '#00aa00'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "pointSize": 1,
-                "fill": 0,
-                "displayExactValues": false,
-                "hAxis": {
-                    "gridlines": {
-                        "count": 20
-                    }
-                },
-                "vAxis": {
-                    "title": "Intra diario",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartDays.view = {
-                columns: [0, 1, 2]
-            };
+                }], ['#ff0000', '#00aa00']);
+            $scope.chartDays.options.pointSize = 1;
+            $scope.chartDays.options.hAxis = {gridlines: {count: 20}};
+            $scope.chartDays.options.vAxis.title = 'Intradiario';
         })
         .controller('statisticsController', function($scope) {
             $scope.current = undefined;
@@ -409,43 +297,42 @@
             $scope.closingLastValue = 0;
             $scope.openingNextValue = 0;
             $scope.openingLastValue = 0;
+            var regretion = function(size, target, attr) {
+                var sx = 0;
+                var sy = 0;
+                var sxx = 0;
+                var sxy = 0;
+                var syy = 0;
+                for(var i = size - 1 ;i>=0;i--) {
+                    var j = size - i - 1;
+                    sx+= j;
+                    sy+= target[i][attr];
+                    sxx+= j*j;
+                    sxy+= j*target[i][attr];
+                    syy+= target[i][attr]*target[i][attr];
+                }
+                var b = (size*sxy - sx*sy)/(size*sxx - sx*sx);
+                var a = (sy - b*sx)/size;
+                return function(x) {
+                    return a + b*x;
+                };
+            };
             $scope.populate = function(title) {
-                var csx = 0;
-                var csy = 0;
-                var csxx = 0;
-                var csxy = 0;
-                var csyy = 0;
-                var osx = 0;
-                var osy = 0;
-                var osxx = 0;
-                var osxy = 0;
-                var osyy = 0;
                 var rows = [];
                 var size = 31;
                 for(var i = size - 1 ;i>=0;i--) {
                     var j = size - i - 1;
-                    var closing = {c:[{v: j}, null, {v: title.history[i].closing}]};
-                    var opening = {c:[{v: j}, {v: title.history[i].opening}]};
-                    csx+= j;
-                    csy+= title.history[i].closing;
-                    csxx+= j*j;
-                    csxy+= j*title.history[i].closing;
-                    csyy+= title.history[i].closing*title.history[i].closing;
-                    osx+= j;
-                    osy+= title.history[i].opening;
-                    osxx+= j*j;
-                    osxy+= j*title.history[i].opening;
-                    osyy+= title.history[i].opening*title.history[i].opening;
+                    var closing = Chart.createRow([j, null, title.history[i].closing]);
+                    var opening = Chart.createRow([j, title.history[i].opening]);
                     rows.push(opening, closing);
                 }
-                var cb = (size*csxy - csx*csy)/(size*csxx - csx*csx);
-                var ca = (csy - cb*csx)/size;
-                $scope.closingNextValue = 31*cb + ca;
+                var cRegretion = regretion(size, title.history, 'closing');
+                var oRegretion = regretion(size, title.history, 'opening');
+
+                $scope.closingNextValue = cRegretion(31);
                 $scope.closingLastValue = title.history[0].closing;
                 $scope.closingPercent = 100*($scope.closingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
-                var ob = (size*osxy - osx*osy)/(size*osxx - osx*osx);
-                var oa = (osy - ob*osx)/size;
-                $scope.openingNextValue = 31*ob + oa;
+                $scope.openingNextValue = oRegretion(31);
                 $scope.openingLastValue = title.history[0].opening;
                 $scope.totalPercent = 100*($scope.closingNextValue - $scope.openingNextValue)/$scope.openingNextValue;
                 $scope.jumpPercent = 100*($scope.openingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
@@ -462,11 +349,7 @@
                 }
             });
 
-            $scope.chartRegretion = {};
-            $scope.chartRegretion.type = "ScatterChart";
-            $scope.chartRegretion.displayed = true;
-            $scope.chartRegretion.data = {
-                "cols": [{
+            $scope.chartRegretion = new Chart(Chart.Type.SCATTER, [{
                     id: "date",
                     label: "Día",
                     type: "number"
@@ -478,34 +361,12 @@
                     id: "closing",
                     label: "Cierre",
                     type: "number"
-                }],
-                "rows": []
-            };
-            $scope.chartRegretion.options = {
-                "colors": ['#00aa00', '#0000aa'],
-                "defaultColors": ['#0000FF'],
-                "isStacked": "false",
-                "pointSize": 2,
-                "fill": 0,
-                "displayExactValues": false,
-                "trendlines":{
+                }], ['#00aa00', '#0000aa']);
+            $scope.chartRegretion.options.pointSize = 2;
+            $scope.chartRegretion.options.trendlines = {
                     0: {"type": 'polynomial', "degree": 1},
-                    1: {"type": 'polynomial', "degree": 1}},
-
-                "hAxis": {
-                    "gridlines": {
-                        "count": 20
-                    }
-                },
-                "vAxis": {
-                    "title": "Regreción",
-                    "gridlines": {
-                        "count": 6
-                    }
-                }
-            };
-            $scope.chartRegretion.view = {
-                columns: [0, 1, 2]
-            };
+                    1: {"type": 'polynomial', "degree": 1}}
+            $scope.chartRegretion.options.hAxis = {gridlines: {count: 20}},
+            $scope.chartRegretion.options.vAxis.title = "Regreción";
         })
 })();
