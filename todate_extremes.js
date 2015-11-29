@@ -4,9 +4,13 @@
 var titles = require('./title-codes.js');
 var db = require('./database.js');
 var TitleExtreme = db.TitleExtreme;
-
+Date.prototype.format = function() {
+    return this.getFullYear() + '-' +
+        ((this.getMonth() < 9) ? '0' + (this.getMonth() + 1) : (this.getMonth() + 1)) +
+        '-' + ((this.getDate() < 10) ? '0' + this.getDate() : this.getDate());
+};
 var path = process.argv[2];
-var file = process.argv[3];
+var file = process.argv[3] || (new Date().format() + '.json');
 var fs = require('fs');
 
 function createTitleExtreme(code) {

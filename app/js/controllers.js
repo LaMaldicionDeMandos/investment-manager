@@ -403,4 +403,109 @@
                 columns: [0, 1, 2]
             };
         })
+        .controller('statisticsController', function($scope) {
+            $scope.current = undefined;
+            $scope.closingNextValue = 0;
+            $scope.closingLastValue = 0;
+            $scope.openingNextValue = 0;
+            $scope.openingLastValue = 0;
+            $scope.populate = function(title) {
+                var csx = 0;
+                var csy = 0;
+                var csxx = 0;
+                var csxy = 0;
+                var csyy = 0;
+                var osx = 0;
+                var osy = 0;
+                var osxx = 0;
+                var osxy = 0;
+                var osyy = 0;
+                var rows = [];
+                var size = 31;
+                for(var i = size - 1 ;i>=0;i--) {
+                    var j = size - i - 1;
+                    var closing = {c:[{v: j}, null, {v: title.history[i].closing}]};
+                    var opening = {c:[{v: j}, {v: title.history[i].opening}]};
+                    csx+= j;
+                    csy+= title.history[i].closing;
+                    csxx+= j*j;
+                    csxy+= j*title.history[i].closing;
+                    csyy+= title.history[i].closing*title.history[i].closing;
+                    osx+= j;
+                    osy+= title.history[i].opening;
+                    osxx+= j*j;
+                    osxy+= j*title.history[i].opening;
+                    osyy+= title.history[i].opening*title.history[i].opening;
+                    rows.push(opening, closing);
+                }
+                var cb = (size*csxy - csx*csy)/(size*csxx - csx*csx);
+                var ca = (csy - cb*csx)/size;
+                $scope.closingNextValue = 31*cb + ca;
+                $scope.closingLastValue = title.history[0].closing;
+                $scope.closingPercent = 100*($scope.closingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
+                var ob = (size*osxy - osx*osy)/(size*osxx - osx*osx);
+                var oa = (osy - ob*osx)/size;
+                $scope.openingNextValue = 31*ob + oa;
+                $scope.openingLastValue = title.history[0].opening;
+                $scope.totalPercent = 100*($scope.closingNextValue - $scope.openingNextValue)/$scope.openingNextValue;
+                $scope.jumpPercent = 100*($scope.openingNextValue - $scope.closingLastValue)/$scope.closingLastValue;
+                $scope.chartRegretion.data.rows = rows;
+            };
+            $scope.$on('currentTitleEvent', function( event, data) {
+                $scope.current = data.title;
+                if (data.title.history) {
+                    $scope.populate(data.title);
+                } else {
+                    data.historyPromise.then(function(history) {
+                        $scope.populate(data.title);
+                    });
+                }
+            });
+
+            $scope.chartRegretion = {};
+            $scope.chartRegretion.type = "ScatterChart";
+            $scope.chartRegretion.displayed = true;
+            $scope.chartRegretion.data = {
+                "cols": [{
+                    id: "date",
+                    label: "Día",
+                    type: "number"
+                }, {
+                    id: "opening",
+                    label: "Apertura",
+                    type: "number"
+                }, {
+                    id: "closing",
+                    label: "Cierre",
+                    type: "number"
+                }],
+                "rows": []
+            };
+            $scope.chartRegretion.options = {
+                "colors": ['#00aa00', '#0000aa'],
+                "defaultColors": ['#0000FF'],
+                "isStacked": "false",
+                "pointSize": 2,
+                "fill": 0,
+                "displayExactValues": false,
+                "trendlines":{
+                    0: {"type": 'polynomial', "degree": 1},
+                    1: {"type": 'polynomial', "degree": 1}},
+
+                "hAxis": {
+                    "gridlines": {
+                        "count": 20
+                    }
+                },
+                "vAxis": {
+                    "title": "Regreción",
+                    "gridlines": {
+                        "count": 6
+                    }
+                }
+            };
+            $scope.chartRegretion.view = {
+                columns: [0, 1, 2]
+            };
+        })
 })();
