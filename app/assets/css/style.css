@@ -17,6 +17,16 @@ body {
     top: 102px;
 }
 
+.loading {
+    position: fixed;
+    top: 352px;
+    left: 464px;
+    border-top-color: grey !important;
+    border-left-color: grey !important;
+    border-bottom-color: grey !important;
+    border-right-color: grey !important;
+}
+
 .centerer{
     text-align: center !important;
 }

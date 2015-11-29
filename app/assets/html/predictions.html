@@ -63,7 +63,8 @@
             </md-fab-actions>
         </md-fab-speed-dial>
     </div>
-    <md-content ng-show="windowMethod" layout="row" flex="100" ng-include="'assets/html/window_table.html'" ></md-content> -->
+    <md-progress-circular md-mode="indeterminate" md-diameter="96" class="loading"></md-progress-circular>
+    <md-content ng-show="windowMethod" layout="row" flex="100" ng-include="'assets/html/window_table.html'" ></md-content>
     <md-content ng-show="regressionMethod" layout="row" flex="100" ng-include="'assets/html/regression_table.html'" ></md-content>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="prediction">
         <md-toolbar class="dark-green header">
