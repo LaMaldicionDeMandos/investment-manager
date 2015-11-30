@@ -148,6 +148,8 @@ function Title(title) {
         for (var key in this.tendings.negatives) {
             this.tendings.negatives[key].percent = 100*this.tendings.negatives[key].count/this.tendings.totalNegatives;
         }
+        this.tendings.positivePercent = 100*this.tendings.totalPositives/(this.tendings.totalPositives + this.tendings.totalNegatives);
+        this.tendings.negativePercent = 100 - this.tendings.positivePercent;
     };
 };
 
