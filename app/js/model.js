@@ -60,6 +60,7 @@ function Title(title) {
         this.minError = filteredError[filteredError.length-1];
         return values;
     };
+
     var regression = function(size, target, attr) {
         var sx = 0;
         var sy = 0;
@@ -93,6 +94,26 @@ function Title(title) {
     this.populate = function(history, size) {
         size = size || 31;
         this.history = history;
+
+        var minEqualClose = history.filter(function(item) {
+            return item.min == item.closing;
+        }).length;
+        var maxEqualClose = history.filter(function(item) {
+            return item.max == item.closing;
+        }).length;
+        this.minDiference = history.map(function(item) {
+                return item.percentBeforeOpen() - item.percentMin();
+            }).reduce(function(last, actual) {
+                return last + actual;
+            })/history.length;
+        this.maxDiference = history.map(function(item) {
+                return item.percentMax() - item.percentBeforeOpen();
+            }).reduce(function(last, actual) {
+                return last + actual;
+            })/history.length;
+        this.minEqualClosePercent = 100*minEqualClose/history.length;
+        this.maxEqualClosePercent = 100*maxEqualClose/history.length;
+
         var cRegression = regression(size, history, 'closing');
         var oRegression = regression(size, history, 'opening');
 
