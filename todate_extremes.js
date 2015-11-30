@@ -1,6 +1,7 @@
 /**
  * Created by marcelo on 26/11/15.
  */
+var async = require('async');
 var titles = require('./title-codes.js');
 var db = require('./database.js');
 var TitleExtreme = db.TitleExtreme;
@@ -21,6 +22,14 @@ function createTitleExtreme(code) {
     return item;
 }
 
+function parseList(string) {
+    try {
+        return JSON.parse(string);
+    } catch(e) {
+        return parseList(string.substr(0, string.length - 1));
+    }
+}
+
 function create(movements) {
     var first = movements[0];
     movements.sort(function(a, b){
@@ -38,14 +47,32 @@ function create(movements) {
         minute: first == max ? 0 : maxDate.getMinutes()};
     return {date: first.dateTime, min: minE, max: maxE};
 }
-
+var functions = [];
 titles.forEach(function(key, title) {
     var dir = path + "/" + key + "/" + title.name;
     TitleExtreme.findOne({code: title.name}, function(err, item) {
         item = item || createTitleExtreme(title.name);
         var movements = fs.readFileSync(dir + '/' + file);
-        var extreme = create(JSON.parse(movements));
+        var extreme = create(parseList(movements.toString()));
         item.extremes.push(extreme);
-        item.save();
+        functions.push(function(callback) {
+            title.save(function(err) {
+                if (!err) {
+                    callback(null, title);
+                } else {
+                    callback(err, title);
+                }
+            });
+        });
     });
+});
+var saveItems = function(callback) {
+    async.parallel(functions, function(err, results) {
+        console.log("End saving titles");
+        callback(err, results);
+    });
+};
+async.series([saveItems], function(err, results) {
+    console.log("End");
+    process.exit();
 });
