@@ -1,0 +1,25 @@
+<div ng-controller="inclineController" layout="row" flex="100" layout-wrap>
+    <md-card layout-padding layout="column" flex="100">
+        <h3>Tendencias</h3>
+        <label>Ultima tendencia fue <label in-color ng-model="current.history[0].percentBeforeOpen()">
+            {{current.history[0].percentBeforeOpen() | number: 2}}%</label></label>
+        <label in-color ng-model="current.history[0].percentBeforeOpen()">
+            Tendencia en {{current.history[0].percentBeforeOpen() >= 0 ? 'alza' : 'baja'}} desde hace {{current.consecutive}} dias</label>
+    </md-card>
+    <md-card layout-padding layout="column" flex="45">
+        <h3>Tendencias Positivas</h3>
+        <md-list>
+            <md-list-item ng-repeat="(key, value) in current.tendings.positives">
+                <label>{{key}} dias: {{value.percent | number: 2}}%</label>
+            </md-list-item>
+        </md-list>
+    </md-card>
+    <md-card layout-padding layout="column" flex="45">
+        <h3>Tendencias Negativas</h3>
+        <md-list>
+            <md-list-item ng-repeat="(key, value) in current.tendings.negatives">
+                <label>{{key}} dias: {{value.percent | number: 2}}%</label>
+            </md-list-item>
+        </md-list>
+    </md-card>
+</div>

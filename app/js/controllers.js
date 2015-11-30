@@ -117,9 +117,6 @@
             $scope.$on('arriveTitlesEvent', function( event, titles) {
                 $scope.titles = titles;
                 $scope.titles.sort(compareByName);
-                $scope.titles.forEach(function(title) {
-                    populate(title);
-                });
             });
         })
         .controller('windowTableController', function($scope) {
@@ -405,5 +402,10 @@
                     1: {"type": 'polynomial', "degree": 1}}
             $scope.chartRegretion.options.hAxis = {gridlines: {count: 20}},
             $scope.chartRegretion.options.vAxis.title = "Regreción";
+        })
+        .controller('inclineController', function($scope) {
+            $scope.$on('currentTitleEvent', function( event, data) {
+                $scope.current = data.title;
+            });
         })
 })();

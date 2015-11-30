@@ -80,6 +80,16 @@ function Title(title) {
             return a + b*x;
         };
     };
+    var tendingPositive = function(history) {
+        var count = 1;
+        for (; history[count].percentBeforeOpen() >= 0;count++) {}
+        return count;
+    };
+    var tendingNegative = function(history) {
+        var count = 1;
+        for (; history[count].percentBeforeOpen() < 0;count++) {}
+        return count;
+    };
     this.populate = function(history, size) {
         size = size || 31;
         this.history = history;
@@ -93,6 +103,51 @@ function Title(title) {
         this.openingLastValue = history[0].opening;
         this.totalPercent = 100*(this.closingNextValue - this.openingNextValue)/this.openingNextValue;
         this.jumpPercent = 100*(this.openingNextValue - this.closingLastValue)/this.closingLastValue;
+        if (history[0].percentBeforeOpen() >= 0) {
+            this.consecutive = tendingPositive(history);
+        } else {
+            this.consecutive = tendingNegative(history);
+        }
+        this.tendings = {positives: {}, negatives: {}};
+        var count = 0;
+        var last = 0;
+        var first = true;
+        for (var i = history.length - 2; i >= 0; i--) {
+            if ((last > 0 ^ history[i].percentBeforeOpen() > 0) && !first) {
+                if (last >= 0) {
+                    if (this.tendings.positives[count]) {
+                        this.tendings.positives[count].count++;
+                    } else {
+                        this.tendings.positives[count] = {count: 1};
+                    }
+                } else {
+                    if (this.tendings.negatives[count]) {
+                        this.tendings.negatives[count].count++;
+                    } else {
+                        this.tendings.negatives[count] = {count: 1};
+                    }
+                }
+                count = 1;
+            } else {
+                count++;
+            }
+            last = history[i].percentBeforeOpen();
+            first = false;
+        }
+        this.tendings.totalPositives = 0;
+        this.tendings.totalNegatives = 0;
+        for (var key in this.tendings.positives) {
+            this.tendings.totalPositives+= this.tendings.positives[key].count;
+        }
+        for (var key in this.tendings.negatives) {
+            this.tendings.totalNegatives+= this.tendings.negatives[key].count;
+        }
+        for (var key in this.tendings.positives) {
+            this.tendings.positives[key].percent = 100*this.tendings.positives[key].count/this.tendings.totalPositives;
+        }
+        for (var key in this.tendings.negatives) {
+            this.tendings.negatives[key].percent = 100*this.tendings.negatives[key].count/this.tendings.totalNegatives;
+        }
     };
 };
 
