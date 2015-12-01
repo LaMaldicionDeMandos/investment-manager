@@ -91,10 +91,25 @@ function Title(title) {
         for (; history[count].percentBeforeOpen() < 0;count++) {}
         return count;
     };
+
+    this.calculateRegression = function(size) {
+        size = size || 31;
+        var cRegression = regression(size, this.history, 'closing');
+        var oRegression = regression(size, this.history, 'opening');
+
+        this.closingNextValue = cRegression(size);
+        this.closingLastValue = this.history[0].closing;
+        this.closingPercent = 100*(this.closingNextValue - this.closingLastValue)/this.closingLastValue;
+        this.openingNextValue = oRegression(size);
+        this.openingLastValue = this.history[0].opening;
+        this.totalPercent = 100*(this.closingNextValue - this.openingNextValue)/this.openingNextValue;
+        this.jumpPercent = 100*(this.openingNextValue - this.closingLastValue)/this.closingLastValue;
+    };
+
     this.populate = function(history, size) {
         size = size || 31;
         this.history = history;
-
+        this.calculateRegretion(size);
         var minEqualClose = history.filter(function(item) {
             return item.min == item.closing;
         }).length;
@@ -114,16 +129,6 @@ function Title(title) {
         this.minEqualClosePercent = 100*minEqualClose/history.length;
         this.maxEqualClosePercent = 100*maxEqualClose/history.length;
 
-        var cRegression = regression(size, history, 'closing');
-        var oRegression = regression(size, history, 'opening');
-
-        this.closingNextValue = cRegression(31);
-        this.closingLastValue = history[0].closing;
-        this.closingPercent = 100*(this.closingNextValue - this.closingLastValue)/this.closingLastValue;
-        this.openingNextValue = oRegression(31);
-        this.openingLastValue = history[0].opening;
-        this.totalPercent = 100*(this.closingNextValue - this.openingNextValue)/this.openingNextValue;
-        this.jumpPercent = 100*(this.openingNextValue - this.closingLastValue)/this.closingLastValue;
         if (history[0].percentBeforeOpen() >= 0) {
             this.consecutive = tendingPositive(history);
         } else {

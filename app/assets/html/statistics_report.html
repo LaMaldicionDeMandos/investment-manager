@@ -1,6 +1,8 @@
 <div ng-controller="statisticsController" layout="row" flex="100" layout-wrap>
+    <h3 flex="100">Tamaño de muestra&nbsp;<input ng-model="regretionSize" type="number", min="1"
+               style="width: 50px !important;" ng-change="recalculateRegression()"/>&nbsp;dias</h3>
     <md-card layout-padding layout="column" flex="45">
-        <h3>Regresión Cierre</h3>
+        <h3>Cierre</h3>
         <md-divider/>
         <label>El ultimo valor fue {{current.closingLastValue | number : 2}}</label>
         <br>
@@ -10,7 +12,7 @@
             {{current.closingPercent | number : 2}}%</label></label>
     </md-card>
     <md-card layout-padding layout="column" flex="45">
-        <h3>Regresión Apertura</h3>
+        <h3>Apertura</h3>
         <md-divider/>
         <label>El siguiente salto es <label in-color ng-model="current.jumpPercent">
             {{current.jumpPercent | number : 2}}%</label></label>

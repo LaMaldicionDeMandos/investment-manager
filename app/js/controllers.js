@@ -361,9 +361,14 @@
         })
         .controller('statisticsController', function($scope) {
             $scope.current = undefined;
+            $scope.regretionSize = 31;
+            $scope.recalculateRegression = function() {
+                $scope.current.calculateRegression($scope.regretionSize);
+                $scope.populate($scope.current);
+            }
             $scope.populate = function(title) {
                 var rows = [];
-                var size = 31;
+                var size = $scope.regretionSize;
                 for(var i = size - 1 ;i>=0;i--) {
                     var j = size - i - 1;
                     var closing = Chart.createRow([j, null, title.history[i].closing]);
@@ -375,10 +380,10 @@
             $scope.$on('currentTitleEvent', function( event, data) {
                 $scope.current = data.title;
                 if (data.title.history) {
-                    $scope.populate(data.title);
+                    $scope.recalculateRegression();
                 } else {
                     data.historyPromise.then(function(history) {
-                        $scope.populate(data.title);
+                        $scope.recalculateRegression();
                     });
                 }
             });
