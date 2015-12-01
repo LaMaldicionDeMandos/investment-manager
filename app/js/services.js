@@ -5,9 +5,14 @@
     'use strict';
     var Title = require('../database').Title;
     var TitleExtreme = require('../database').TitleExtreme;
+    var dailyData = require('../daily-data');
+    var path = '.titles/runtime';
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {
+                dailyData: function(titleName, n) {
+                    return dailyData(titleName, path, n);
+                },
                 all: function () {
                     var def = $q.defer();
                     Title.find({}).select('name windowReports').exec(function(err, titles) {

@@ -413,4 +413,54 @@
                 $scope.current = data.title;
             });
         })
+        .controller('dailyController', function($scope, titlesService) {
+            $scope.current = undefined;
+
+            var populate = function(title) {
+                $scope.chartDaily = new Chart(Chart.Type.LINE, [{
+                    id: "hour",
+                    label: "Hora",
+                    type: "timeofday"
+                }], ['#00abbd', '#055499', '#132241', '#c3c3c3', '#ff5a00', '#e91365', '#ff921f', '#cc0000', '#4d5766', '#98dde4']);
+                var cols = $scope.chartDaily.data.cols;
+                var values = {};
+                for(var i = 0; i<2; i++) {
+                    cols.push({id: i, type: 'number'});
+                    var day = $scope.dailyList[i];
+                    day.forEach(function(movement) {
+                        var date = new Date(movement.dateTime);
+                        var hour = date.getHours();
+                        var minute = date.getMinutes();
+                        var second = date.getSeconds();
+                        if (!values[hour]) values[hour] = {};
+                        if (!values[hour][minute]) values[hour][minute] = {};
+                        if (!values[hour][minute][second]) {
+                            values[hour][minute][second] = [];
+                            for (var j = 0; j < i; j++) {
+                                values[hour][minute][second].push(null);
+                            }
+                        }
+                        values[hour][minute][second].push(movement.value);
+                    });
+                }
+                var rows = [];
+                for (var hour in values) {
+                    for (var minute in values[hour]) {
+                        for (var second in values[hour][minute]) {
+                            values[hour][minute][second].unshift([hour, minute, second]);
+                            rows.push(Chart.createRow(values[hour][minute][second]));
+                        }
+                    }
+                }
+                $scope.chartDaily.data.rows = rows;
+                $scope.chartLast.options.vAxis.title = 'Diario';
+            };
+            $scope.$on('currentTitleEvent', function( event, data) {
+                $scope.current = data.title;
+                if (!$scope.current.dailyList) {
+                   $scope.current.dailyList = titlesService.dailyData($scope.current.name, 2);
+                }
+                populate($scope.current);
+            });
+        })
 })();
