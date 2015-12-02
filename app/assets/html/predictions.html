@@ -43,6 +43,11 @@
                                 Tendencia
                             </md-button>
                         </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="selectView('daily')">
+                                Movimientos intradiarios
+                            </md-button>
+                        </md-menu-item>
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
@@ -98,5 +103,12 @@
         </md-toolbar>
         <md-content layout="row" layout-wrap class="content"
                     ng-include="'assets/html/incline_report.html'"></md-content>
+    </md-sidenav>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="daily">
+        <md-toolbar class="cyan header">
+            <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
+        </md-toolbar>
+        <md-content layout="row" layout-wrap class="content"
+                    ng-include="'assets/html/daily_report.html'"></md-content>
     </md-sidenav>
 </selection>

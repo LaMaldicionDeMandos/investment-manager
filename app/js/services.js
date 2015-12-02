@@ -6,7 +6,7 @@
     var Title = require('../database').Title;
     var TitleExtreme = require('../database').TitleExtreme;
     var dailyData = require('../daily-data');
-    var path = '.titles/runtime';
+    var path = './titles/runtime';
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {

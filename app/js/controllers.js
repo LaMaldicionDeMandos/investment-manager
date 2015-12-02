@@ -417,19 +417,20 @@
             $scope.current = undefined;
 
             var populate = function(title) {
-                $scope.chartDaily = new Chart(Chart.Type.LINE, [{
+
+                $scope.chartDaily = new Chart(Chart.Type.LINE, undefined, ['#00abbd', '#055499', '#132241', '#c3c3c3', '#ff5a00', '#e91365', '#ff921f', '#cc0000', '#4d5766', '#98dde4']);
+                var cols = [{
                     id: "hour",
                     label: "Hora",
                     type: "timeofday"
-                }], ['#00abbd', '#055499', '#132241', '#c3c3c3', '#ff5a00', '#e91365', '#ff921f', '#cc0000', '#4d5766', '#98dde4']);
-                var cols = $scope.chartDaily.data.cols;
+                }];
                 var values = {};
-                for(var i = 0; i<2; i++) {
-                    cols.push({id: i, type: 'number'});
-                    var day = $scope.dailyList[i];
+                for(var i = 0; i<3; i++) {
+                    cols.push({id: i, label: 'Day ' + i,type: 'number'});
+                    var day = $scope.current.dailyList[i];
                     day.forEach(function(movement) {
                         var date = new Date(movement.dateTime);
-                        var hour = date.getHours();
+                        var hour = date.getHours() > 18 ? 8 : date.getHours();
                         var minute = date.getMinutes();
                         var second = date.getSeconds();
                         if (!values[hour]) values[hour] = {};
@@ -443,22 +444,29 @@
                         values[hour][minute][second].push(movement.value);
                     });
                 }
+                $scope.chartDaily.data.cols = cols;
                 var rows = [];
                 for (var hour in values) {
                     for (var minute in values[hour]) {
                         for (var second in values[hour][minute]) {
-                            values[hour][minute][second].unshift([hour, minute, second]);
+                            values[hour][minute][second].unshift([parseInt(hour), parseInt(minute), parseInt(second)]);
                             rows.push(Chart.createRow(values[hour][minute][second]));
                         }
                     }
                 }
                 $scope.chartDaily.data.rows = rows;
-                $scope.chartLast.options.vAxis.title = 'Diario';
+                $scope.chartDaily.options.vAxis.title = 'Diario';
+                $scope.chartDaily.options.interpolateNulls = true;
+                var colsToShow = [];
+                for (var i = 0; i <= 3;i++) {
+                    colsToShow.push(i);
+                }
+                $scope.chartDaily.view = {columns: colsToShow};
             };
             $scope.$on('currentTitleEvent', function( event, data) {
                 $scope.current = data.title;
                 if (!$scope.current.dailyList) {
-                   $scope.current.dailyList = titlesService.dailyData($scope.current.name, 2);
+                   $scope.current.dailyList = titlesService.dailyData($scope.current.name, 3);
                 }
                 populate($scope.current);
             });

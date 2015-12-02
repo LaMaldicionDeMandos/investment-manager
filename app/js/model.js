@@ -180,10 +180,11 @@ function Title(title) {
 };
 
 function Chart(type, cols, colors, colsToShow) {
+    cols = cols || [];
     this.type = type;
     this.displayed = true;
     this.data = {
-        cols: cols || [],
+        cols: cols,
         rows: []
     };
     this.options = {
