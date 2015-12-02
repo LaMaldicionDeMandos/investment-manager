@@ -109,7 +109,7 @@ function Title(title) {
     this.populate = function(history, size) {
         size = size || 31;
         this.history = history;
-        this.calculateRegretion(size);
+        this.calculateRegression(size);
         var minEqualClose = history.filter(function(item) {
             return item.min == item.closing;
         }).length;
