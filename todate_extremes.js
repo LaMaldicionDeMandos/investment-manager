@@ -52,18 +52,31 @@ titles.forEach(function(key, title) {
     var dir = path + "/" + key + "/" + title.name;
     TitleExtreme.findOne({code: title.name}, function(err, item) {
         item = item || createTitleExtreme(title.name);
+        console.log("Reading file " + dir + '/' + file);
         var movements = fs.readFileSync(dir + '/' + file);
         var extreme = create(parseList(movements.toString()));
         item.extremes.push(extreme);
-        functions.push(function(callback) {
-            title.save(function(err) {
+        item.save(function(err) {
+            if (!err) {
+                console.log("Error saving title: " + title.name);
+                //callback(null, title);
+            } else {
+                console.log("End saved title: " + title.name);
+                //callback(err, title);
+            }
+        });
+/*        functions.push(function(callback) {
+            console.log("End saving title: " + title.name);
+            item.save(function(err) {
                 if (!err) {
+                    console.log("Error saving title: " + title.name);
                     callback(null, title);
                 } else {
+                    console.log("End saved title: " + title.name);
                     callback(err, title);
                 }
             });
-        });
+        });*/
     });
 });
 var saveItems = function(callback) {
@@ -74,5 +87,5 @@ var saveItems = function(callback) {
 };
 async.series([saveItems], function(err, results) {
     console.log("End");
-    process.exit();
+    //process.exit();
 });
