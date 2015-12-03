@@ -83,12 +83,17 @@ function Title(title) {
     };
     var tendingPositive = function(history) {
         var count = 1;
-        for (; history[count].percentBeforeOpen() >= 0;count++) {}
+        for (; history[count].percentBeforeOpen() > 0;count++) {}
         return count;
     };
     var tendingNegative = function(history) {
         var count = 1;
         for (; history[count].percentBeforeOpen() < 0;count++) {}
+        return count;
+    };
+    var tendingZero = function(history) {
+        var count = 1;
+        for (; history[count].percentBeforeOpen() == 0;count++) {}
         return count;
     };
 
@@ -129,44 +134,80 @@ function Title(title) {
         this.minEqualClosePercent = 100*minEqualClose/history.length;
         this.maxEqualClosePercent = 100*maxEqualClose/history.length;
 
-        if (history[0].percentBeforeOpen() >= 0) {
+        if (history[0].percentBeforeOpen() > 0) {
             this.consecutive = tendingPositive(history);
-        } else {
+        } else if (history[0].percentBeforeOpen() < 0){
             this.consecutive = tendingNegative(history);
+        } else {
+            this.consecutive = tendingZero(history);
         }
-        this.tendings = {positives: {}, negatives: {}};
-        var count = 0;
-        var last = 0;
-        var first = true;
+        this.tendings = {positives: {}, negatives: {}, zero: {}};
+        var count = 1;
+        var actual = null;
         for (var i = history.length - 2; i >= 0; i--) {
-            if ((last > 0 ^ history[i].percentBeforeOpen() > 0) && !first) {
-                if (last >= 0) {
-                    if (this.tendings.positives[count]) {
-                        this.tendings.positives[count].count++;
-                    } else {
-                        this.tendings.positives[count] = {count: 1};
-                    }
-                } else {
+            var last = history[i + 1].percentBeforeOpen();
+            actual = history[i].percentBeforeOpen();
+            if (last < 0 && actual < 0) {
+                count++;
+                if (i == 0) {
                     if (this.tendings.negatives[count]) {
                         this.tendings.negatives[count].count++;
                     } else {
                         this.tendings.negatives[count] = {count: 1};
                     }
                 }
+            } else if (last < 0 && actual >=0) {
+                if (this.tendings.negatives[count]) {
+                    this.tendings.negatives[count].count++;
+                } else {
+                    this.tendings.negatives[count] = {count: 1};
+                }
+                count = 1;
+            } else if (last == 0 && actual != 0) {
+                if (this.tendings.zero[count]) {
+                    this.tendings.zero[count].count++;
+                } else {
+                    this.tendings.zero[count] = {count: 1};
+                }
+                count = 1;
+            } else if (last == 0 && actual == 0) {
+                count++;
+                if (i == 0) {
+                    if (this.tendings.zero[count]) {
+                        this.tendings.zero[count].count++;
+                    } else {
+                        this.tendings.zero[count] = {count: 1};
+                    }
+                }
+            } else if (last > 0 && actual <= 0) {
+                if (this.tendings.positives[count]) {
+                    this.tendings.positives[count].count++;
+                } else {
+                    this.tendings.positives[count] = {count: 1};
+                }
                 count = 1;
             } else {
                 count++;
+                if (i == 0) {
+                    if (this.tendings.positives[count]) {
+                        this.tendings.positives[count].count++;
+                    } else {
+                        this.tendings.positives[count] = {count: 1};
+                    }
+                }
             }
-            last = history[i].percentBeforeOpen();
-            first = false;
         }
         this.tendings.totalPositives = 0;
         this.tendings.totalNegatives = 0;
+        this.tendings.totalZeros = 0;
         for (var key in this.tendings.positives) {
             this.tendings.totalPositives+= this.tendings.positives[key].count;
         }
         for (var key in this.tendings.negatives) {
             this.tendings.totalNegatives+= this.tendings.negatives[key].count;
+        }
+        for (var key in this.tendings.zero) {
+            this.tendings.totalZeros+= this.tendings.zero[key].count;
         }
         for (var key in this.tendings.positives) {
             this.tendings.positives[key].percent = 100*this.tendings.positives[key].count/this.tendings.totalPositives;
@@ -174,8 +215,16 @@ function Title(title) {
         for (var key in this.tendings.negatives) {
             this.tendings.negatives[key].percent = 100*this.tendings.negatives[key].count/this.tendings.totalNegatives;
         }
-        this.tendings.positivePercent = 100*this.tendings.totalPositives/(this.tendings.totalPositives + this.tendings.totalNegatives);
-        this.tendings.negativePercent = 100 - this.tendings.positivePercent;
+        for (var key in this.tendings.zero) {
+            this.tendings.zero[key].percent = 100*this.tendings.zero[key].count/this.tendings.totalZeros;
+        }
+        var divisor = this.tendings.totalPositives + this.tendings.totalNegatives + this.tendings.totalZeros;
+        this.tendings.positivePercent = 100*this.tendings.totalPositives/divisor;
+        this.tendings.negativePercent = 100*this.tendings.totalNegatives/divisor;
+        this.tendings.zeroPercent = 100*this.tendings.totalZeros/divisor;
+        if (this.name == 'INAG') {
+            console.log(this.tendings);
+        }
     };
 };
 
