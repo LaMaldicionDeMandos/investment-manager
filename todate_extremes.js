@@ -58,10 +58,10 @@ titles.forEach(function(key, title) {
         item.extremes.push(extreme);
         item.save(function(err) {
             if (!err) {
-                console.log("Error saving title: " + title.name);
-                //callback(null, title);
-            } else {
                 console.log("End saved title: " + title.name);
+            } else {
+                //callback(null, title);
+                console.log("Error saving title: " + title.name);
                 //callback(err, title);
             }
         });
