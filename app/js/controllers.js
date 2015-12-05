@@ -430,18 +430,16 @@
                     var day = $scope.current.dailyList[i];
                     day.forEach(function(movement) {
                         var date = new Date(movement.dateTime);
-                        var hour = date.getHours() > 18 ? 8 : date.getHours();
+                        var hour = date.getHours() > 20 ? 8 : date.getHours();
                         var minute = date.getMinutes();
                         var second = date.getSeconds();
                         if (!values[hour]) values[hour] = {};
                         if (!values[hour][minute]) values[hour][minute] = {};
                         if (!values[hour][minute][second]) {
                             values[hour][minute][second] = [];
-                            for (var j = 0; j < i; j++) {
-                                values[hour][minute][second].push(null);
-                            }
                         }
-                        values[hour][minute][second].push(movement.value);
+
+                        values[hour][minute][second][i] = movement.value;
                     });
                 }
                 $scope.chartDaily.data.cols = cols;
@@ -454,6 +452,11 @@
                         }
                     }
                 }
+                var latest = $scope.current.dailyList.map(function(day) {
+                    return day.pop().value;
+                });
+                latest.unshift([14,4,59]);
+                rows.push(Chart.createRow(latest));
                 $scope.chartDaily.data.rows = rows;
                 $scope.chartDaily.options.vAxis.title = 'Diario';
                 $scope.chartDaily.options.interpolateNulls = true;

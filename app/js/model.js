@@ -260,7 +260,6 @@ Chart.Type = {
 };
 
 Chart.createRow = function(columns) {
-    var cols = [];
     var cols = columns.map(function(value) {
         return {v: value};
     });
