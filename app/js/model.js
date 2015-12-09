@@ -53,9 +53,11 @@ function Title(title) {
             })[0];
             if (col) col.c[1].v++;
         });
+        console.log('Filtering errors');
         values.forEach(function(value) {
             value.c[1].v*=100/values.length;
         });
+        console.log('Procesing errors');
         this.maxError = filteredError[0];
         this.minError = filteredError[filteredError.length-1];
         return values;
