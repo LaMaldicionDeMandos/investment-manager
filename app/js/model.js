@@ -100,7 +100,7 @@ function Title(title) {
     };
 
     this.calculateRegression = function(size) {
-        size = size || 31;
+        size = size || 7;
         var cRegression = regression(size, this.history, 'closing');
         var oRegression = regression(size, this.history, 'opening');
 
@@ -114,7 +114,7 @@ function Title(title) {
     };
 
     this.populate = function(history, size) {
-        size = size || 31;
+        size = size || 7;
         this.history = history;
         this.calculateRegression(size);
         var minEqualClose = history.filter(function(item) {
@@ -243,7 +243,7 @@ function Chart(type, cols, colors, colsToShow) {
         defaultColors: ['#0000FF'],
         isStacked: false,
         fill: 0,
-        displayExactValues: false,
+        displayExactValues: true,
         vAxis: {
             gridlines: {count: 6}
         }

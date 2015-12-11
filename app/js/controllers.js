@@ -361,7 +361,7 @@
         })
         .controller('statisticsController', function($scope) {
             $scope.current = undefined;
-            $scope.regretionSize = 31;
+            $scope.regretionSize = 7;
             $scope.recalculateRegression = function() {
                 $scope.current.calculateRegression($scope.regretionSize);
                 $scope.populate($scope.current);
