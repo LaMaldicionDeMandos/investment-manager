@@ -4,7 +4,5 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('mainController', function($scope) {
-            $scope.appName = 'Investment Manager - Window Report';
-        })
+
 })();
