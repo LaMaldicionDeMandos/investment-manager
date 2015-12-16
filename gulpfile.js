@@ -10,6 +10,11 @@ var gulp        = require('gulp'),
 gulp.task('app', function () {
     childProcess.spawn(electron, ['./app'], { stdio: 'inherit' });
 });
+gulp.task('window', function () {
+    childProcess.spawn(electron, ['./window_report'], { stdio: 'inherit' });
+});
+
+
 gulp.task('debug', function () {
     childProcess.spawn(electron, ['--debug=5858', './app'], { stdio: 'inherit' });
 });
