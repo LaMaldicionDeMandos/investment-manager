@@ -4,16 +4,13 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('mainController', function($scope) {
-            $scope.appName = 'Investment Manager';
-        })
         .controller('menuController', function($scope) {
             $scope.menu = {isOpen: false, hover: false};
             $scope.openMenu = function(mustOpen) {
                 $scope.menu.isOpen = mustOpen;
             };
         })
-        .controller('predictionsController', function($scope, $mdSidenav, titlesService) {
+        .controller('mainController', function($scope, $mdSidenav, titlesService) {
             $scope.view = 'prediction';
             $scope.windowMethod = true;
             $scope.regressionMethod = false;
