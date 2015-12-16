@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-gulp run
+gulp app

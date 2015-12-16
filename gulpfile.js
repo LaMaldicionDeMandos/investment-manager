@@ -7,7 +7,7 @@ var gulp        = require('gulp'),
     electron      = require('electron-prebuilt');
 
 // create the gulp task
-gulp.task('run', function () {
+gulp.task('app', function () {
     childProcess.spawn(electron, ['./app'], { stdio: 'inherit' });
 });
 gulp.task('debug', function () {
