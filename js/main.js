@@ -2,7 +2,7 @@
  * Created by boot on 11/1/15.
  */
 'use strict';
-function main(path) {
+function main(path, dirname) {
 // Module to control application life.
     var app = require('app');
 
@@ -28,7 +28,7 @@ function main(path) {
             'dark-theme': true});
 
         // and load the index.html of the app.
-        mainWindow.loadUrl('file://' + path + '/index.html');
+        mainWindow.loadUrl('file://' + path + '/../html/index.html#{"path":"' + dirname +'"}');
 
         // Open the devtools.
         // mainWindow.openDevTools();

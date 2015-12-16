@@ -4,4 +4,4 @@
 'use strict';
 
 // Module to control application life.
-var app = require('../js/main')(__dirname);
+var app = require('../js/main')(__dirname, 'window_report');

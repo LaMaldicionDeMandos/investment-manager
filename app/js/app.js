@@ -5,7 +5,7 @@ appName = 'Investment Manager';
 (function () {
     'use strict';
 
-    var _templateBase = './html';
+    var _templateBase = '../app/html';
 
     angular.module('app', [
         'ngRoute',

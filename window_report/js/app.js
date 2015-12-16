@@ -5,7 +5,7 @@ appName = 'Investment Manager - Window Report';
 (function () {
     'use strict';
 
-    var _templateBase = './html';
+    var _templateBase = '../window_report/html';
 
     angular.module('app', [
         'ngRoute',
