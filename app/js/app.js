@@ -13,6 +13,7 @@
         'googlechart',
         'app.controllers',
         'app.services',
+        'global.directives',
         'app.directives'
     ])
         .config(['$routeProvider', function ($routeProvider) {
