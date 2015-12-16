@@ -11,5 +11,8 @@
         'ngMaterial',
         'ngAnimate',
         'googlechart',
+        'app.controllers',
+        'app.services',
+        'app.directives'
     ])
 })();

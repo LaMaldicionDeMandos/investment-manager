@@ -4,6 +4,9 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
+        .controller('mainController', function($scope) {
+            $scope.appName = 'Investment Manager';
+        })
         .controller('menuController', function($scope) {
             $scope.menu = {isOpen: false, hover: false};
             $scope.openMenu = function(mustOpen) {
