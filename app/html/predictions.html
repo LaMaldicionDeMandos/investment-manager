@@ -11,7 +11,7 @@
             <md-fab-trigger>
                 <md-button aria-label="menu" class="md-fab md-warn" style="background-color: #7c4dff">
                     <md-tooltip md-direction="top" md-visible="tooltipVisible">Menu</md-tooltip>
-                    <md-icon md-svg-src="assets/img/ic_menu.svg" aria-label="menu"></md-icon>
+                    <md-icon md-svg-src="../assets/img/ic_menu.svg" aria-label="menu"></md-icon>
                 </md-button>
             </md-fab-trigger>
             <md-fab-actions>
@@ -20,7 +20,7 @@
                         <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
                             Reportes
                         </md-tooltip>
-                        <md-icon md-svg-src="assets/img/ic_dashboard.svg" aria-label="Reportes"></md-icon>
+                        <md-icon md-svg-src="../assets/img/ic_dashboard.svg" aria-label="Reportes"></md-icon>
                     </md-button>
                     <md-menu-content>
                         <md-menu-item>
@@ -55,7 +55,7 @@
                         <md-tooltip md-direction="top" md-visible="tooltipVisible" md-autohide="false">
                             Tablas
                         </md-tooltip>
-                        <md-icon md-svg-src="assets/img/ic_grid.svg" aria-label="Tablas"></md-icon>
+                        <md-icon md-svg-src="../assets/img/ic_grid.svg" aria-label="Tablas"></md-icon>
                     </md-button>
                     <md-menu-content>
                         <md-menu-item>
@@ -74,41 +74,41 @@
         </md-fab-speed-dial>
     </div>
     <md-progress-circular md-mode="indeterminate" md-diameter="96" class="loading"></md-progress-circular>
-    <md-content ng-show="windowMethod" layout="row" flex="100" ng-include="'assets/html/window_table.html'" ></md-content>
-    <md-content ng-show="regressionMethod" layout="row" flex="100" ng-include="'assets/html/regression_table.html'" ></md-content>
+    <md-content ng-show="windowMethod" layout="row" flex="100" ng-include="'html/window_table.html'" ></md-content>
+    <md-content ng-show="regressionMethod" layout="row" flex="100" ng-include="'html/regression_table.html'" ></md-content>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="prediction">
         <md-toolbar class="dark-green header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
         <md-content layout="row" layout-wrap ng-controller="predictionController" class="content"
-                    ng-include="'assets/html/prediction_report.html'"></md-content>
+                    ng-include="'html/prediction_report.html'"></md-content>
     </md-sidenav>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="extremes">
         <md-toolbar class="cyan header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
         <md-content layout="row" layout-wrap class="content"
-                    ng-include="'assets/html/extremes_report.html'"></md-content>
+                    ng-include="'html/extremes_report.html'"></md-content>
     </md-sidenav>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="statistics">
         <md-toolbar class="cyan header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
         <md-content layout="row" layout-wrap class="content"
-                    ng-include="'assets/html/statistics_report.html'"></md-content>
+                    ng-include="'html/statistics_report.html'"></md-content>
     </md-sidenav>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="incline">
         <md-toolbar class="cyan header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
         <md-content layout="row" layout-wrap class="content"
-                    ng-include="'assets/html/incline_report.html'"></md-content>
+                    ng-include="'html/incline_report.html'"></md-content>
     </md-sidenav>
     <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="daily">
         <md-toolbar class="cyan header">
             <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
         </md-toolbar>
         <md-content layout="row" layout-wrap class="content"
-                    ng-include="'assets/html/daily_report.html'"></md-content>
+                    ng-include="'html/daily_report.html'"></md-content>
     </md-sidenav>
 </selection>

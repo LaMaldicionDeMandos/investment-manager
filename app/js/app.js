@@ -4,7 +4,7 @@
 (function () {
     'use strict';
 
-    var _templateBase = './assets/html';
+    var _templateBase = './html';
 
     angular.module('app', [
         'ngRoute',

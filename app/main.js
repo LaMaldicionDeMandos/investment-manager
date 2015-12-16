@@ -25,7 +25,7 @@ app.on('window-all-closed', function () {
 app.on('ready', function () {
 
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 1024, height: 800, title: 'Investment Manager', icon: 'app/assets/logo.png',
+    mainWindow = new BrowserWindow({ width: 1024, height: 800, title: 'Investment Manager', icon: 'assets/logo.png',
     'dark-theme': true});
 
     // and load the index.html of the app.
