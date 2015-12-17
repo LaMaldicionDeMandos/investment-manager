@@ -13,6 +13,7 @@ var _templateBase = templateBase;
         'app.controllers',
         'global.controllers',
         'app.services',
+        'global.services',
         'app.directives',
         'global.directives',
     ]).config(['$routeProvider', function ($routeProvider) {
