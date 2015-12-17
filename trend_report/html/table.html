@@ -1,0 +1,29 @@
+<table class="table table-striped table-hover content">
+    <thead>
+        <tr>
+            <th class="centerer">
+                <label>Títulos</label>
+                <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
+            </th>
+            <th class="centerer">
+                <label>Positivos</label>
+            </th>
+            <th class="centerer">
+                <label>Ceros</label>
+            </th>
+            <th class="centerer">
+                <label>Negativos</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="title in titles">
+        <td ng-click="selectTitle(title);open()">
+            <label>{{title.name}}</label>
+        </td>
+        <td><label>{{title.upPercent | number : 2}}</label></td>
+        <td><label>{{title.downPercent | number : 2}}</label></td>
+        <td><label>{{title.zeroPercent | number : 2}}</label></td>
+    </tr>
+    </tbody>
+</table>

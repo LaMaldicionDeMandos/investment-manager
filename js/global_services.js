@@ -15,14 +15,13 @@
                             def.reject(err);
                             return;
                         }
-                        console.log('Fetch titles: ' + JSON.stringify(titles));
                         def.resolve(titles);
                     });
                     return def.promise;
                 },
                 findHistory: function(title) {
                     var def = $q.defer();
-                    Title.findOne({_id: title.id}).select('history').exec(function(err, titleHistory) {
+                    Title.findOne({_id: title._id}).select('history').exec(function(err, titleHistory) {
                         if (err) {
                             console.log(err);
                             def.reject(err);
