@@ -37,6 +37,14 @@
                     globalTitlesService.findHistory(dto).then(function(history) {
                         title.setHistory(history);
                     });
+                    title.slow = true;
+                    try {
+                        var dailySize = globalTitlesService.dailyData(dto.name, 1)[0].length;
+                        console.log(dto.name + ' --- size: ' + dailySize);
+                        title.slow = dailySize < 20;
+                    } catch(e){
+                        console.log(dto.name + ' --- Error: ' + e);
+                    }
                     return title;
                 });
             });
