@@ -8,7 +8,7 @@ function Title(dto) {
     this.days = 0;
     this.trend = {up: 0, down:0, zero: 0, size: 0, ups: {}, downs:{}, zeros:{}};
     var state = function(item) {
-        return item.percentBeforeOpen() > 0 ? 1 : (item.percentBeforeOpen() < 0 ? -1 : 0);
+        return item.percentBeforeOpen > 0 ? 1 : (item.percentBeforeOpen < 0 ? -1 : 0);
     };
     var populateTrend = function(history, index){
         var next = state(history[index - 1]);
@@ -32,7 +32,7 @@ function Title(dto) {
     var findNegatives = function(history, size) {
         var list = [];
         for(var i = 1; i < history.length - size;i++) {
-            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen() < 0;}) && history[i + size].percentBeforeOpen() >= 0) {
+            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen < 0;}) && history[i + size].percentBeforeOpen >= 0) {
                 list.push(i);
             }
         }
@@ -41,7 +41,7 @@ function Title(dto) {
     var findPositives = function(history, size) {
         var list = [];
         for(var i = 1; i < history.length - size;i++) {
-            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen() > 0;}) && history[i + size].percentBeforeOpen() <= 0) {
+            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen > 0;}) && history[i + size].percentBeforeOpen <= 0) {
                 list.push(i);
             }
         }
@@ -50,7 +50,7 @@ function Title(dto) {
     var findZeros = function(history, size) {
         var list = [];
         for(var i = 1; i < history.length - size;i++) {
-            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen() == 0;}) && history[i + size].percentBeforeOpen() != 0) {
+            if(history.slice(i, i + size).every(function(item){return item.percentBeforeOpen == 0;}) && history[i + size].percentBeforeOpen != 0) {
                 list.push(i);
             }
         }
@@ -58,7 +58,7 @@ function Title(dto) {
     };
     var processNegative = function(history) {
         that.down = 1;
-        for(;history[that.down].percentBeforeOpen() < 0;that.down++) {}
+        for(;history[that.down].percentBeforeOpen < 0;that.down++) {}
         var negatives = findNegatives(history, that.down);
         negatives.forEach(function(index) {
            populateTrend(history, index);
@@ -66,7 +66,7 @@ function Title(dto) {
     };
     var processPositive = function(history) {
         that.up = 1;
-        for(;history[that.up].percentBeforeOpen() > 0;that.up++) {}
+        for(;history[that.up].percentBeforeOpen > 0;that.up++) {}
         var positives = findPositives(history, that.up);
         positives.forEach(function(index) {
             populateTrend(history, index);
@@ -74,7 +74,7 @@ function Title(dto) {
     };
     var processZero = function(history) {
         that.zero = 1;
-        for(;history[that.zero].percentBeforeOpen() == 0;that.zero++) {}
+        for(;history[that.zero].percentBeforeOpen == 0;that.zero++) {}
         var zeros = findZeros(history, that.zero);
         zeros.forEach(function(index) {
             populateTrend(history, index);
@@ -83,9 +83,9 @@ function Title(dto) {
     this.setHistory = function(history) {
         console.log('Setting history for ' + this.name);
         this.history = history;
-        if (this.history[0].percentBeforeOpen() < 0) {
+        if (this.history[0].percentBeforeOpen < 0) {
             processNegative(history);
-        } else if(this.history[0].percentBeforeOpen() > 0) {
+        } else if(this.history[0].percentBeforeOpen > 0) {
             processPositive(history);
         } else {
             processZero(history);

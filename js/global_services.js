@@ -28,18 +28,10 @@
                             return;
                         }
                         titleHistory.history.forEach(function(item) {
-                            item.percentAfterOpen = function() {
-                                return 100*(item.closing - item.opening)/item.opening;
-                            };
-                            item.percentBeforeOpen = function() {
-                                return 100*(item.closing - item.opening + item.jump)/(item.opening - item.jump);
-                            };
-                            item.percentMin = function() {
-                                return 100*(item.min - item.opening + item.jump)/(item.opening - item.jump);
-                            };
-                            item.percentMax = function() {
-                                return 100*(item.max - item.opening + item.jump)/(item.opening - item.jump);
-                            };
+                            item.percentAfterOpen = 100*(item.closing - item.opening)/item.opening;
+                            item.percentBeforeOpen = 100*(item.closing - item.opening + item.jump)/(item.opening - item.jump);
+                            item.percentMin = 100*(item.min - item.opening + item.jump)/(item.opening - item.jump);
+                            item.percentMax = 100*(item.max - item.opening + item.jump)/(item.opening - item.jump);
                         });
                         def.resolve(titleHistory.history);
                     });

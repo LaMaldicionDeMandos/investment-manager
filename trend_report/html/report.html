@@ -1,12 +1,12 @@
 <div layout="row" flex="100" layout-wrap>
     <md-card layout-padding layout="column" flex="100">
         <h3>Tendencias</h3>
-        <label>Ultima tendencia fue <label in-color ng-model="currentTitle.history[0].percentBeforeOpen()">
-            {{currentTitle.history[0].percentBeforeOpen() | number: 2}}%</label></label>
-        <label in-color ng-model="currentTitle.history[0].percentBeforeOpen()">
-            Tendencia en {{currentTitle.history[0].percentBeforeOpen() > 0
+        <label>Ultima tendencia fue <label in-color ng-model="currentTitle.history[0].percentBeforeOpen">
+            {{currentTitle.history[0].percentBeforeOpen | number: 2}}%</label></label>
+        <label in-color ng-model="currentTitle.history[0].percentBeforeOpen">
+            Tendencia en {{currentTitle.history[0].percentBeforeOpen > 0
             ? 'alza'
-            : (currentTitle.history[0].percentBeforeOpen() < 0 ? 'baja' : 'cero')}} desde hace {{currentTitle.days}} dias</label>
+            : (currentTitle.history[0].percentBeforeOpen < 0 ? 'baja' : 'cero')}} desde hace {{currentTitle.days}} dias</label>
     </md-card>
     <md-card layout-padding layout="column" flex="30">
         <h3>Tendencias Positivas {{currentTitle.upPercent | number: 2}}%</h3>
