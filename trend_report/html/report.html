@@ -10,26 +10,59 @@
     </md-card>
     <md-card layout-padding layout="column" flex="30">
         <h3>Tendencias Positivas {{currentTitle.upPercent | number: 2}}%</h3>
-        <md-list>
-            <md-list-item ng-repeat="(key, value) in currentTitle.trend.ups">
-                <label>{{key}} dias: {{value | number: 2}}%</label>
-            </md-list-item>
-        </md-list>
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <td><label>Días</label></td>
+                <td><label>%</label></td>
+                <td><label>Veces</label></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(key, value) in currentTitle.trend.ups">
+                <td>{{key}}</td>
+                <td>{{currentTitle.trend.upsPercent[key] | number: 2}}%</td>
+                <td>{{value}}</td>
+            </tr>
+            </tbody>
+        </table>
     </md-card>
     <md-card layout-padding layout="column" flex="30">
         <h3>Tendencias en Ceros {{currentTitle.zeroPercent | number: 2}}%</h3>
-        <md-list>
-            <md-list-item ng-repeat="(key, value) in currentTitle.trend.zeros">
-                <label>{{key}} dias: {{value | number: 2}}%</label>
-            </md-list-item>
-        </md-list>
+        <table class="table table-striped table-hover content">
+            <thead>
+                <tr>
+                    <td><label>Días</label></td>
+                    <td><label>%</label></td>
+                    <td><label>Veces</label></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(key, value) in currentTitle.trend.zeros">
+                    <td>{{key}}</td>
+                    <td>{{currentTitle.trend.zerosPercent[key] | number: 2}}%</td>
+                    <td>{{value}}</td>
+                </tr>
+            </tbody>
+        </table>
     </md-card>
     <md-card layout-padding layout="column" flex="30">
         <h3>Tendencias Negativas {{currentTitle.downPercent | number: 2}}%</h3>
-        <md-list>
-            <md-list-item ng-repeat="(key, value) in currentTitle.trend.downs">
-                <label>{{key}} dias: {{value | number: 2}}%</label>
-            </md-list-item>
-        </md-list>
+        <table class="table table-striped table-hover content">
+            <thead>
+            <tr>
+                <td><label>Días</label></td>
+                <td><label>%</label></td>
+                <td><label>Veces</label></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="(key, value) in currentTitle.trend.downs">
+                <td>{{key}}</td>
+                <td>{{currentTitle.trend.downsPercent[key] | number: 2}}%</td>
+                <td>{{value}}</td>
+            </tr>
+            </tbody>
+        </table>
     </md-card>
 </div>

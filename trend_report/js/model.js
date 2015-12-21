@@ -6,7 +6,7 @@ function Title(dto) {
     this.down = 0;
     this.zero = 0;
     this.days = 0;
-    this.trend = {up: 0, down:0, zero: 0, size: 0, ups: {}, downs:{}, zeros:{}};
+    this.trend = {up: 0, down:0, zero: 0, size: 0, ups: {}, downs:{}, zeros:{}, downsPercent: {}, upsPercent: {}, zerosPercent: {}};
     var state = function(item) {
         return item.percentBeforeOpen > 0 ? 1 : (item.percentBeforeOpen < 0 ? -1 : 0);
     };
@@ -92,13 +92,13 @@ function Title(dto) {
         }
         this.days = Math.max(this.up, this.down, this.zero);
         for (var att in this.trend.ups) {
-            this.trend.ups[att] = 100*this.trend.ups[att]/this.trend.size;
+            this.trend.upsPercent[att] = 100*this.trend.ups[att]/this.trend.size;
         }
         for (var att in this.trend.zeros) {
-            this.trend.zeros[att] = 100*this.trend.zeros[att]/this.trend.size;
+            this.trend.zerosPercent[att] = 100*this.trend.zeros[att]/this.trend.size;
         }
         for (var att in this.trend.downs) {
-            this.trend.downs[att] = 100*this.trend.downs[att]/this.trend.size;
+            this.trend.downsPercent[att] = 100*this.trend.downs[att]/this.trend.size;
         }
 
         this.upPercent = 100*this.trend.up/this.trend.size;
