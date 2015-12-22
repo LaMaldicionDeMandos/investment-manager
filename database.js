@@ -17,6 +17,8 @@ var Title = mongoose.model('Title', TitleSchema);
 var TitleExtreme = mongoose.model('TitleExtreme', TitleExtremeSchema);
 
 function DBSchema() {
+	this.mongoose = mongoose;
+	this.Schema = Schema;
 	this.ObjectId = mongoose.Types.ObjectId;
 	this.Title = Title;
 	this.TitleExtreme = TitleExtreme;
