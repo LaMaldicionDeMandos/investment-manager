@@ -1,4 +1,4 @@
-var database = require('./database.js');
+var database = require('./trend_report/trend_schema.js');
 var predictions = require('./predictions.js');
 var csv = require("csvjson");
 var trendModel = require('./trend_report/trend_model');

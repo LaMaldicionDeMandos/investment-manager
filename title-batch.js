@@ -1,10 +1,10 @@
 var titleCodes = require('./title-codes.js');
 var titleFactory = require('./titles.js');
 var async = require('async');
-require('./database.js').clean();
+require('./trend_report/trend_schema.js').clean();
 var path = process.argv[2];
 var cleanDb = function(callback) {
-	require('./database.js').clean(function(err) {
+	require('./trend_report/trend_schema.js').clean(function(err) {
 		console.log("clear database");
 		if (!err) {
 			callback(null, null);
