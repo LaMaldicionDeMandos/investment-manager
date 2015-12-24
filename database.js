@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var schemas = require('./schema_loader.js');
 mongoose.connect('mongodb://localhost/investment');
 console.log('Connecting to mongodb');
 
@@ -30,6 +31,10 @@ var schema = new DBSchema();
 process.on('exit', function() {
 	console.log('Desconnecting db');
 	mongoose.disconnect();
+});
+
+schemas.forEach(function(sch) {
+	sch(schema);
 });
 
 module.exports = schema;

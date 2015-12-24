@@ -1,7 +1,7 @@
 /**
  * Created by boot on 12/21/15.
  */
-var TitleTrend = require('./trend_schema').TitleTrend;
+var TitleTrend = require('../database.js').TitleTrend;
 var state = function(item) {
     return item.percentBeforeOpen() > 0 ? 1 : (item.percentBeforeOpen() < 0 ? -1 : 0);
 };
@@ -76,6 +76,7 @@ var processZero = function(title, history) {
     });
 };
 var process = function(_id, dto) {
+    console.log('Saving model for trends');
     var title = new TitleTrend();
     title._id = _id;
     title.name = dto.name;

@@ -1,7 +1,7 @@
-var database = require('./trend_report/trend_schema.js');
+var database = require('./database.js');
 var predictions = require('./predictions.js');
 var csv = require("csvjson");
-var trendModel = require('./trend_report/trend_model');
+var models = require('./model_loader.js');
 function Title(name, array) {
 	this.name = name;
 	array.forEach(function(item, index, array) {
@@ -65,7 +65,10 @@ function Title(name, array) {
 			historyDto.jump = item.jump;
 			dto.history.push(historyDto);
 		});
-		trendModel(dto._id, this);
+		var that = this;
+		models.forEach(function(model) {
+			model(dto._id, that);
+		});
 		var report = {size: this.windowReports[0].size};
 		var windowReport = {};
 		windowReport.predictionBefore = this.windowReports[0].report.predictionBefore;
