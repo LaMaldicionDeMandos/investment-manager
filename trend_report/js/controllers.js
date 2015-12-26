@@ -4,8 +4,8 @@
 (function () {
     'use strict';
     angular.module('app.controllers', [])
-        .controller('mainController', function($scope, globalTitlesService, $mdSidenav) {
-            $scope.titles = undefined;
+        .controller('mainController', function($scope, globalTitlesService, titlesService, $mdSidenav) {
+            $scope.titles = [];
             $scope.sorterBy;
             $scope.open = function() {
                 $mdSidenav('report')
@@ -32,20 +32,18 @@
                 $scope.currentTitle = title;
             };
             globalTitlesService.all().then(function(titles) {
-                $scope.titles = titles.map(function(dto) {
-                    var title = new Title(dto);
-                    globalTitlesService.findHistory(dto).then(function(history) {
-                        title.setHistory(history);
+                titles.forEach(function(dto) {
+                    titlesService.find(dto._id).then(function(title) {
+                        $scope.titles.push(title);
+                        title.slow = true;
+                        try {
+                            var dailySize = globalTitlesService.dailyData(dto.name, 1)[0].length;
+                            console.log(dto.name + ' --- size: ' + dailySize);
+                            title.slow = dailySize < 20;
+                        } catch(e){
+                            console.log(dto.name + ' --- Error: ' + e);
+                        }
                     });
-                    title.slow = true;
-                    try {
-                        var dailySize = globalTitlesService.dailyData(dto.name, 1)[0].length;
-                        console.log(dto.name + ' --- size: ' + dailySize);
-                        title.slow = dailySize < 20;
-                    } catch(e){
-                        console.log(dto.name + ' --- Error: ' + e);
-                    }
-                    return title;
                 });
             });
         });
