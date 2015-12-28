@@ -5,6 +5,12 @@ var fs = require('fs');
 var th = require('through2');
 var q = require('q');
 var csv = require("csvjson");
+function parseIntIfNaN(value) {
+    return isNaN(value) ? null : parseInt(value);
+}
+function parseFloatIfNaN(value) {
+    return isNaN(value) ? null : parseFloat(value);
+}
 var transform = th(function(data, encoding, done) {
     var string = data.toString();
     string = string.replace('Cantidad Compra', 'buyAmount');
@@ -46,12 +52,12 @@ var create = function(path, fileName, newFileName) {
         var current = undefined;
         sortedList.forEach(function(item) {
            if(!current || current.name != item.title) {
-               current = {name: item.title, ends: [{buyAmount: parseInt(item.buyAmount), buyPrice: parseFloat(item.buyPrice),
-               salePrice: parseFloat(item.salePrice), saleAmount: parseInt(item.saleAmount)}]};
+               current = {name: item.title, ends: [{buyAmount: parseIntIfNaN(item.buyAmount), buyPrice: parseFloatIfNaN(item.buyPrice),
+               salePrice: parseFloatIfNaN(item.salePrice), saleAmount: parseIntIfNaN(item.saleAmount)}]};
                list.push(current);
            } else {
-               current.ends.push({buyAmount: item.buyAmount, buyPrice: item.buyPrice,
-                   salePrice: item.salePrice, saleAmount: item.saleAmount});
+               current.ends.push({buyAmount: parseIntIfNaN(item.buyAmount), buyPrice: parseFloatIfNaN(item.buyPrice),
+                   salePrice: parseFloatIfNaN(item.salePrice), saleAmount: parseIntIfNaN(item.saleAmount)});
            }
         });
         def.resolve(list);
