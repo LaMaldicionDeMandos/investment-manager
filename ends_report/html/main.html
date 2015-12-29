@@ -1,0 +1,16 @@
+<selection layout="row" flex>
+    <md-toolbar layout="row" class="shadow-z-2 header green">
+        <h1 class="md-toolbar-tools" flex="20">
+            <span>Puntas</span>
+        </h1>
+    </md-toolbar>
+    <md-progress-circular md-mode="indeterminate" md-diameter="96" class="loading"></md-progress-circular>
+    <md-content layout="row" flex="100" ng-include="'../ends_report/html/table.html'"></md-content>
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="report">
+        <md-toolbar class="dark-green header">
+            <h1 class="md-toolbar-tools">{{currentTitle.name}}</h1>
+        </md-toolbar>
+        <md-content layout="row" layout-wrap class="content"
+                    ng-include="'../end_report/html/report.html'"></md-content>
+    </md-sidenav>
+</selection>

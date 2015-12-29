@@ -1,0 +1,20 @@
+<table class="table table-striped table-hover content">
+    <thead>
+        <tr>
+            <th colspan="2" class="centerer">
+                <label>Títulos</label>
+                <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="title in titles">
+        <td style="width: 32px">
+            <md-icon md-svg-src="../assets/img/ic_sleep.svg" aria-label="slow" ng-show="title.slow"></md-icon>
+        </td>
+        <td ng-click="selectTitle(title);open()">
+            <label>{{title.name}}</label>
+        </td>
+    </tr>
+    </tbody>
+</table>

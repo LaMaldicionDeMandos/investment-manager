@@ -15,11 +15,6 @@ Date.prototype.format = function() {
 };
 
 console.log('Upgrade schema with Ends');
-var Schema = database.Schema;
-var TitleEndsSchema = new Schema({_id: Schema.ObjectId, name: String, ends: [{date: String, ends:
-    [{buyAmount: Number, buyPrice: Number, saleAmount: Number, salePrice: Number}]}]}, {strict: false});
-var TitleEnds = database.mongoose.model('TitleEnds', TitleEndsSchema);
-database.TitleEnds = TitleEnds;
 
 var functions = [];
 

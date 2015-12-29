@@ -18,6 +18,10 @@ gulp.task('trend', function () {
     childProcess.spawn(electron, ['./trend_report'], { stdio: 'inherit' });
 });
 
+gulp.task('ends', function () {
+    childProcess.spawn(electron, ['./ends_report'], { stdio: 'inherit' });
+});
+
 
 gulp.task('debug', function () {
     childProcess.spawn(electron, ['--debug=5858', './app'], { stdio: 'inherit' });
