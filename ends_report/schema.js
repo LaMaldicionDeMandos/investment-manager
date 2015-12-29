@@ -8,5 +8,17 @@ function addSchema(database) {
         [{buyAmount: Number, buyPrice: Number, saleAmount: Number, salePrice: Number}]}]}, {strict: false});
     var TitleEnds = database.mongoose.model('TitleEnds', TitleEndsSchema);
     database.TitleEnds = TitleEnds;
+
+    console.log('Upgrade schema with TitleEndsDaily');
+    var TitleEndsDailySchema = new Schema({_id: Schema.ObjectId, name: String, ends: [{buyAmount: Number,
+        buyPrice: Number, saleAmount: Number, salePrice: Number}], price: Number, estimated: Number, percent: Number}, {strict: false});
+    var TitleEndsDaily = database.mongoose.model('TitleEndsDaily', TitleEndsDailySchema);
+    database.TitleEndsDaily = TitleEndsDaily;
+
+    var clean = database.clean;
+    database.clean = function(callback) {
+        TitleEndsDaily.remove({});
+        clean(callback);
+    };
 };
 module.exports = addSchema;

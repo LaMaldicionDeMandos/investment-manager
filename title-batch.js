@@ -37,5 +37,5 @@ var saveItems = function(callback) {
 }
 async.series([cleanDb, saveItems], function(err, results) {
 	console.log("End");
-	process.exit();
+	//process.exit();
 });
