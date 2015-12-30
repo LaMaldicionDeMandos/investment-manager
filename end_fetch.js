@@ -23,12 +23,16 @@ fetcher(path, filename, newfilename).then(function(ends) {
       console.log('Fetching end, ' + end.name);
       functions.push(function(callback) {
          console.log('finding end in database, ' + end.name);
-         TitleEnds.findOne({'name': end.name}, function(err, title) {
+         database.TitleEnds.findOne({'name': end.name}, function(err, title) {
+            if (err) {
+               console.log('Error saving end, ' + end.name + err);
+               process.exit(0);
+            }
             console.log('found: ' + end.name + ' ' + JSON.stringify(title));
             var dto = {date: new Date().format(), ends: end.ends};
             if (title == null) {
                console.log('not found end, ' + end.name);
-               title = new TitleEnds();
+               title = new database.TitleEnds();
                title._id = database.ObjectId();
                title.name = end.name;
                title.ends = [dto];
