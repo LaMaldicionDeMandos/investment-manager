@@ -3,18 +3,19 @@
  */
 (function () {
     'use strict';
-    var Title = require('../database').TitleTrend;
+    var database = require('../database');
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {
                 find : function(id) {
                     var def = $q.defer();
-                    Title.findOne({_id: id}, function(err, title) {
+                    database.TitleTrend.findOne({_id: id}, function(err, title) {
                         if (err) {
                             console.log(err);
                             def.reject(err);
                             return;
                         }
+                        console.log('Found trend ' + title.name);
                         def.resolve(title);
                     });
                     return def.promise;

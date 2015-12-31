@@ -7,8 +7,9 @@ var TitleEndsDaily = db.TitleEndsDaily;
 var process = function(_id, dto) {
     console.log('Finding model for ends ' + dto.name);
     TitleEnds.findOne({name: dto.name}, function(err, end) {
-        if (err) {
-            console.log(err);
+        if (err || !end) {
+            console.log('Error with: ' + dto.name + err);
+            console.log(JSON.stringify(end));
             return;
         }
         console.log('Saving model for ends ' + dto.name);
@@ -16,7 +17,9 @@ var process = function(_id, dto) {
         var title = new TitleEndsDaily();
         title._id = _id;
         title.name = dto.name;
-        title.ends = last.ends;
+        title.ends = last.ends.map(function(end) {
+            return {buyAmount: end.buyAmount, buyPrice: end.buyPrice, saleAmount: end.saleAmount, salePrice: end.salePrice};
+        });
         title.price = dto.history[0].closing;
         var buyIndex = 4;
         var saleIndex = 4;
@@ -52,7 +55,7 @@ var process = function(_id, dto) {
                 console.log(err);
                 console.log('Error: ' + title.name + ' --> ' + err);
             } else {
-                console.log('Save Success:' + title.name);
+                console.log('Save Success Ends:' + title.name);
             }
         });
     });

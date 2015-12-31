@@ -17,24 +17,25 @@
             var compareByName = function(a, b) {
                 return a.name > b.name ? 1 : -1;
             };
-            var compareByEnd = function(a, b) {
-                return a.end < b.end ? 1 : -1;
+            var compareByPercent = function(a, b) {
+                return a.percent < b.percent ? 1 : -1;
             };
             $scope.sortByName = function() {
                 $scope.sorterBy = 'name';
                 $scope.titles.sort(compareByName);
             };
-            $scope.sortByEnd = function() {
-                $scope.sorterBy = 'end';
-                $scope.titles.sort(compareByEnd);
+            $scope.sortByPercent = function() {
+                $scope.sorterBy = 'percent';
+                $scope.titles.sort(compareByPercent);
             };
             $scope.selectTitle = function(title) {
                 $scope.currentTitle = title;
             };
             globalTitlesService.all().then(function(titles) {
                 titles.forEach(function(dto) {
-                    titlesService.find(dto.name).then(function(title) {
+                    titlesService.find(dto.id).then(function(title) {
                         console.log(JSON.stringify(title));
+                        if (title == null) return;
                         $scope.titles.push(title);
                         title.slow = true;
                         try {

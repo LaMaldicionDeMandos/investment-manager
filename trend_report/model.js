@@ -1,7 +1,7 @@
 /**
  * Created by boot on 12/21/15.
  */
-var TitleTrend = require('../database.js').TitleTrend;
+var database = require('../database.js');
 var state = function(item) {
     return item.percentBeforeOpen() > 0 ? 1 : (item.percentBeforeOpen() < 0 ? -1 : 0);
 };
@@ -77,7 +77,7 @@ var processZero = function(title, history) {
 };
 var process = function(_id, dto) {
     console.log('Saving model for trends');
-    var title = new TitleTrend();
+    var title = new database.TitleTrend();
     title._id = _id;
     title.name = dto.name;
     title.up = 0;
@@ -86,8 +86,10 @@ var process = function(_id, dto) {
     title.days = 0;
     title.trend = {up: 0, down:0, zero: 0, size: 0, ups: {}, downs:{}, zeros:{}, downsPercent: {}, upsPercent: {}, zerosPercent: {}};
     console.log('Setting history for ' + dto.name);
+    title.history = dto.history[0].percentBeforeOpen();
     if (dto.history[0].percentBeforeOpen() < 0) {
         processNegative(title, dto.history);
+        title.history = dto.history[0].percentBeforeOpen();
     } else if(dto.history[0].percentBeforeOpen() > 0) {
         processPositive(title, dto.history);
     } else {
@@ -112,7 +114,7 @@ var process = function(_id, dto) {
             console.log(err);
             console.log('Error: ' + title.name + ' --> ' + err);
         } else {
-            console.log('Save Success:' + title.name);
+            console.log('Save Success Trends:' + title.name);
         }
     });
 };

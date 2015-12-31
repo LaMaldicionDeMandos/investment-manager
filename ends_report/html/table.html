@@ -5,6 +5,12 @@
                 <label>Títulos</label>
                 <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
             </th>
+            <th class="centerer">
+                <label>Porcentajes</label>
+                <a class='fa fa-caret-down right' ng-show="sorterBy != 'percent'" ng-click="sortByPercent()"/>
+            </th>
+            <th class="centerer">Precio</th>
+            <th class="centerer">Estimado</th>
         </tr>
     </thead>
     <tbody>
@@ -14,6 +20,15 @@
         </td>
         <td ng-click="selectTitle(title);open()">
             <label>{{title.name}}</label>
+        </td>
+        <td>
+            <label in-color ng-model="title.percent">{{title.percent | number: 2}}%</label>
+        </td>
+        <td>
+            <label>${{title.price | number: 2}}</label>
+        </td>
+        <td>
+            <label>${{title.estimated | number: 2}}</label>
         </td>
     </tr>
     </tbody>

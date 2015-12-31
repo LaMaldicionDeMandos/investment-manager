@@ -40,6 +40,7 @@
                             var dailySize = globalTitlesService.dailyData(dto.name, 1)[0].length;
                             console.log(dto.name + ' --- size: ' + dailySize);
                             title.slow = dailySize < 20;
+                            console.log('Trend: ' + JSON.stringify(title));
                         } catch(e){
                             console.log(dto.name + ' --- Error: ' + e);
                         }

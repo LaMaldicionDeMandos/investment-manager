@@ -14,11 +14,5 @@ function addSchema(database) {
         buyPrice: Number, saleAmount: Number, salePrice: Number}], price: Number, estimated: Number, percent: Number}, {strict: false});
     var TitleEndsDaily = database.mongoose.model('TitleEndsDaily', TitleEndsDailySchema);
     database.TitleEndsDaily = TitleEndsDaily;
-
-    var clean = database.clean;
-    database.clean = function(callback) {
-        TitleEndsDaily.remove({});
-        clean(callback);
-    };
 };
 module.exports = addSchema;

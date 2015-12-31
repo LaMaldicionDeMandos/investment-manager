@@ -3,13 +3,13 @@
  */
 (function () {
     'use strict';
-    var Title = require('../database').TitleEnds;
+    var Title = require('../database').TitleEndsDaily;
     angular.module('app.services', [])
         .factory('titlesService', function ($q) {
             return {
-                find : function(name) {
+                find : function(id) {
                     var def = $q.defer();
-                    Title.findOne({name: name}, function(err, title) {
+                    Title.findOne({_id: id}, function(err, title) {
                         if (err) {
                             console.log(err);
                             def.reject(err);
