@@ -11,7 +11,8 @@ function addSchema(database) {
 
     console.log('Upgrade schema with TitleEndsDaily');
     var TitleEndsDailySchema = new Schema({_id: Schema.ObjectId, name: String, ends: [{buyAmount: Number,
-        buyPrice: Number, saleAmount: Number, salePrice: Number}], price: Number, estimated: Number, percent: Number}, {strict: false});
+        buyPrice: Number, saleAmount: Number, salePrice: Number}], price: Number, estimated: Number, percent: Number,
+    averangeEstimated: Number, averangePercent: Number}, {strict: false});
     var TitleEndsDaily = database.mongoose.model('TitleEndsDaily', TitleEndsDailySchema);
     database.TitleEndsDaily = TitleEndsDaily;
 };
