@@ -6,11 +6,15 @@
                 <a class='fa fa-caret-down right' ng-show="sorterBy != 'name'" ng-click="sortByName()"/>
             </th>
             <th class="centerer">
-                <label>Porcentajes</label>
+                <label>% Estimado</label>
                 <a class='fa fa-caret-down right' ng-show="sorterBy != 'percent'" ng-click="sortByPercent()"/>
             </th>
-            <th class="centerer">Precio</th>
             <th class="centerer">Estimado</th>
+            <th class="centerer">Precio</th>
+            <th class="centerer">
+                <label>% Estimado Promedio</label>
+                <a class='fa fa-caret-down right' ng-show="sorterBy != 'averange'" ng-click="sortByAverangePercent()"/>
+            <th class="centerer">Estimado Promedio</th>
         </tr>
     </thead>
     <tbody>
@@ -21,14 +25,20 @@
         <td ng-click="selectTitle(title);open()">
             <label>{{title.name}}</label>
         </td>
-        <td>
+        <td class="centerer">
             <label in-color ng-model="title.percent">{{title.percent | number: 2}}%</label>
         </td>
-        <td>
+        <td class="centerer">
+            <label>${{title.estimated | number: 2}}</label>
+        </td>
+        <td class="centerer">
             <label>${{title.price | number: 2}}</label>
         </td>
-        <td>
-            <label>${{title.estimated | number: 2}}</label>
+        <td class="centerer">
+            <label in-color ng-model="title.averangePercent">{{title.averangePercent | number: 2}}%</label>
+        </td>
+        <td class="centerer">
+            <label>${{title.averangeEstimated | number: 2}}</label>
         </td>
     </tr>
     </tbody>

@@ -65,3 +65,7 @@ md-sidenav, md-sidenav.md-locked-open, md-sidenav.md-closed.md-locked-open-add-a
     width: 50vw !important;
     max-width: 800px !important;
 }
+
+.right {
+    right: 0px;
+}

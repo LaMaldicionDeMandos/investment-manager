@@ -20,6 +20,9 @@
             var compareByPercent = function(a, b) {
                 return a.percent < b.percent ? 1 : -1;
             };
+            var compareByAverangePercent = function(a, b) {
+                return a.averangePercent < b.averangePercent ? 1 : -1;
+            };
             $scope.sortByName = function() {
                 $scope.sorterBy = 'name';
                 $scope.titles.sort(compareByName);
@@ -27,6 +30,10 @@
             $scope.sortByPercent = function() {
                 $scope.sorterBy = 'percent';
                 $scope.titles.sort(compareByPercent);
+            };
+            $scope.sortByAverangePercent = function() {
+                $scope.sorterBy = 'averange';
+                $scope.titles.sort(compareByAverangePercent);
             };
             $scope.selectTitle = function(title) {
                 $scope.currentTitle = title;
