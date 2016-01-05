@@ -65,18 +65,6 @@ titles.forEach(function(key, title) {
                 //callback(err, title);
             }
         });
-/*        functions.push(function(callback) {
-            console.log("End saving title: " + title.name);
-            item.save(function(err) {
-                if (!err) {
-                    console.log("Error saving title: " + title.name);
-                    callback(null, title);
-                } else {
-                    console.log("End saved title: " + title.name);
-                    callback(err, title);
-                }
-            });
-        });*/
     });
 });
 var saveItems = function(callback) {
