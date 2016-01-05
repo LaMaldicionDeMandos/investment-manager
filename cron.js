@@ -6,15 +6,17 @@ Date.prototype.formatTime = function() {
             ':' + (this.getMinutes() >= 10 ? this.getMinutes() : ('0' + this.getMinutes()));
 };
 cookie = process.argv[2];
+var loader = require('./end_runtime_fetcher.js');
 var runNow = process.argv[3] == 'true';
 var CronJob = require('cron').CronJob;
 var loopJob;
 var loop = function() {
     console.log("Analizing " + new Date().formatTime());
+    loader(cookie);
 };
 var start = function() {
     console.log('Run loop');
-    loopJob = loopJob || new CronJob('*/30 * * * * *', loop, function() {
+    loopJob = loopJob || new CronJob('0 * * * * *', loop, function() {
             console.log('stop loop');
         }, true);
 };

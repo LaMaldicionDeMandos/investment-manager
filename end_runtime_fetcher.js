@@ -41,12 +41,13 @@ module.exports = function(cookie) {
         functions.push(function(callback) {
             loader(title.name, cookie).then(function(ends) {
                 console.log('Ends for ' + title.name + ' --> ' + JSON.stringify(ends));
-                append(title.name, ends, callback);
+                var item = {time: new Date().getTime, ends: ends};
+                append(title.name, item, callback);
             });
         });
     });
     async.parallel(functions, function(err, results) {
         console.log("End");
-        process.exit();
+        //process.exit();
     });
 };
