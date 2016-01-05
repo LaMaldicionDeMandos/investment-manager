@@ -6,7 +6,9 @@ Date.prototype.formatTime = function() {
             ':' + (this.getMinutes() >= 10 ? this.getMinutes() : ('0' + this.getMinutes()));
 };
 cookie = process.argv[2];
-var loader = require('./end_runtime_fetcher.js');
+var fetcher = require('./end_runtime_fetcher.js');
+var loader = fetcher.loader;
+var cleaner = fetcher.cleaner;
 var runNow = process.argv[3] == 'true';
 var CronJob = require('cron').CronJob;
 var loopJob;
@@ -29,6 +31,7 @@ var stop = function() {
         console.log('stoping loop');
         loopJob.stop();
     }
+    cleaner();
 };
 var startJob = new CronJob('0 10 * * 1-5', start, null, true);
 if (runNow) {

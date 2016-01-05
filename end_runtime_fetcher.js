@@ -34,20 +34,27 @@ function append(title, ends, callback) {
         if (err) console.log(err);
     });
 };
-
-module.exports = function(cookie) {
-    titleCodes.forEach(function(key, title) {
-        createFolder(title.name);
-        functions.push(function(callback) {
-            loader(title.name, cookie).then(function(ends) {
-                console.log('Ends for ' + title.name + ' --> ' + JSON.stringify(ends));
-                var item = {time: new Date().getTime(), ends: ends};
-                append(title.name, item, callback);
+function EndRuntimeFetcher() {
+    this.loader = function (cookie) {
+        titleCodes.forEach(function (key, title) {
+            createFolder(title.name);
+            functions.push(function (callback) {
+                loader(title.name, cookie).then(function (ends) {
+                    console.log('Ends for ' + title.name + ' --> ' + JSON.stringify(ends));
+                    var item = {time: new Date().getTime(), ends: ends};
+                    append(title.name, item, callback);
+                });
             });
         });
-    });
-    async.parallel(functions, function(err, results) {
-        console.log("End");
-        //process.exit();
-    });
+        async.parallel(functions, function (err, results) {
+            console.log("End");
+            //process.exit();
+        });
+    };
+
+    this.cleaner = function () {
+        console.log('Cleaning');
+    };
 };
+
+module.exports = new EndRuntimeFetcher();
