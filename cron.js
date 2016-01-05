@@ -12,7 +12,11 @@ var CronJob = require('cron').CronJob;
 var loopJob;
 var loop = function() {
     console.log("Analizing " + new Date().formatTime());
-    loader(cookie);
+    try {
+        loader(cookie);
+    } catch(e) {
+        console.log(e);
+    }
 };
 var start = function() {
     console.log('Run loop');

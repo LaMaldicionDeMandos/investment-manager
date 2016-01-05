@@ -41,7 +41,7 @@ module.exports = function(cookie) {
         functions.push(function(callback) {
             loader(title.name, cookie).then(function(ends) {
                 console.log('Ends for ' + title.name + ' --> ' + JSON.stringify(ends));
-                var item = {time: new Date().getTime, ends: ends};
+                var item = {time: new Date().getTime(), ends: ends};
                 append(title.name, item, callback);
             });
         });
