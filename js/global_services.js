@@ -5,12 +5,17 @@
     'use strict';
     var Title = require('../database').Title;
     var dailyData = require('../daily-data');
+    var dailyEnds = require('../daily_ends');
     var path = './titles/runtime';
+    var pathEnds = './titles/ends';
     angular.module('global.services', [])
         .factory('globalTitlesService', function ($q) {
             return {
                 dailyData: function(titleName, n) {
                     return dailyData(titleName, path, n);
+                },
+                latestEnds: function(titleName) {
+                    return dailyEnds(titleName, pathEnds);
                 },
                 all: function () {
                     var def = $q.defer();

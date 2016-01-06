@@ -5,8 +5,8 @@ var fs = require('fs');
 var loader = require('./ends_loader.js');
 var titleCodes = require('./title-codes.js');
 var async = require('async');
-var functions = [];
 var path = './titles/ends/BCBA';
+var LineReader = require('readline');
 
 Date.prototype.format = function() {
     return this.getFullYear() + '-' +
@@ -36,6 +36,7 @@ function append(title, ends, callback) {
 };
 function EndRuntimeFetcher() {
     this.loader = function (cookie) {
+        var functions = [];
         titleCodes.forEach(function (key, title) {
             createFolder(title.name);
             functions.push(function (callback) {
@@ -54,6 +55,32 @@ function EndRuntimeFetcher() {
 
     this.cleaner = function () {
         console.log('Cleaning');
+        var functions = [];
+        titleCodes.forEach(function (key, title) {
+            var filename = path + '/' + title.name + '/' + now;
+            var lineReader = LineReader.createInterface({
+                input: fs.createReadStream(filename)
+            });
+            var moves = [];
+            lineReader.on('line', function (line) {
+                moves.push(JSON.parse(line));
+            });
+            lineReader.on('close', function () {
+                var oldSize = moves.length;
+                var latest;
+                moves = moves.filter(function(item) {
+                    var pass = JSON.stringify(latest) != JSON.stringify(item.ends);
+                    latest = item.ends;
+                    return pass;
+                });
+                console.log('Finish file ' + title.name + ' old size: ' + oldSize + ' new size: ' + moves.length);
+                fs.writeFile(filename, JSON.stringify(moves));
+            });
+        });
+        async.parallel(functions, function (err, results) {
+            console.log("End Clean");
+            //process.exit();
+        });
     };
 };
 
