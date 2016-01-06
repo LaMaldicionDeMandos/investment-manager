@@ -235,7 +235,7 @@
                 $scope.current.maxLimit = $scope.current.history.slice().sort(function(a,b) {
                     return b.percentMax() - a.percentMax();
                 }).slice($scope.current.history.length*(100 - $scope.limitPercent)/100)[0].percentMax();
-            }
+            };
             $scope.populate = function(title) {
                 var rowsFull = [];
                 var rowsLast = [];
